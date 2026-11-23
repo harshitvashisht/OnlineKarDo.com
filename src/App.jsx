@@ -378,6 +378,7 @@ function EnquiryModal({ offer, onClose }) {
   const [status, setStatus] = useState('idle')
   const [error, setError] = useState('')
   const [selectedServices, setSelectedServices] = useState(() => services.some(service => service.name === offer) ? [offer] : [])
+  const [selectedPacks, setSelectedPacks] = useState(() => packs.some(pack => pack.name === offer) ? [offer] : [])
   useEffect(() => {
     const onKeyDown = event => { if (event.key === 'Escape') onClose() }
     document.addEventListener('keydown', onKeyDown)
@@ -405,11 +406,12 @@ function EnquiryModal({ offer, onClose }) {
         <form className="enquiry-form" onSubmit={submit}>
           <input type="hidden" name="Selected service or plan" value={offer} />
           <label className="enquiry-trap" aria-hidden="true">Leave this field empty<input name="_gotcha" tabIndex="-1" autoComplete="off" /></label>
-          <fieldset className="enquiry-service-picker"><legend>Which services are you interested in?</legend><p>Select as many as you need.</p><div className="enquiry-service-options">{services.map(service => <label key={service.id}><input type="checkbox" name="services" value={service.name} checked={selectedServices.includes(service.name)} onChange={event => setSelectedServices(current => event.target.checked ? [...current, service.name] : current.filter(name => name !== service.name))} /><span>{service.name}</span></label>)}</div></fieldset>
           <label>Your name<input name="name" required autoComplete="name" placeholder="Name" /></label>
           <label>Business name<input name="business_name" required autoComplete="organization" placeholder="Business name" /></label>
           <label>Phone / WhatsApp<input name="phone" type="tel" required autoComplete="tel" placeholder="+91 98765 43210" /></label>
           <label>Email address<input name="email" type="email" required autoComplete="email" placeholder="you@example.com" /></label>
+          <fieldset className="enquiry-service-picker"><legend>Which setup packs are you interested in?</legend><p>Select one or more packs, if you need a bundled setup.</p><div className="enquiry-service-options">{packs.map(pack => <label key={pack.name}><input type="checkbox" name="packs" value={pack.name} checked={selectedPacks.includes(pack.name)} onChange={event => setSelectedPacks(current => event.target.checked ? [...current, pack.name] : current.filter(name => name !== pack.name))} /><span>{pack.name} · {money(pack.price)}</span></label>)}</div></fieldset>
+          <fieldset className="enquiry-service-picker"><legend>Which individual services are you interested in?</legend><p>Select as many as you need.</p><div className="enquiry-service-options">{services.map(service => <label key={service.id}><input type="checkbox" name="services" value={service.name} checked={selectedServices.includes(service.name)} onChange={event => setSelectedServices(current => event.target.checked ? [...current, service.name] : current.filter(name => name !== service.name))} /><span>{service.name}</span></label>)}</div></fieldset>
           <label className="enquiry-wide">What does your business do?<textarea name="business_details" required rows="3" placeholder="Tell us what you sell or the service you provide…" /></label>
           <label className="enquiry-wide">Anything specific you need?<textarea name="requirements" rows="3" placeholder="A website, ordering, payments, a catalogue…" /></label>
           {error && <p className="enquiry-error" role="alert">{error}</p>}
