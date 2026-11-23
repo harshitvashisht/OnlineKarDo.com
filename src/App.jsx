@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Clock3, Menu, X } from 'lucide-react'
+import { formspreeEndpoint } from './config'
 
 // Add the business WhatsApp number in international format and a contact email here.
 const CONTACT = { whatsapp: '', email: '' }
@@ -69,7 +70,7 @@ const phonePreviews = [
   { title: 'Link-in-bio page', caption: 'Turn one link into many paths', type: 'bio' },
 ]
 
-function Header({ isService, onSection }) {
+function Header({ isService, onSection, onEnquiry }) {
   const [open, setOpen] = useState(false)
   const links = [['How it works', '#how'], ['Packs', '#packs'], ['Examples', '#examples'], ['Monthly plans', '#monthly']]
   const handleSection = id => event => {
@@ -84,7 +85,7 @@ function Header({ isService, onSection }) {
     <button className="menu-toggle" type="button" aria-expanded={open} aria-label={open ? 'Close navigation' : 'Open navigation'} onClick={() => setOpen(!open)}>{open ? <X size={19} /> : <Menu size={19} />}</button>
     <nav id="main-nav" className={`main-nav ${open ? 'open' : ''}`} aria-label="Main navigation">
       {links.map(([label, href]) => <a key={href} href={href} onClick={handleSection(href.slice(1))}>{label}</a>)}
-      <a className="button button-small button-dark nav-cta" href="#contact" onClick={handleSection('contact')}>Get started <ArrowUpRight size={15} /></a>
+      <button className="button button-small button-dark nav-cta" type="button" onClick={() => { setOpen(false); onEnquiry('General enquiry') }}>Get started <ArrowUpRight size={15} /></button>
     </nav>
   </div></header>
 }
@@ -125,7 +126,7 @@ function Packs({ onChoose }) {
       {pack.featured && <div className="featured-tag">MOST POPULAR</div>}<div className="pack-top"><span className="pack-label">{pack.label}</span><span className="pack-emoji">{pack.icon}</span></div>
       <h3>{pack.name}</h3><p className="pack-desc">{pack.description}</p><div className="pack-price">{money(pack.price)} <small>one time</small></div>
       <ul>{pack.includes.map(item => <li key={item}>{item}</li>)}</ul><div className="pack-delivery"><Clock3 size={14} /> Target: {pack.delivery}</div>
-      <a className={`button ${pack.featured ? 'button-primary' : 'button-outline'} pack-action`} href="#contact" onClick={() => onChoose(pack.name)}>{pack.button}<ArrowUpRight size={15} /></a>
+      <button className={`button ${pack.featured ? 'button-primary' : 'button-outline'} pack-action`} type="button" onClick={() => onChoose(pack.name)}>{pack.button}<ArrowUpRight size={15} /></button>
     </article>)}</div>
     <p className="pricing-footnote">*Delivery targets begin after complete business details and required account approvals. Third-party verification can take longer. Domain, hosting, gateway and other third-party fees are billed separately.</p>
   </div></section>
@@ -346,7 +347,7 @@ function ServiceDetailPage({ service, onBack, onChoose }) {
 function Monthly({ onChoose }) {
   return <section className="monthly-section" id="monthly"><div className="container">
     <div className="section-heading section-heading-row"><div><span className="eyebrow">Ongoing support</span><h2>Keep things ticking along.</h2></div><p>Simple monthly help for updates and social posting. Choose what suits your rhythm.</p></div>
-    <div className="monthly-grid">{monthlyPlans.map(([name, price, description], index) => <article className="monthly-card" key={name}><span className="monthly-num">0{index + 1} / CARE PLAN</span><h3>{name}</h3><div className="monthly-price">{money(price)} <small>/ month</small></div><p>{description}</p><a className="monthly-link" href="#contact" onClick={() => onChoose(`${name} monthly plan`)}>Ask about this plan <ArrowUpRight size={14} /></a></article>)}</div>
+    <div className="monthly-grid">{monthlyPlans.map(([name, price, description], index) => <article className="monthly-card" key={name}><span className="monthly-num">0{index + 1} / CARE PLAN</span><h3>{name}</h3><div className="monthly-price">{money(price)} <small>/ month</small></div><p>{description}</p><button className="monthly-link" type="button" onClick={() => onChoose(`${name} monthly plan`)}>Ask about this plan <ArrowUpRight size={14} /></button></article>)}</div>
     <p className="pricing-footnote monthly-note">Social plans cover creating and publishing template-based posts. They don’t include ad management, daily customer replies or guaranteed leads, followers or sales.</p>
   </div></section>
 }
@@ -373,12 +374,58 @@ function Contact({ selected, onContact }) {
   </div><div className="contact-aside"><span className="aside-spark">✳</span><b>One clear brief.<br />One thoughtful setup.</b><span>Start with the details that make your business yours.</span><div className="aside-line" /><small>OnlineKarDo · Get Your Business Online</small></div></div></section>
 }
 
+function EnquiryModal({ offer, onClose }) {
+  const [status, setStatus] = useState('idle')
+  const [error, setError] = useState('')
+  useEffect(() => {
+    const onKeyDown = event => { if (event.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKeyDown)
+    document.body.style.overflow = 'hidden'
+    return () => { document.removeEventListener('keydown', onKeyDown); document.body.style.overflow = '' }
+  }, [onClose])
+  async function submit(event) {
+    event.preventDefault()
+    setStatus('sending')
+    setError('')
+    try {
+      const response = await fetch(formspreeEndpoint, { method: 'POST', body: new FormData(event.currentTarget), headers: { Accept: 'application/json' } })
+      if (!response.ok) throw new Error('We couldn’t send your request. Please try again in a moment.')
+      setStatus('sent')
+    } catch (err) {
+      setStatus('error')
+      setError(err.message || 'Something went wrong. Please try again.')
+    }
+  }
+  return <div className="enquiry-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
+    <section className="enquiry-modal" role="dialog" aria-modal="true" aria-labelledby="enquiry-title">
+      <button className="enquiry-close" type="button" onClick={onClose} aria-label="Close enquiry form"><X size={19} /></button>
+      {status === 'sent' ? <div className="enquiry-success"><span><Check size={23} /></span><p className="eyebrow">Request received</p><h2>Thanks for reaching out.</h2><p>We’ve received your enquiry about <b>{offer}</b> and will get back to you soon.</p><button className="button button-primary" type="button" onClick={onClose}>Done</button></div> : <>
+        <span className="eyebrow">Let’s get your business online</span><h2 id="enquiry-title">Tell us a little about your business.</h2><p className="enquiry-intro">We’ll follow up about <b>{offer}</b> and help you figure out the next step.</p>
+        <form className="enquiry-form" onSubmit={submit}>
+          <input type="hidden" name="Selected service or plan" value={offer} />
+          <label className="enquiry-trap" aria-hidden="true">Leave this field empty<input name="_gotcha" tabIndex="-1" autoComplete="off" /></label>
+          <label>Your name<input name="name" required autoComplete="name" placeholder="Name" /></label>
+          <label>Business name<input name="business_name" required autoComplete="organization" placeholder="Business name" /></label>
+          <label>Phone / WhatsApp<input name="phone" type="tel" required autoComplete="tel" placeholder="+91 98765 43210" /></label>
+          <label>Email address<input name="email" type="email" required autoComplete="email" placeholder="you@example.com" /></label>
+          <label className="enquiry-wide">What does your business do?<textarea name="business_details" required rows="3" placeholder="Tell us what you sell or the service you provide…" /></label>
+          <label className="enquiry-wide">Anything specific you need?<textarea name="requirements" rows="3" placeholder="A website, ordering, payments, a catalogue…" /></label>
+          {error && <p className="enquiry-error" role="alert">{error}</p>}
+          <button className="button button-primary enquiry-submit" type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Sending…' : 'Send enquiry'} <ArrowUpRight size={15} /></button>
+          <small className="enquiry-privacy">Your details will only be used to respond to this enquiry.</small>
+        </form>
+      </>}
+    </section>
+  </div>
+}
+
 function Footer() {
   return <footer className="site-footer"><div className="container footer-main"><div className="footer-brand"><img src="/assets/onlinekardo-logo.jpeg" alt="OnlineKarDo" /><p>Digital essentials for local businesses, made simpler.</p></div><div className="footer-nav"><div><b>Explore</b><a href="#how">How it works</a><a href="#packs">Setup packs</a><a href="#examples">Examples</a><a href="#monthly">Monthly plans</a></div><div><b>Get started</b><a href="#services">Individual services</a><a href="#contact">Contact</a><a href="#fineprint">Important details</a></div></div></div><div className="container footer-bottom"><span>© {new Date().getFullYear()} OnlineKarDo. All rights reserved.</span><span>Made for the people building local business.</span></div></footer>
 }
 
 export default function App() {
   const [selected, setSelected] = useState('')
+  const [enquiryOffer, setEnquiryOffer] = useState('')
   const [toast, setToast] = useState('')
   const [pathname, setPathname] = useState(window.location.pathname)
   const activeService = services.find(service => service.id === pathname.split('/').filter(Boolean).at(-1) && pathname.startsWith('/services/'))
@@ -436,14 +483,15 @@ export default function App() {
 
   function chooseDetailService(name) {
     setSelected(name)
-    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
+    setEnquiryOffer(name)
   }
 
   return <>
-    <Header isService={Boolean(activeService)} onSection={navigateSection} />
-    {activeService ? <ServiceDetailPage service={activeService} onBack={backToServices} onChoose={chooseDetailService} /> : <main id="top"><Hero /><HowItWorks /><Packs onChoose={setSelected} /><Examples onBusiness={chooseBusiness} /><Services onOpen={openService} /><Monthly onChoose={setSelected} /><GoodToKnow /></main>}
+    <Header isService={Boolean(activeService)} onSection={navigateSection} onEnquiry={chooseDetailService} />
+    {activeService ? <ServiceDetailPage service={activeService} onBack={backToServices} onChoose={chooseDetailService} /> : <main id="top"><Hero /><HowItWorks /><Packs onChoose={chooseDetailService} /><Examples onBusiness={chooseBusiness} /><Services onOpen={openService} /><Monthly onChoose={chooseDetailService} /><GoodToKnow /></main>}
     <Contact selected={selected} />
     <Footer />
+    {enquiryOffer && <EnquiryModal key={enquiryOffer} offer={enquiryOffer} onClose={() => setEnquiryOffer('')} />}
     <a className="floating-contact" href={CONTACT.whatsapp ? `https://wa.me/${CONTACT.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(`Hi OnlineKarDo! I'm interested in ${selected || 'getting my business online'}.`)}` : '#contact'} target={CONTACT.whatsapp ? '_blank' : undefined} rel={CONTACT.whatsapp ? 'noreferrer' : undefined} aria-label="Contact OnlineKarDo"><ArrowUpRight size={17} /><span>Let’s talk</span></a>
     <div className={`toast ${toast ? 'show' : ''}`} role="status" aria-live="polite">{toast}</div>
   </>

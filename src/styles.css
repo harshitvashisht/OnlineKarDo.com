@@ -191,3 +191,23 @@
 .facebook-brandbar{border:0;margin:-18px -18px 0;background:#fff;padding:10px 14px}.facebook-brandbar .brand-lockup{margin-right:auto}.facebook-brandbar>span:last-child{color:#1877f2;font-weight:700}.facebook-cover{background:linear-gradient(120deg,#d8e6fa,#acc7ed);color:#1763b7}.facebook-action-row button{background:#0866ff}.facebook-action-row button+button{background:#e8f0fe;color:#0866ff}.facebook-sample .specific-tabs button.selected{background:#e8f0fe;color:#0866ff}
 .wa-profile-header{background:#1e6048;display:flex;align-items:center}.wa-profile-header .brand-lockup{margin-right:auto}.wa-profile-header>span:last-child{color:#fff}.wa-profile-sample .sample-notice{background:#edf7ef;border-color:#d7ebdc;color:#286242}.wa-business-avatar{background:#e7f5ec;color:#1e6048}
 @media(max-width:520px){.wa-order-titlebar{margin:-14px -14px 0;padding:10px 12px}.facebook-brandbar{margin:-14px -14px 0}.brand-lockup b{font-size:.72rem}.detail-brand-lockup .brand-logo-icon{width:25px;height:25px}}
+
+/* Shared enquiry form opened from service and plan actions */
+.enquiry-backdrop{position:fixed;inset:0;z-index:60;background:#10221dcc;backdrop-filter:blur(5px);display:grid;place-items:center;padding:20px;overflow:auto}
+.enquiry-modal{position:relative;width:min(100%,650px);max-height:min(92vh,900px);overflow:auto;background:var(--paper);border:1px solid #e9e4d9;border-radius:22px;padding:34px;box-shadow:0 30px 100px #07161055}
+.enquiry-close{position:absolute;right:19px;top:19px;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:#fffefa;color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.enquiry-modal h2{font-size:clamp(1.8rem,5vw,2.6rem);max-width:500px;margin:11px 42px 8px 0}
+.enquiry-intro{margin:0 0 22px;color:var(--muted)}
+.enquiry-form{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.enquiry-form label{display:flex;flex-direction:column;gap:6px;color:#31433a;font-size:.78rem;font-weight:700}
+.enquiry-form input,.enquiry-form textarea{width:100%;border:1px solid #dcded5;border-radius:8px;background:#fffefa;padding:11px 12px;color:var(--ink);font:400 .9rem 'DM Sans';outline:none}
+.enquiry-form input:focus,.enquiry-form textarea:focus{border-color:#49825d;box-shadow:0 0 0 3px #49825d20}
+.enquiry-form textarea{resize:vertical;min-height:82px}
+.enquiry-form .enquiry-wide{grid-column:1/-1}
+.enquiry-trap{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+.enquiry-submit{justify-content:center;gap:8px;min-height:49px}
+.enquiry-form .enquiry-privacy{align-self:center;color:#748078;font-size:.7rem}
+.enquiry-error{grid-column:1/-1;margin:0;color:#a3311b;font-size:.84rem}
+.enquiry-success{padding:30px 12px;text-align:center}.enquiry-success>span{margin:0 auto 16px;width:54px;height:54px;display:grid;place-items:center;border-radius:50%;background:#e5f1e5;color:#2f7946}.enquiry-success h2{margin:8px auto 11px}.enquiry-success p:not(.eyebrow){max-width:420px;margin:0 auto 23px}.enquiry-success .button{margin:auto}
+.pack-action{width:100%;justify-content:center;cursor:pointer}.monthly-link{display:inline-flex;align-items:center;gap:5px;padding:0;border:0;background:transparent;color:var(--orange);font-size:.82rem;font-weight:700;cursor:pointer}
+@media(max-width:600px){.enquiry-backdrop{padding:10px;align-items:center}.enquiry-modal{padding:27px 20px 22px;border-radius:16px;max-height:95vh}.enquiry-form{grid-template-columns:1fr;gap:12px}.enquiry-form .enquiry-wide{grid-column:auto}.enquiry-form .enquiry-privacy{grid-column:auto}.enquiry-close{right:14px;top:14px;width:34px;height:34px}}
