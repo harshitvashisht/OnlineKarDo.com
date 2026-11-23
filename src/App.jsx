@@ -35,6 +35,33 @@ const businesses = [
   ['Photographer', '📷', 'services', 'Portfolio & bookings'], ['Florist', '🌷', 'retail', 'Bouquets & custom orders'],
 ]
 
+const businessQuestions = {
+  'Bakery': ['What do you bake or sell most often?', 'Do you take custom cake or celebration orders?'],
+  'Clinic': ['What kind of care or specialties do you offer?', 'How should patients request an appointment?'],
+  'Garment shop': ['What clothing or product ranges do you sell?', 'What sizing, price or order details should customers see?'],
+  'Cafe': ['What are your popular menu items?', 'Do customers need pickup, delivery or table information?'],
+  'Restaurant': ['What cuisine and signature dishes should we feature?', 'Do you want customers to enquire about tables, takeaway or delivery?'],
+  'Supermarket': ['Which product categories should customers browse?', 'Do you offer delivery, pickup or local-area service?'],
+  'Salon': ['Which services and treatments do you provide?', 'How should clients request a booking?'],
+  'Home kitchen': ['What meals or snacks are on your usual menu?', 'How far ahead should customers place pre-orders?'],
+  'Handmade gifts': ['What handmade products or custom gifts do you make?', 'How can customers request custom colours, names or packaging?'],
+  'Event decor': ['What kinds of events and decor do you specialize in?', 'Which details do you need for a quote (date, venue, guest count)?'],
+  'AC & appliance repair': ['Which appliances or brands do you repair?', 'What details should a customer share to request a visit?'],
+  'Yoga studio': ['Which classes or programs do you offer?', 'What schedule, level or enrolment details should visitors see?'],
+  'Homestay': ['How many rooms and guests can you accommodate?', 'What dates, amenities or house rules should guests know?'],
+  'Dental clinic': ['Which dental treatments and services do you provide?', 'How should patients request a consultation or appointment?'],
+  'Hardware store': ['Which hardware or building supply categories do you stock?', 'Do customers need help with availability, delivery or quotations?'],
+  'Nursery & farm produce': ['What plants, produce or seasonal items do you offer?', 'How often does availability change and where do you deliver?'],
+  'PG & hostel': ['What room types, facilities and occupancy do you offer?', 'What should a prospective resident know about rent and visits?'],
+  'School': ['Which grades, programs or admissions do you want to highlight?', 'What should parents know about admissions and visits?'],
+  'Coaching centre': ['Which subjects, exams or courses do you teach?', 'What batches, age groups or enrolment details should be shown?'],
+  'Builder': ['What projects or property types do you offer?', 'Which location, configuration or RERA details should customers see?'],
+  'Showroom': ['What products or brands are available in your showroom?', 'Do customers need appointment, price or availability enquiries?'],
+  'Gym': ['What membership options, facilities and classes do you offer?', 'How can someone book a trial or ask about membership?'],
+  'Photographer': ['What photography services and event types do you cover?', 'How should clients share dates, locations or package preferences?'],
+  'Florist': ['What bouquets, arrangements or floral services do you offer?', 'Do you take custom, event or same-day orders?'],
+}
+
 const services = [
   { id: 'one-page-business-website', name: 'One-page business website', price: 2999, category: 'Website', mark: '↗', summary: 'Give your business one clear, professional home on the web.', impact: 'A focused page helps a new customer understand what you offer, where you are and how to take the next step without searching through scattered posts.', why: 'People often check a business online before calling or visiting. A useful one-page site puts your key details, photos and enquiry link together in one place you control.', bestFor: 'New businesses, solo professionals and local shops that need a simple first website.', demo: { heading: 'Good things, made daily.', subheading: 'A neighbourhood bakery for the everyday treat.', items: ['Fresh bakes, made this morning', 'Find us in Indiranagar, Bengaluru', 'Ask about today’s specials'], action: 'Send an enquiry' } },
   { id: '3-5-page-business-website', name: '3–5 page business website', price: 4999, category: 'Website', mark: '▤', summary: 'Organize your services, story and contact details across a few pages.', impact: 'Separate pages give customers room to compare services, understand your approach and find answers. This can make more complex offers easier to explore.', why: 'When every detail is squeezed into one page, visitors can miss the information they came for. A small, well-planned site makes each customer question easier to answer.', bestFor: 'Growing businesses, clinics, studios and service providers with several offers or locations.', demo: { heading: 'Care that listens.', subheading: 'Meet the team, explore services and request a visit.', items: ['About the practice', 'Services and helpful information', 'Hours, location and contact'], action: 'Explore services' } },
@@ -374,7 +401,7 @@ function Contact({ selected, onContact }) {
   </div><div className="contact-aside"><span className="aside-spark">✳</span><b>One clear brief.<br />One thoughtful setup.</b><span>Start with the details that make your business yours.</span><div className="aside-line" /><small>OnlineKarDo · Get Your Business Online</small></div></div></section>
 }
 
-function EnquiryModal({ offer, onClose }) {
+function EnquiryModal({ offer, businessType, onClose }) {
   const [status, setStatus] = useState('idle')
   const [error, setError] = useState('')
   const [selectedServices, setSelectedServices] = useState(() => services.some(service => service.name === offer) ? [offer] : [])
@@ -406,6 +433,7 @@ function EnquiryModal({ offer, onClose }) {
         <span className="eyebrow">Let’s get your business online</span><h2 id="enquiry-title">Tell us a little about your business.</h2><p className="enquiry-intro">We’ll follow up about <b>{offer}</b> and help you figure out the next step.</p>
         <form className="enquiry-form" onSubmit={submit}>
           <input type="hidden" name="Selected service or plan" value={offer} />
+          {businessType && <input type="hidden" name="Business type" value={businessType} />}
           <label className="enquiry-trap" aria-hidden="true">Leave this field empty<input name="_gotcha" tabIndex="-1" autoComplete="off" /></label>
           <label>Your name<input name="name" required autoComplete="name" placeholder="Name" /></label>
           <label>Business name<input name="business_name" required autoComplete="organization" placeholder="Business name" /></label>
@@ -415,6 +443,7 @@ function EnquiryModal({ offer, onClose }) {
           <fieldset className="enquiry-service-picker"><legend>Which monthly care plans interest you?</legend><p>Select any plans you’d like to ask us about.</p><div className="enquiry-service-options">{monthlyPlans.map(([name, price, description]) => { const value = `${name} monthly plan`; return <label key={name}><input type="checkbox" name="monthly_plans" value={`${name} · ${money(price)}/month`} checked={selectedPlans.includes(value)} onChange={event => setSelectedPlans(current => event.target.checked ? [...current, value] : current.filter(item => item !== value))} /><span>{name} · {money(price)}/month</span></label> })}</div></fieldset>
           <fieldset className="enquiry-service-picker"><legend>Which individual services are you interested in?</legend><p>Select as many as you need.</p><div className="enquiry-service-options">{services.map(service => <label key={service.id}><input type="checkbox" name="services" value={service.name} checked={selectedServices.includes(service.name)} onChange={event => setSelectedServices(current => event.target.checked ? [...current, service.name] : current.filter(name => name !== service.name))} /><span>{service.name}</span></label>)}</div></fieldset>
           <label className="enquiry-wide">What does your business do?<textarea name="business_details" required rows="3" placeholder="Tell us what you sell or the service you provide…" /></label>
+          {businessType && <fieldset className="enquiry-business-fields"><legend>Details for your {businessType.toLowerCase()}</legend><div>{(businessQuestions[businessType] || ['What products or services do you offer?', 'What should customers know before they contact you?']).map((question, index) => <label key={question}>{question}<textarea name={`business_specific_${index + 1}`} required={index === 0} rows="2" placeholder="Add a few details…" /></label>)}</div></fieldset>}
           <label className="enquiry-wide">Anything specific you need?<textarea name="requirements" rows="3" placeholder="A website, ordering, payments, a catalogue…" /></label>
           {error && <p className="enquiry-error" role="alert">{error}</p>}
           <button className="button button-primary enquiry-submit" type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Sending…' : 'Send enquiry'} <ArrowUpRight size={15} /></button>
@@ -432,6 +461,7 @@ function Footer() {
 export default function App() {
   const [selected, setSelected] = useState('')
   const [enquiryOffer, setEnquiryOffer] = useState('')
+  const [enquiryBusiness, setEnquiryBusiness] = useState('')
   const [toast, setToast] = useState('')
   const [pathname, setPathname] = useState(window.location.pathname)
   const activeService = services.find(service => service.id === pathname.split('/').filter(Boolean).at(-1) && pathname.startsWith('/services/'))
@@ -457,8 +487,8 @@ export default function App() {
 
   function chooseBusiness(name) {
     setSelected(`${name} setup`)
-    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
-    setToast(`${name} setup selected. Share your details to get started.`)
+    setEnquiryBusiness(name)
+    setEnquiryOffer(`${name} business setup`)
   }
 
   function openService(service) {
@@ -489,15 +519,16 @@ export default function App() {
 
   function chooseDetailService(name) {
     setSelected(name)
+    setEnquiryBusiness('')
     setEnquiryOffer(name)
   }
 
   return <>
-    <Header isService={Boolean(activeService)} onSection={navigateSection} onEnquiry={chooseDetailService} />
+    <Header isService={Boolean(activeService)} onSection={navigateSection} onEnquiry={name => { setEnquiryBusiness(''); chooseDetailService(name) }} />
     {activeService ? <ServiceDetailPage service={activeService} onBack={backToServices} onChoose={chooseDetailService} /> : <main id="top"><Hero /><HowItWorks /><Packs onChoose={chooseDetailService} /><Examples onBusiness={chooseBusiness} /><Services onOpen={openService} /><Monthly onChoose={chooseDetailService} /><GoodToKnow /></main>}
     <Contact selected={selected} />
     <Footer />
-    {enquiryOffer && <EnquiryModal key={enquiryOffer} offer={enquiryOffer} onClose={() => setEnquiryOffer('')} />}
+    {enquiryOffer && <EnquiryModal key={`${enquiryOffer}-${enquiryBusiness}`} offer={enquiryOffer} businessType={enquiryBusiness} onClose={() => { setEnquiryOffer(''); setEnquiryBusiness('') }} />}
     <a className="floating-contact" href={CONTACT.whatsapp ? `https://wa.me/${CONTACT.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(`Hi OnlineKarDo! I'm interested in ${selected || 'getting my business online'}.`)}` : '#contact'} target={CONTACT.whatsapp ? '_blank' : undefined} rel={CONTACT.whatsapp ? 'noreferrer' : undefined} aria-label="Contact OnlineKarDo"><ArrowUpRight size={17} /><span>Let’s talk</span></a>
     <div className={`toast ${toast ? 'show' : ''}`} role="status" aria-live="polite">{toast}</div>
   </>
