@@ -3,7 +3,7 @@ import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Clock3, Menu, X 
 import { formspreeEndpoint } from './config'
 
 // Add the business WhatsApp number in international format and a contact email here.
-const CONTACT = { whatsapp: '', email: '' }
+const CONTACT = { whatsapp: '', email: 'support@onlinekardo.com' }
 const BRAND_NAMES = { razorpay: 'Razorpay', google: 'Google', instagram: 'Instagram', facebook: 'Facebook', whatsapp: 'WhatsApp' }
 const money = value => `₹${Number(value).toLocaleString('en-IN')}`
 
@@ -455,7 +455,7 @@ function EnquiryModal({ offer, businessType, onClose }) {
 }
 
 function Footer() {
-  return <footer className="site-footer"><div className="container footer-main"><div className="footer-brand"><img src="/assets/onlinekardo-logo.jpeg" alt="OnlineKarDo" /><p>Digital essentials for local businesses, made simpler.</p></div><div className="footer-nav"><div><b>Explore</b><a href="#how">How it works</a><a href="#packs">Setup packs</a><a href="#examples">Examples</a><a href="#monthly">Monthly plans</a></div><div><b>Get started</b><a href="#services">Individual services</a><a href="#contact">Contact</a><a href="#fineprint">Important details</a></div></div></div><div className="container footer-bottom"><span>© {new Date().getFullYear()} OnlineKarDo. All rights reserved.</span><span>Made for the people building local business.</span></div></footer>
+  return <footer className="site-footer"><div className="container footer-main"><div className="footer-brand"><img src="/assets/onlinekardo-logo.jpeg" alt="OnlineKarDo" /><p>Digital essentials for local businesses, made simpler.</p></div><div className="footer-nav"><div><b>Explore</b><a href="how">How it works</a><a href="packs">Setup packs</a><a href="examples">Examples</a><a href="monthly">Monthly plans</a></div><div><b>Get started</b><a href="#services">Individual services</a><a href="#contact">Contact</a><a href="fineprint">Important details</a><a href="mail">support@onlinekardo.com</a></div></div></div><div className="container footer-bottom"><span>© {new Date().getFullYear()} OnlineKarDo. All rights reserved.</span><span>Made for the people building local business.</span></div></footer>
 }
 
 export default function App() {
