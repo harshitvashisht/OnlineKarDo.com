@@ -144,10 +144,10 @@ export default function ContactPage() {
 
   return (
     <div className="page-wrapper">
-      <section className="page-hero page-hero--contact !bg-[#eee8ff] !py-24 md:!py-32">
+      <section className="page-hero page-hero--contact !bg-[#e2f5f5] !py-24 md:!py-32">
         <div className="container !max-w-6xl !text-left">
-          <span className="eyebrow !text-[#714be8]">Your next step starts here</span>
-          <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Tell us what you do.<br /><span className="!text-[#714be8]">We&apos;ll help you get online.</span></h1>
+          <span className="eyebrow !text-[#087b87]">Your next step starts here</span>
+          <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Tell us what you do.<br /><span className="!text-[#087b87]">We&apos;ll help you get online.</span></h1>
           <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#5e586d]">Pick a pack or tell us what you&apos;re trying to set up. We&apos;ll point you in the right direction.</p>
         </div>
       </section>

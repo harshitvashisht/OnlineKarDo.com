@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
-import { ArrowUpRight, Check, Menu, X } from 'lucide-react'
+import { ArrowUpRight, Check, Menu, X, ShoppingBag, HeartPulse, House, Utensils, Briefcase, GraduationCap } from 'lucide-react'
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { formspreeEndpoint } from './config'
 import HomePage from './pages/HomePage'
 import HowItWorksPage from './pages/HowItWorksPage'
 import PacksPage from './pages/PacksPage'
-import ExamplesPage from './pages/ExamplesPage'
 import MonthlyPage from './pages/MonthlyPage'
 import ServicesPage from './pages/ServicesPage'
 import ServiceDetailPage from './pages/ServiceDetailPage'
+import CategoryPage from './pages/CategoryPage'
+import CaseStudyPage from './pages/CaseStudyPage'
 import FineprintPage from './pages/FineprintPage'
 import ContactPage from './pages/ContactPage'
 import { EnquiryProvider } from './context/EnquiryContext'
@@ -113,10 +114,11 @@ interface HeaderProps {
 }
 function Header({ isService, onEnquiry }: HeaderProps) {
   const [open, setOpen] = useState(false)
+  const [servicesOpen, setServicesOpen] = useState(false)
   const location = useLocation()
   const homeHeader = location.pathname === '/'
   const navigate = useNavigate()
-  const links = [{ label: 'How it works', to: '/how' }, { label: 'Packs', to: '/packs' }, { label: 'Work examples', to: '/examples' }, { label: 'Services', to: '/services' }, { label: 'Monthly plans', to: '/monthly' }]
+  const links = [{ label: 'How it works', to: '/how' }, { label: 'Packs', to: '/packs' }, { label: 'Monthly plans', to: '/monthly' }]
   
   const handleNavClick = (to: string) => {
     setOpen(false)
@@ -126,30 +128,88 @@ function Header({ isService, onEnquiry }: HeaderProps) {
   }
 
   return (
-    <header className={`site-header !border-[#ded8ca] !bg-[#fffaf0]/95 !shadow-[0_6px_28px_rgba(24,44,34,0.07)] !backdrop-blur-xl ${homeHeader ? '!absolute !left-0 !right-0 !top-0 !z-50 !h-auto !border-0 !bg-transparent !shadow-none !backdrop-blur-none' : ''}`}>
-      <div className={`container nav-wrap ${homeHeader ? '!h-auto !w-full !max-w-none !gap-3 !px-4 !py-5 md:!gap-5 md:!px-10 md:!py-7' : ''}`}>
-        <Link to="/" className={`brand ${homeHeader ? '!rounded-full !bg-white !px-4 !py-3 !shadow-[0_14px_40px_rgba(5,18,43,.16)] md:!px-5' : ''}`} aria-label="OnlineKarDo home">
-          <img src="/assets/onlinekardo-logo.jpeg" alt="OnlineKarDo — Get Your Business Online" />
+    <>
+    <header className={`site-header !border-0 !bg-transparent !shadow-none !backdrop-blur-none ${homeHeader ? '!absolute !left-0 !right-0 !top-3 !z-50 !h-auto md:!top-5 xl:!top-6' : '!sticky !top-0 !z-50 !h-auto !bg-[#f7fafb]/85 !backdrop-blur-xl'}`}>
+      <div className={`container nav-wrap !relative !justify-between ${homeHeader ? '!h-auto !w-full !max-w-none !gap-3 !px-4 !py-2 md:!gap-5 md:!px-10 md:!py-3' : '!h-auto !w-full !max-w-[1440px] !gap-3 !px-4 !py-2 md:!gap-5 md:!px-8'}`}>
+        <Link to="/" className="brand !shrink-0 !rounded-full !border !border-white/80 !bg-white/95 !px-3 !py-1 !shadow-[0_14px_42px_rgba(5,18,43,.17)] backdrop-blur-xl sm:!px-4 md:!h-[58px] md:!px-5 md:!py-0.5" aria-label="OnlineKarDo home">
+          <img className="!w-[140px] sm:!w-[150px] md:!w-[154px]" src="/assets/onlinekardo-logo.jpeg" alt="OnlineKarDo — Get Your Business Online" />
         </Link>
-        <button className={`menu-toggle ${homeHeader ? '!rounded-full !border !border-white/40 !bg-white/15 !text-white !backdrop-blur-md' : ''}`} type="button" aria-expanded={open} aria-label={open ? 'Close navigation' : 'Open navigation'} onClick={() => setOpen(!open)}>
-          {open ? <X size={19} /> : <Menu size={19} />}
-        </button>
-        <nav id="main-nav" className={`main-nav ${open ? 'open' : ''} ${homeHeader ? '!gap-2 !rounded-full !bg-white/95 !p-2 !shadow-[0_14px_40px_rgba(5,18,43,.16)] !backdrop-blur-md md:!gap-5 md:!px-4' : ''}`} aria-label="Main navigation">
-          {links.map(({ label, to }) => (
-            <Link key={to} to={to} onClick={() => handleNavClick(to)} className={location.pathname === to ? 'active' : ''}>
+        <nav id="main-nav" className={`main-nav ${open ? 'open' : ''} !gap-1 !rounded-3xl !border !border-white/80 !bg-white/95 !p-3 !shadow-[0_14px_42px_rgba(5,18,43,.17)] !backdrop-blur-xl md:!relative md:!left-auto md:!right-auto md:!top-auto md:!flex md:!items-center md:!gap-1 md:!rounded-full md:!px-2 md:!py-2`} aria-label="Main navigation">
+          {links.slice(0, 3).map(({ label, to }) => (
+            <Link key={to} to={to} onClick={() => handleNavClick(to)} className={`!rounded-full !px-3 !py-2 !text-sm !font-semibold !text-[#243b4d] hover:!bg-[#eaf7f7] md:!px-3.5 ${location.pathname === to ? 'active' : ''}`}>
               {label}
             </Link>
           ))}
-          <button className={`button button-small button-dark nav-cta !rounded-full !px-5 !text-white !shadow-lg ${homeHeader ? '!bg-[#171521] !shadow-black/20 hover:!bg-[#714be8]' : '!bg-[#714be8] !shadow-[#714be833] hover:!bg-[#5e3ad0]'}`} type="button" onClick={() => { setOpen(false); onEnquiry('General enquiry') }}>{homeHeader ? 'Let’s talk' : 'Get started'} <ArrowUpRight size={15} /></button>
+          <button type="button" aria-expanded={servicesOpen} aria-haspopup="dialog" onClick={() => { setOpen(false); setServicesOpen(value => !value) }} className={`!rounded-full !px-3 !py-2 !text-sm !font-semibold !text-[#243b4d] hover:!bg-[#eaf7f7] md:!px-3.5 ${location.pathname.startsWith('/services') ? 'active' : ''}`}>Services</button>
+          {links.slice(3).map(({ label, to }) => (
+            <Link key={to} to={to} onClick={() => handleNavClick(to)} className={`!rounded-full !px-3 !py-2 !text-sm !font-semibold !text-[#243b4d] hover:!bg-[#eaf7f7] md:!px-3.5 ${location.pathname === to ? 'active' : ''}`}>
+              {label}
+            </Link>
+          ))}
+          <button type="button" onClick={() => { setOpen(false); onEnquiry('General enquiry') }} className="button button-small button-dark nav-cta !ml-0 !min-h-10 !rounded-full !bg-[#11151b] !px-5 !text-sm !font-bold !text-white !shadow-[0_12px_30px_rgba(5,18,43,.22)] transition hover:!-translate-y-0.5 hover:!bg-[#087b87]">{homeHeader ? 'Let’s talk' : 'Get started'} <ArrowUpRight size={15} /></button>
         </nav>
+        <button className="menu-toggle !ml-0 !rounded-full !border !border-white/50 !bg-white/15 !text-white !backdrop-blur-md md:!hidden" type="button" aria-expanded={open} aria-label={open ? 'Close navigation' : 'Open navigation'} onClick={() => setOpen(!open)}>
+          {open ? <X size={19} /> : <Menu size={19} />}
+        </button>
       </div>
     </header>
+    {servicesOpen && <ServicesMegaMenu onClose={() => setServicesOpen(false)} />}
+    </>
   )
+}
+
+const serviceMenuGroups = [
+  { label: 'Web', to: '/web-development', ids: ['one-page-business-website', '3-5-page-business-website', 'domain-and-business-email-setup', 'basic-seo-setup'] },
+  { label: 'WhatsApp Commerce', to: '/whatsapp-commerce', ids: ['whatsapp-ordering-catalogue', 'whatsapp-business-profile-setup', 'digital-product-catalogue', 'digital-menu-with-qr-code'] },
+  { label: 'Local Discovery', to: '/local-discovery', ids: ['google-business-profile-setup', 'instagram-business-setup', 'facebook-business-page-setup'] },
+]
+
+const industryMenuItems = [
+  { label: 'E-commerce & Retail', detail: 'Storefronts, product catalogues and local shops.', icon: ShoppingBag },
+  { label: 'Restaurants & Hospitality', detail: 'Menus, ordering, bookings and discovery.', icon: Utensils },
+  { label: 'Healthcare', detail: 'Clinic information and patient enquiry journeys.', icon: HeartPulse },
+  { label: 'Real Estate', detail: 'Property showcases and location-led enquiries.', icon: House },
+  { label: 'Professional Services', detail: 'Clear service pages and qualified enquiries.', icon: Briefcase },
+  { label: 'Education', detail: 'Programs, admissions information and contact paths.', icon: GraduationCap },
+]
+
+function ServicesMegaMenu({ onClose }: { onClose: () => void }) {
+  const [activeGroup, setActiveGroup] = useState(0)
+  const isIndustries = activeGroup === serviceMenuGroups.length
+  const group = serviceMenuGroups[activeGroup]
+  const groupServices = group?.ids.map(id => services.find(service => service.id === id)).filter((service): service is Service => Boolean(service)) ?? []
+  const menuTabs = [...serviceMenuGroups.map(item => item.label), 'Industries']
+
+  useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose() }
+    document.addEventListener('keydown', closeOnEscape)
+    return () => document.removeEventListener('keydown', closeOnEscape)
+  }, [onClose])
+
+  return <div className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-[#071e32]/60 px-3 pb-5 pt-24 backdrop-blur-sm md:px-6 md:pt-28" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
+    <section role="dialog" aria-modal="true" aria-label="Explore services" className="relative w-full max-w-[1500px] rounded-[28px] border border-white/70 bg-[#f5f5e9] p-3 shadow-[0_35px_110px_rgba(0,0,0,.3)] md:rounded-[34px] md:p-5">
+      <div className="grid gap-4 md:grid-cols-[250px_1fr] lg:grid-cols-[300px_1fr]">
+        <div className="flex gap-2 overflow-x-auto md:flex-col md:overflow-visible" role="tablist" aria-label="Service categories and industries">
+          {menuTabs.map((label, index) => <button key={label} id={`service-group-tab-${index}`} type="button" role="tab" aria-selected={activeGroup === index} aria-controls="service-group-panel" onClick={() => setActiveGroup(index)} className={`flex min-h-14 shrink-0 items-center justify-between gap-4 rounded-full px-5 text-left text-sm font-semibold transition md:min-h-[72px] md:px-6 md:text-base ${activeGroup === index ? 'bg-[#55c9c0] text-white shadow-[0_12px_30px_rgba(40,170,165,.22)]' : 'bg-white text-[#30343a] hover:bg-[#e7f5f1]'}`}><span>{label}</span>{activeGroup === index && <span className="h-2 w-2 rounded-full bg-white"/>}</button>)}
+        </div>
+        <div id="service-group-panel" role="tabpanel" aria-labelledby={`service-group-tab-${activeGroup}`} className="min-w-0 rounded-[22px] bg-transparent p-2 md:p-3">
+          {isIndustries ? <>
+            <div className="grid gap-x-5 md:grid-cols-2 xl:grid-cols-3">{industryMenuItems.map(({label,detail,icon:Icon})=><div key={label} className="flex min-h-[82px] items-center gap-4 border-b border-[#d9ddd5] px-2 py-3 text-[#282b2e] md:px-3"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-[#e8e8df] bg-white text-[#087b87] shadow-sm"><Icon size={22}/></span><span><b className="block text-sm font-semibold leading-snug md:text-base">{label}</b><small className="mt-1 block text-xs text-[#818781]">{detail}</small></span></div>)}</div>
+            <div className="mt-4 flex flex-col gap-3 rounded-[20px] bg-white p-4 sm:flex-row sm:items-center sm:justify-between md:mt-5 md:px-5"><div><span className="block text-lg font-semibold tracking-tight text-[#24282b]">Industry overview</span><span className="text-xs text-[#77817f]">Digital setup options for the way different businesses serve customers.</span></div><Link to="/services" onClick={onClose} className="inline-flex min-h-11 items-center gap-2 self-start rounded-full bg-[#55c9c0] px-5 text-sm font-bold text-white transition hover:bg-[#168b8f] sm:self-auto">Explore services <ArrowUpRight size={15}/></Link></div>
+          </> : <>
+            <div className="grid gap-x-5 md:grid-cols-2 xl:grid-cols-3">{groupServices.map(service => <Link key={service.id} to={`/services/${service.id}`} onClick={onClose} className="group flex min-h-[76px] items-center gap-4 border-b border-[#d9ddd5] px-2 py-3 text-[#282b2e] transition hover:text-[#087b87] md:px-3"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-[#e8e8df] bg-white font-display text-xl font-semibold text-[#087b87] shadow-sm">{service.mark || service.name.slice(0, 1)}</span><span className="min-w-0"><b className="block text-sm font-semibold leading-snug md:text-base">{service.name}</b><small className="mt-1 block text-xs text-[#818781]">{`₹${service.price.toLocaleString('en-IN')}`}</small></span><ArrowUpRight size={15} className="ml-auto shrink-0 opacity-0 transition group-hover:opacity-100"/></Link>)}</div>
+            <div className="mt-4 flex flex-col gap-3 rounded-[20px] bg-white p-4 sm:flex-row sm:items-center sm:justify-between md:mt-5 md:px-5"><div><span className="block text-lg font-semibold tracking-tight text-[#24282b]">{group.label} overview</span><span className="text-xs text-[#77817f]">See the full approach, demos and outcomes for this area.</span></div><div className="flex flex-wrap gap-2"><Link to={group.to} onClick={onClose} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#55c9c0] px-5 text-sm font-bold text-white transition hover:bg-[#168b8f]">{group.label} overview <ArrowUpRight size={15}/></Link><Link to="/services" onClick={onClose} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#d8dfd9] px-5 text-sm font-bold text-[#34444b] transition hover:bg-[#f3f7f5]">All services</Link></div></div>
+          </>}
+        </div>
+      </div>
+      <button type="button" onClick={onClose} className="absolute right-4 top-4 hidden h-10 w-10 place-items-center rounded-full bg-white text-[#263847] shadow md:grid" aria-label="Close services menu"><X size={18}/></button>
+    </section>
+  </div>
 }
 
 function Footer() {
   return (
-    <footer className="site-footer !bg-[#171521] !text-[#fffaff]">
+    <footer className="site-footer !bg-[#101c29] !text-[#fffaff]">
       <div className="container footer-main">
         <div className="footer-brand">
           <img src="/assets/onlinekardo-logo.jpeg" alt="OnlineKarDo" />
@@ -160,7 +220,6 @@ function Footer() {
             <b>Explore</b>
             <Link to="/how">How it works</Link>
             <Link to="/packs">Setup packs</Link>
-            <Link to="/examples">Work examples</Link>
             <Link to="/monthly">Monthly plans</Link>
           </div>
           <div>
@@ -252,6 +311,7 @@ function EnquiryModal({ offer, businessType, onClose }: EnquiryModalProps) {
             <form className="enquiry-form" onSubmit={submit}>
               <input type="hidden" name="Selected service or plan" value={offer} />
               <input type="hidden" name="Enquiry type" value={formType} />
+              <input type="hidden" name="_subject" value={`OnlineKarDo enquiry: ${offer}`} />
               {businessType && <input type="hidden" name="Business type" value={businessType} />}
               <label className="enquiry-trap" aria-hidden="true">Leave this field empty<input name="_gotcha" tabIndex={-1} autoComplete="off" /></label>
               <label>Your name<input name="name" required autoComplete="name" placeholder="Name" /></label>
@@ -261,9 +321,11 @@ function EnquiryModal({ offer, businessType, onClose }: EnquiryModalProps) {
               <fieldset className="enquiry-service-picker"><legend>Which setup packs are you interested in?</legend><p>Select one or more packs, if you need a bundled setup.</p><div className="enquiry-service-options">{packs.map(pack => <label key={pack.name}><input type="checkbox" name="packs" value={pack.name} checked={selectedPacks.includes(pack.name)} onChange={event => setSelectedPacks(current => event.target.checked ? [...current, pack.name] : current.filter(name => name !== pack.name))} /><span>{pack.name} · {money(pack.price)}</span></label>)}</div></fieldset>
               <fieldset className="enquiry-service-picker"><legend>Which monthly care plans interest you?</legend><p>Select any plans you&apos;d like to ask us about.</p><div className="enquiry-service-options">{monthlyPlans.map(([name, price]) => { const value = `${name} monthly plan`; return <label key={name}><input type="checkbox" name="monthly_plans" value={`${name} · ${money(price)}/month`} checked={selectedPlans.includes(value)} onChange={event => setSelectedPlans(current => event.target.checked ? [...current, value] : current.filter(item => item !== value))} /><span>{name} · {money(price)}/month</span></label> })}</div></fieldset>
               <fieldset className="enquiry-service-picker"><legend>Which individual services are you interested in?</legend><p>Select as many as you need.</p><div className="enquiry-service-options">{services.map(service => <label key={service.id}><input type="checkbox" name="services" value={service.name} checked={selectedServices.includes(service.name)} onChange={event => setSelectedServices(current => event.target.checked ? [...current, service.name] : current.filter(name => name !== service.name))} /><span>{service.name}</span></label>)}</div></fieldset>
+              <fieldset className="enquiry-service-picker enquiry-wide"><legend>What budget range should we keep in mind?</legend><p>This helps us suggest a useful scope. You can leave it open if you are still deciding.</p><div className="grid grid-cols-1 gap-2 sm:grid-cols-2">{[['Under ₹2,000', 'under-2000'], ['₹2,000–₹5,000', '2000-5000'], ['₹5,000–₹10,000', '5000-10000'], ['₹10,000+', '10000-plus'], ['I’m not sure yet', 'undecided']].map(([label, value]) => <label className="!flex-row !items-center gap-2 rounded-lg border border-[#e8e9e2] bg-white px-3 py-2 text-sm font-medium" key={value}><input className="!h-4 !w-4 !accent-[#087b87]" type="radio" name="budget_range" value={label} /><span>{label}</span></label>)}</div></fieldset>
               <label className="enquiry-wide">{businessType ? `Tell us about your ${businessType.toLowerCase()}` : isMonthly ? 'What does your business need right now?' : 'What does your business do?'}<textarea name="business_details" required rows={3} placeholder={businessType ? `Share a little about your ${businessType.toLowerCase()}…` : 'Tell us what you sell or the service you provide…'} /></label>
               <fieldset className="enquiry-business-fields"><legend>{businessType ? `Details for your ${businessType.toLowerCase()}` : isMonthly ? 'Your current setup and support needs' : `A few details about ${offer}`}</legend><div>{contextualQuestions.map((question, index) => <label key={question}>{question}<textarea name={`project_details_${index + 1}`} required={index === 0} rows={2} placeholder="Add a few details…" /></label>)}</div></fieldset>
               <label className="enquiry-wide">Anything specific you need?<textarea name="requirements" rows={3} placeholder="A website, ordering, payments, a catalogue…" /></label>
+              <label className="enquiry-wide !flex-row !items-start gap-3 rounded-xl border border-[#e8e0f3] bg-white px-4 py-3 text-sm leading-relaxed !font-medium"><input className="!mt-1 !h-4 !w-4 !shrink-0 !accent-[#087b87]" type="checkbox" name="contact_consent" value="yes" required /><span>I agree to be contacted about this enquiry and understand my details will be used to respond to it.</span></label>
               {error && <p className="enquiry-error" role="alert">{error}</p>}
               <button className="button button-primary enquiry-submit" type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Sending…' : 'Send enquiry'} <ArrowUpRight size={15} /></button>
               <small className="enquiry-privacy">Your details will only be used to respond to this enquiry.</small>
@@ -313,9 +375,12 @@ function AppContent() {
           <Route path="/" element={<HomePage />} />
           <Route path="/how" element={<HowItWorksPage />} />
           <Route path="/packs" element={<PacksPage />} />
-          <Route path="/examples" element={<ExamplesPage />} />
           <Route path="/monthly" element={<MonthlyPage />} />
           <Route path="/services" element={<ServicesPage />} />
+          <Route path="/web-development" element={<CategoryPage category="web-development" />} />
+          <Route path="/whatsapp-commerce" element={<CategoryPage category="whatsapp-commerce" />} />
+          <Route path="/local-discovery" element={<CategoryPage category="local-discovery" />} />
+          <Route path="/case-studies/:slug" element={<CaseStudyPage />} />
           <Route path="/services/:id" element={<ServiceDetailPage services={services} />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/fineprint" element={<FineprintPage />} />
@@ -323,7 +388,7 @@ function AppContent() {
       </main>
       <Footer />
       {enquiryOffer && <EnquiryModal key={`${enquiryOffer}-${enquiryBusiness}`} offer={enquiryOffer} businessType={enquiryBusiness} onClose={() => { setEnquiryOffer(''); setEnquiryBusiness('') }} />}
-      <a className="floating-contact !rounded-full !bg-[#171521] !text-white !shadow-[0_16px_38px_rgba(29,21,50,0.28)] hover:!bg-[#714be8]" href={whatsappHref} target={waNumber ? '_blank' : undefined} rel={waNumber ? 'noreferrer' : undefined} aria-label="Contact OnlineKarDo"><ArrowUpRight size={17} /><span>Let&apos;s talk</span></a>
+      <a className="floating-contact !rounded-full !bg-[#101c29] !text-white !shadow-[0_16px_38px_rgba(29,21,50,0.28)] hover:!bg-[#087b87]" href={whatsappHref} target={waNumber ? '_blank' : undefined} rel={waNumber ? 'noreferrer' : undefined} aria-label="Contact OnlineKarDo"><ArrowUpRight size={17} /><span>Let&apos;s talk</span></a>
       <div className={`toast ${toast ? 'show' : ''}`} role="status" aria-live="polite">{toast}</div>
     </>
   )

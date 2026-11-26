@@ -20,7 +20,7 @@ export default function FineprintPage() {
       <FAQSchema faqs={faqs} />
       <section className="page-hero page-hero--fineprint !bg-[#eee5d6] !py-24 md:!py-32">
         <div className="container !max-w-6xl !text-left">
-          <span className="eyebrow !text-[#714be8]">The useful details</span>
+          <span className="eyebrow !text-[#087b87]">The useful details</span>
           <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Good work begins<br />with clarity.</h1>
           <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#5e584d]">Clear expectations make a better project for everyone.</p>
         </div>

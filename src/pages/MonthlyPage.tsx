@@ -24,7 +24,7 @@ export default function MonthlyPage() {
       />
       <section className="page-hero page-hero--monthly !bg-[#e2ebec] !py-24 md:!py-32">
         <div className="container !max-w-6xl !text-left">
-          <span className="eyebrow !text-[#714be8]">Ongoing support</span>
+          <span className="eyebrow !text-[#087b87]">Ongoing support</span>
           <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Your online presence,<br />well looked after.</h1>
           <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#5d586b]">Thoughtful monthly help to keep your website fresh, your content moving and the little things taken care of.</p>
         </div>
@@ -39,7 +39,7 @@ export default function MonthlyPage() {
                 <h3>{name}</h3>
                 <div className="monthly-price">{money(price)} <small>/ month</small></div>
                 <p>{description}</p>
-                <button className="monthly-link !font-bold !text-[#714be8] hover:!text-[#cf4188]" onClick={() => openEnquiry(`${name} monthly plan`)}>
+                <button className="monthly-link !font-bold !text-[#087b87] hover:!text-[#cf4188]" onClick={() => openEnquiry(`${name} monthly plan`)}>
                   Ask about this plan <ArrowUpRight size={14} />
                 </button>
               </article>
