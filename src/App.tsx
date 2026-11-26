@@ -11,11 +11,13 @@ import MonthlyPage from './pages/MonthlyPage'
 import ServicesPage from './pages/ServicesPage'
 import ServiceDetailPage from './pages/ServiceDetailPage'
 import FineprintPage from './pages/FineprintPage'
+import ContactPage from './pages/ContactPage'
 import { EnquiryProvider } from './context/EnquiryContext'
 import './styles.css'
+import './site-refresh.css'
 
 // Add the business WhatsApp number in international format and a contact email here.
-const CONTACT = { whatsapp: '', email: 'support@onlinekardo.com' }
+const CONTACT = { whatsapp: '+91 91879 43361', email: 'support@onlinekardo.com' }
 const money = (value: number | string): string => `₹${Number(value).toLocaleString('en-IN')}`
 
 const businessQuestions: Record<string, string[]> = {
@@ -113,7 +115,7 @@ function Header({ isService, onEnquiry }: HeaderProps) {
   const [open, setOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
-  const links = [{ label: 'How it works', to: '/how' }, { label: 'Packs', to: '/packs' }, { label: 'Services', to: '/examples' }, { label: 'Monthly plans', to: '/monthly' }]
+  const links = [{ label: 'How it works', to: '/how' }, { label: 'Packs', to: '/packs' }, { label: 'Work examples', to: '/examples' }, { label: 'Services', to: '/services' }, { label: 'Monthly plans', to: '/monthly' }]
   
   const handleNavClick = (to: string) => {
     setOpen(false)
@@ -144,10 +146,7 @@ function Header({ isService, onEnquiry }: HeaderProps) {
   )
 }
 
-interface FooterProps {
-  onEnquiry: (name: string) => void
-}
-function Footer({ onEnquiry }: FooterProps) {
+function Footer() {
   return (
     <footer className="site-footer">
       <div className="container footer-main">
@@ -166,7 +165,7 @@ function Footer({ onEnquiry }: FooterProps) {
           <div>
             <b>Get started</b>
             <Link to="/services">Individual services</Link>
-            <Link to="#" onClick={() => onEnquiry('General enquiry')}>Contact</Link>
+            <Link to="/contact">Contact</Link>
             <Link to="/fineprint">Important details</Link>
             <a href="mailto:support@onlinekardo.com">support@onlinekardo.com</a>
           </div>
@@ -191,6 +190,36 @@ function EnquiryModal({ offer, businessType, onClose }: EnquiryModalProps) {
   const [selectedServices, setSelectedServices] = useState(() => services.some(service => service.name === offer) ? [offer] : [])
   const [selectedPacks, setSelectedPacks] = useState(() => packs.some(pack => pack.name === offer) ? [offer] : [])
   const [selectedPlans, setSelectedPlans] = useState(() => monthlyPlans.some(([name]) => `${name} monthly plan` === offer) ? [offer] : [])
+  const isMonthly = offer.toLowerCase().includes('monthly plan')
+  const isPack = packs.some(pack => pack.name === offer)
+  const isPayment = /razorpay|payment/i.test(offer)
+  const isCatalogue = /catalogue|menu|ordering/i.test(offer)
+  const isWeb = /website|domain|seo/i.test(offer)
+  const isGoogle = /google business/i.test(offer)
+  const isSocial = /instagram|facebook/i.test(offer)
+  const isWhatsApp = /whatsapp/i.test(offer)
+  const contextualQuestions = businessType
+    ? businessQuestions[businessType] || ['What products or services do you offer?', 'What should customers know before they contact you?']
+    : isMonthly
+      ? ['What is your current website or social profile URL?', 'What updates, content or support would help you each month?']
+      : isPayment
+        ? ['What do you need to collect payments for?', 'Do you already have a merchant account? If so, which provider?']
+        : isGoogle
+          ? ['What is your business address, service area and opening schedule?', 'Do you already have a Google Business Profile? Share its link if available.']
+          : isSocial
+            ? ['Share your social handle or profile link, if you have one.', 'What should your profile help customers discover or do?']
+            : isWhatsApp
+              ? ['What business number should customers contact?', 'Would you like to display products, services, prices or quick replies?']
+              : isPack
+                ? ['Which parts of your business should the pack bring online first?', 'Do you already have a logo, photos, product list or social profiles we can build from?']
+                : isCatalogue
+                  ? ['Which products, menu categories or services should customers browse?', 'How do customers usually order: WhatsApp, pickup, delivery or in person?']
+                  : isWeb
+                    ? ['What pages or information should your website include?', 'Do you already have a domain, logo, photos or written content?']
+                    : ['Which accounts, links or tools do you currently use for this?', 'What would you like customers to be able to do next?']
+  const formKicker = businessType ? `${businessType} enquiry` : isMonthly ? 'Monthly support enquiry' : isPack ? 'Setup pack enquiry' : 'Service enquiry'
+  const formHeadline = businessType ? `Let’s build something for your ${businessType.toLowerCase()}.` : isMonthly ? 'What would you like help maintaining?' : isPack ? 'Let’s find the right starting point.' : isPayment ? 'Let’s understand your payment flow.' : isCatalogue ? 'Tell us what customers should browse.' : isWeb ? 'What should your online home do?' : 'Tell us what you want to set up.'
+  const formType = businessType ? 'Business-specific enquiry' : isMonthly ? 'Monthly care plan enquiry' : isPack ? 'Setup pack enquiry' : 'Individual service enquiry'
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose() }
     document.addEventListener('keydown', onKeyDown)
@@ -203,7 +232,7 @@ function EnquiryModal({ offer, businessType, onClose }: EnquiryModalProps) {
     setError('')
     try {
       const response = await fetch(formspreeEndpoint, { method: 'POST', body: new FormData(event.currentTarget), headers: { Accept: 'application/json' } })
-      if (!response.ok) throw new Error('We couldn&apos;t send your request. Please try again in a moment.')
+      if (!response.ok) throw new Error('We couldn’t send your request. Please try again in a moment.')
       setStatus('sent')
     } catch (err) {
       setStatus('error')
@@ -218,9 +247,10 @@ function EnquiryModal({ offer, businessType, onClose }: EnquiryModalProps) {
           <div className="enquiry-success"><span><Check size={23} /></span><p className="eyebrow">Request received</p><h2>Thanks for reaching out.</h2><p>We've received your enquiry about <b>{offer}</b> and will get back to you soon.</p><button className="button button-primary" type="button" onClick={onClose}>Done</button></div>
         ) : (
           <>
-            <span className="eyebrow">Let&apos;s get your business online</span><h2 id="enquiry-title">Tell us a little about your business.</h2><p className="enquiry-intro">We&apos;ll follow up about <b>{offer}</b> and help you figure out the next step.</p>
+            <span className="eyebrow">{formKicker}</span><h2 id="enquiry-title">{formHeadline}</h2><p className="enquiry-intro">We&apos;ll follow up about <b>{offer}</b> and help you figure out the next step.</p>
             <form className="enquiry-form" onSubmit={submit}>
               <input type="hidden" name="Selected service or plan" value={offer} />
+              <input type="hidden" name="Enquiry type" value={formType} />
               {businessType && <input type="hidden" name="Business type" value={businessType} />}
               <label className="enquiry-trap" aria-hidden="true">Leave this field empty<input name="_gotcha" tabIndex={-1} autoComplete="off" /></label>
               <label>Your name<input name="name" required autoComplete="name" placeholder="Name" /></label>
@@ -230,8 +260,8 @@ function EnquiryModal({ offer, businessType, onClose }: EnquiryModalProps) {
               <fieldset className="enquiry-service-picker"><legend>Which setup packs are you interested in?</legend><p>Select one or more packs, if you need a bundled setup.</p><div className="enquiry-service-options">{packs.map(pack => <label key={pack.name}><input type="checkbox" name="packs" value={pack.name} checked={selectedPacks.includes(pack.name)} onChange={event => setSelectedPacks(current => event.target.checked ? [...current, pack.name] : current.filter(name => name !== pack.name))} /><span>{pack.name} · {money(pack.price)}</span></label>)}</div></fieldset>
               <fieldset className="enquiry-service-picker"><legend>Which monthly care plans interest you?</legend><p>Select any plans you&apos;d like to ask us about.</p><div className="enquiry-service-options">{monthlyPlans.map(([name, price]) => { const value = `${name} monthly plan`; return <label key={name}><input type="checkbox" name="monthly_plans" value={`${name} · ${money(price)}/month`} checked={selectedPlans.includes(value)} onChange={event => setSelectedPlans(current => event.target.checked ? [...current, value] : current.filter(item => item !== value))} /><span>{name} · {money(price)}/month</span></label> })}</div></fieldset>
               <fieldset className="enquiry-service-picker"><legend>Which individual services are you interested in?</legend><p>Select as many as you need.</p><div className="enquiry-service-options">{services.map(service => <label key={service.id}><input type="checkbox" name="services" value={service.name} checked={selectedServices.includes(service.name)} onChange={event => setSelectedServices(current => event.target.checked ? [...current, service.name] : current.filter(name => name !== service.name))} /><span>{service.name}</span></label>)}</div></fieldset>
-              <label className="enquiry-wide">What does your business do?<textarea name="business_details" required rows={3} placeholder="Tell us what you sell or the service you provide…" /></label>
-              {businessType && <fieldset className="enquiry-business-fields"><legend>Details for your {businessType.toLowerCase()}</legend><div>{(businessQuestions[businessType] || ['What products or services do you offer?', 'What should customers know before they contact you?']).map((question, index) => <label key={question}>{question}<textarea name={`business_specific_${index + 1}`} required={index === 0} rows={2} placeholder="Add a few details…" /></label>)}</div></fieldset>}
+              <label className="enquiry-wide">{businessType ? `Tell us about your ${businessType.toLowerCase()}` : isMonthly ? 'What does your business need right now?' : 'What does your business do?'}<textarea name="business_details" required rows={3} placeholder={businessType ? `Share a little about your ${businessType.toLowerCase()}…` : 'Tell us what you sell or the service you provide…'} /></label>
+              <fieldset className="enquiry-business-fields"><legend>{businessType ? `Details for your ${businessType.toLowerCase()}` : isMonthly ? 'Your current setup and support needs' : `A few details about ${offer}`}</legend><div>{contextualQuestions.map((question, index) => <label key={question}>{question}<textarea name={`project_details_${index + 1}`} required={index === 0} rows={2} placeholder="Add a few details…" /></label>)}</div></fieldset>
               <label className="enquiry-wide">Anything specific you need?<textarea name="requirements" rows={3} placeholder="A website, ordering, payments, a catalogue…" /></label>
               {error && <p className="enquiry-error" role="alert">{error}</p>}
               <button className="button button-primary enquiry-submit" type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Sending…' : 'Send enquiry'} <ArrowUpRight size={15} /></button>
@@ -286,10 +316,11 @@ function AppContent() {
           <Route path="/monthly" element={<MonthlyPage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/services/:id" element={<ServiceDetailPage services={services} />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/fineprint" element={<FineprintPage />} />
         </Routes>
       </main>
-      <Footer onEnquiry={openEnquiry} />
+      <Footer />
       {enquiryOffer && <EnquiryModal key={`${enquiryOffer}-${enquiryBusiness}`} offer={enquiryOffer} businessType={enquiryBusiness} onClose={() => { setEnquiryOffer(''); setEnquiryBusiness('') }} />}
       <a className="floating-contact" href={whatsappHref} target={waNumber ? '_blank' : undefined} rel={waNumber ? 'noreferrer' : undefined} aria-label="Contact OnlineKarDo"><ArrowUpRight size={17} /><span>Let's talk</span></a>
       <div className={`toast ${toast ? 'show' : ''}`} role="status" aria-live="polite">{toast}</div>

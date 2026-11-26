@@ -1,0 +1,65 @@
+/* Page identities: each route gets its own visual mood while sharing the brand system. */
+.page-hero{position:relative;isolation:isolate;overflow:hidden;padding:clamp(76px,9vw,128px) 0 clamp(60px,7vw,92px);text-align:left;border-bottom:1px solid #e9e7df}
+.page-hero:before,.page-hero:after{content:"";position:absolute;z-index:-1;border-radius:50%;pointer-events:none}
+.page-hero:before{width:390px;height:390px;right:-100px;top:-190px;border:1px solid #fff8;box-shadow:0 0 0 36px #ffffff24,0 0 0 82px #ffffff18}
+.page-hero:after{width:180px;height:180px;left:-90px;bottom:-130px;background:#ffffff35}
+.page-hero .container{text-align:left;max-width:1160px;position:relative;z-index:1}
+.page-hero .eyebrow{margin-bottom:18px;padding:8px 12px;border:1px solid currentColor;border-radius:99px;background:#fff8}
+.page-hero h1{max-width:850px;font-size:clamp(3rem,7.4vw,6.4rem);line-height:.96;letter-spacing:-.075em;margin:0 0 23px}
+.page-hero .hero-lede{max-width:590px;margin:0;font-size:1.08rem;color:#46554c}
+.page-hero--packs{background:#f2e4d5}
+.page-hero--packs .eyebrow{color:#a94820}
+.page-hero--packs h1 span{color:#a94820}
+.page-hero--examples{background:#e5ecdf}
+.page-hero--examples .eyebrow{color:#375f43}
+.page-hero--examples:before{right:8%;top:-260px;width:470px;height:470px;border-color:#fff9;box-shadow:0 0 0 38px #ffffff30,0 0 0 92px #ffffff20}
+.page-hero--services{background:#182d27;color:#fff}
+.page-hero--services .eyebrow{color:#f6aa71}
+.page-hero--services .hero-lede{color:#cfdbd1}
+.page-hero--services:before{border-color:#ffffff22;box-shadow:0 0 0 36px #ffffff0d,0 0 0 82px #ffffff08}
+.page-hero--monthly{background:#dfe8ea}
+.page-hero--monthly .eyebrow{color:#3c6870}
+.page-hero--monthly:before{border-radius:43% 57% 60% 40%;border:1px solid #fff;transform:rotate(-22deg)}
+.page-hero--how{background:#e9ebdc}
+.page-hero--how .eyebrow{color:#566c37}
+.page-hero--how:before{width:280px;height:440px;right:8%;top:-245px;border-radius:50%;transform:rotate(42deg);border-color:#fff}
+.page-hero--fineprint{background:#ece6d8}
+.page-hero--fineprint .eyebrow{color:#78653d}
+.page-hero--contact{background:#f2e4d5}
+.page-hero--contact .eyebrow{color:#a94820}
+.page-hero--contact h1{max-width:760px}
+
+/* The business chooser becomes a visual index rather than a plain directory. */
+.business-browser{position:relative;padding:clamp(26px,4vw,52px);border:1px solid #e7e5dc;border-radius:28px;background:#f6f4ed;overflow:hidden}
+.business-browser:before{content:"";position:absolute;right:-80px;top:-130px;width:250px;height:250px;border-radius:50%;background:#e5eadf;opacity:.75}
+.business-head,.filter-row,.business-grid,.business-note{position:relative;z-index:1}
+.business-head{align-items:end}
+.business-head h2{max-width:580px;font-size:clamp(2rem,4vw,3.2rem);margin:12px 0 0}
+.business-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.business-card{position:relative;min-height:160px;justify-content:space-between;gap:10px;padding:19px;border-radius:16px;border-color:#e7e4da;background:linear-gradient(145deg,#fffefa 0%,#faf8f2 100%);overflow:hidden}
+.business-card:after{content:"";position:absolute;width:94px;height:94px;right:-24px;bottom:-29px;border-radius:50%;background:#edf0e8;transition:transform .25s}
+.business-card:hover:after{transform:scale(1.45)}
+.business-card .business-emoji,.business-card b,.business-card small{position:relative;z-index:1}
+.business-card .business-emoji{display:grid;place-items:center;width:43px;height:43px;border-radius:13px;background:#f0e7d8;font-size:1.5rem}
+.business-card b{font-family:'Space Grotesk',sans-serif;font-size:.95rem;letter-spacing:-.025em}
+.business-card small{max-width:170px;line-height:1.4}
+.business-note{margin:22px 0 0}
+.showcase-section .preview-card{border-radius:18px;box-shadow:0 8px 30px #162b2208}
+.showcase-section .preview-card:nth-child(3n + 2){transform:translateY(16px)}
+.showcase-section .business-browser{margin-top:88px}
+.pack-card,.monthly-card,.service-card{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.pack-card:hover,.monthly-card:hover{transform:translateY(-5px);box-shadow:0 22px 48px #162b2212}
+.pack-featured:hover{transform:translateY(-14px)}
+.service-card-link:hover .service-card{transform:translateY(-4px);box-shadow:0 20px 45px #162b2214}
+.site-header{box-shadow:0 6px 30px #172c2808}
+.main-nav a.active{color:var(--orange)}
+.floating-contact{box-shadow:0 14px 34px #14262038}
+.enquiry-backdrop{background:#10221ddc;backdrop-filter:blur(8px)}
+.enquiry-modal{border-radius:26px;padding:38px;box-shadow:0 36px 110px #07161066}
+.enquiry-form{gap:16px}
+.enquiry-form input,.enquiry-form textarea{border-radius:10px}
+.enquiry-service-picker,.enquiry-business-fields{border-radius:13px}
+.enquiry-submit{min-height:54px}
+
+@media(max-width:900px){.business-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.showcase-section .preview-card:nth-child(3n + 2){transform:none}.showcase-section .business-browser{margin-top:58px}}
+@media(max-width:650px){.page-hero{padding:76px 0 58px}.page-hero h1{font-size:clamp(2.8rem,14vw,4.6rem)}.business-browser{padding:24px 15px;border-radius:20px}.business-head{gap:10px}.business-head h2{font-size:1.8rem}.business-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.business-card{min-height:139px;padding:14px}.business-card b{font-size:.83rem}.business-card small{font-size:.65rem}.showcase-section .business-browser{margin-top:46px}.enquiry-modal{padding:30px 20px 22px;border-radius:20px}}

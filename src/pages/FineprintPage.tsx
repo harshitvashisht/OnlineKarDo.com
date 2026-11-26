@@ -18,7 +18,7 @@ export default function FineprintPage() {
         canonical="/fineprint"
       />
       <FAQSchema faqs={faqs} />
-      <section className="page-hero">
+      <section className="page-hero page-hero--fineprint">
         <div className="container">
           <span className="eyebrow">The useful details</span>
           <h1>Good to know<br />before we start.</h1>

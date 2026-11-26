@@ -30,7 +30,7 @@ export default function PacksPage() {
         description="Choose from 3 fixed-price digital packs: Starter (₹2,999), Business (₹4,999), Seller (₹6,999). Clear scope, upfront pricing, delivery in 48-72 hours."
         canonical="/packs"
       />
-      <section className="page-hero">
+      <section className="page-hero page-hero--packs">
         <div className="container">
           <span className="eyebrow">One-time setup</span>
           <h1>Pick your starting point.</h1>

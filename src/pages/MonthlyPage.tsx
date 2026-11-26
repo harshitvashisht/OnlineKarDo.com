@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { useEnquiry } from '../context/EnquiryContext'
+import { Link } from 'react-router-dom'
 import { SEO } from '../components/SEO'
 
 const money = (value: number | string): string => `₹${Number(value).toLocaleString('en-IN')}`
@@ -21,7 +22,7 @@ export default function MonthlyPage() {
         description="4 monthly plans from ₹499: Basic Care, Social Lite, Social Growth, Digital Care Plus. Website maintenance, social posts, content updates. Cancel anytime."
         canonical="/monthly"
       />
-      <section className="page-hero">
+      <section className="page-hero page-hero--monthly">
         <div className="container">
           <span className="eyebrow">Ongoing support</span>
           <h1>Keep things ticking along.</h1>
@@ -53,9 +54,9 @@ export default function MonthlyPage() {
           <div className="cta-content">
             <h2>Need a one-time setup instead?</h2>
             <p>Our packs include everything to get your business online in about 48 hours.</p>
-            <button className="button button-primary" onClick={() => openEnquiry('View setup packs')}>
+            <Link className="button button-primary" to="/packs">
               View setup packs <ArrowUpRight size={15} />
-            </button>
+            </Link>
           </div>
         </div>
       </section>

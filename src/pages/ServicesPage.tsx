@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { useEnquiry } from '../context/EnquiryContext'
 import { SEO } from '../components/SEO'
 
 const money = (value: number | string): string => `₹${Number(value).toLocaleString('en-IN')}`
@@ -64,7 +63,6 @@ function ServiceCard({ service, index }: ServiceCardProps) {
 
 export default function ServicesPage() {
   const [filter, setFilter] = useState<Category>(categories[0])
-  const { openEnquiry } = useEnquiry()
   const visibleServices = filter === 'All services' ? services : services.filter(service => service.category === filter)
 
   return (
@@ -74,7 +72,7 @@ export default function ServicesPage() {
         description="Pick from 14 individual services: websites, WhatsApp ordering, payment links, catalogues, menus, SEO, social profiles, Google Business, domain/email. Transparent pricing from ₹499."
         canonical="/services"
       />
-      <section className="page-hero">
+      <section className="page-hero page-hero--services">
         <div className="container">
           <span className="eyebrow">Build your own bundle</span>
           <h1>Just need one piece?</h1>
@@ -108,9 +106,9 @@ export default function ServicesPage() {
           <div className="cta-content">
             <h2>Want a complete package?</h2>
             <p>Our bundles combine the most popular services at a better value.</p>
-            <button className="button button-primary" onClick={() => openEnquiry('View setup packs')}>
+            <Link className="button button-primary" to="/packs">
               View setup packs <ArrowUpRight size={15} />
-            </button>
+            </Link>
           </div>
         </div>
       </section>

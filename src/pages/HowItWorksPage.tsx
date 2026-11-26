@@ -18,7 +18,7 @@ export default function HowItWorksPage() {
         description="Four simple steps: pick a pack, share details, we build it, review and launch. Get your business online in about 48 hours with OnlineKarDo."
         canonical="/how"
       />
-      <section className="page-hero">
+      <section className="page-hero page-hero--how">
         <div className="container">
           <span className="eyebrow">A smoother way to get online</span>
           <h1>Four steps. No tech headache.</h1>

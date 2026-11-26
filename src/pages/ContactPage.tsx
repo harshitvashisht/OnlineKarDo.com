@@ -144,7 +144,7 @@ export default function ContactPage() {
 
   return (
     <div className="page-wrapper">
-      <section className="page-hero">
+      <section className="page-hero page-hero--contact">
         <div className="container">
           <span className="eyebrow">Your next step starts here</span>
           <h1>Tell us what you do.<br /><span>We&apos;ll help you get online.</span></h1>

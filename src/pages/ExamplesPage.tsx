@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { useEnquiry } from '../context/EnquiryContext'
+import { Link } from 'react-router-dom'
 import { SEO } from '../components/SEO'
 
 interface PhonePreviewProps {
@@ -128,7 +129,7 @@ export default function ExamplesPage() {
         description="See 8 phone-first page types: product catalogue, WhatsApp ordering, payment page, social page, digital menu, website, search listing, link-in-bio. Filter by 30+ business types."
         canonical="/examples"
       />
-      <section className="page-hero">
+      <section className="page-hero page-hero--examples">
         <div className="container">
           <span className="eyebrow">Picture your business here</span>
           <h1>Small screen. Big first impression.</h1>
@@ -170,7 +171,7 @@ export default function ExamplesPage() {
             </div>
             <div className="business-grid">
               {filtered.map(([name, icon, , fit]) => (
-                <button type="button" className="business-card" onClick={() => openEnquiry(`${name} business setup`, name)}>
+                <button type="button" className="business-card" key={name} onClick={() => openEnquiry(`${name} business setup`, name)}>
                   <span className="business-emoji" aria-hidden="true">{icon}</span>
                   <b>{name}</b>
                   <small>{fit}</small>
@@ -187,9 +188,9 @@ export default function ExamplesPage() {
           <div className="cta-content">
             <h2>See a service you like?</h2>
             <p>Explore all 14 individual services or start with a pack.</p>
-            <button className="button button-primary" onClick={() => openEnquiry('Browse services')}>
+            <Link className="button button-primary" to="/services">
               Browse services <ArrowUpRight size={15} />
-            </button>
+            </Link>
           </div>
         </div>
       </section>
