@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { SEO } from '../components/SEO'
 
 type Step = [string, string, string]
 const steps: Step[] = [
@@ -12,6 +13,11 @@ const steps: Step[] = [
 export default function HowItWorksPage() {
   return (
     <div className="page-wrapper">
+      <SEO
+        title="How It Works — 4 Steps to Get Online | OnlineKarDo"
+        description="Four simple steps: pick a pack, share details, we build it, review and launch. Get your business online in about 48 hours with OnlineKarDo."
+        canonical="/how"
+      />
       <section className="page-hero">
         <div className="container">
           <span className="eyebrow">A smoother way to get online</span>

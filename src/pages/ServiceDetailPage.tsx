@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check } from 'lucide-react'
 import { useParams, Link } from 'react-router-dom'
 import { useEnquiry } from '../context/EnquiryContext'
+import { SEO, ServiceSchema, BreadcrumbSchema } from '../components/SEO'
 
 const money = (value: number | string): string => `₹${Number(value).toLocaleString('en-IN')}`
 
@@ -316,9 +317,50 @@ export default function ServiceDetailPage({ services }: ServiceDetailPageProps) 
   }
 
   const backToServices = () => window.history.back()
+  const serviceUrl = `https://onlinekardo.com/services/${service.id}`
 
   return (
     <main className="service-detail-page" id="top">
+      <SEO
+        title={`${service.name} for Small Businesses | OnlineKarDo`}
+        description={service.summary}
+        canonical={`/services/${service.id}`}
+        structuredData={{
+          '@type': 'Service',
+          name: service.name,
+          description: service.summary,
+          provider: {
+            '@type': 'Organization',
+            name: 'OnlineKarDo',
+            url: 'https://onlinekardo.com',
+          },
+          offers: {
+            '@type': 'Offer',
+            name: service.name,
+            description: service.summary,
+            price: service.price,
+            priceCurrency: 'INR',
+            availability: 'https://schema.org/InStock',
+            url: serviceUrl,
+          },
+          category: service.category,
+          url: serviceUrl,
+        }}
+      />
+      <ServiceSchema
+        name={service.name}
+        description={service.summary}
+        price={service.price}
+        category={service.category}
+        url={serviceUrl}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: 'Home', url: 'https://onlinekardo.com' },
+          { name: 'Services', url: 'https://onlinekardo.com/services' },
+          { name: service.name, url: serviceUrl },
+        ]}
+      />
       <section className="service-detail-hero"><div className="container"><button className="detail-back" onClick={backToServices}><ArrowLeft size={15} /> Back to all services</button><div className="detail-hero-grid"><div className="detail-hero-copy"><span className="eyebrow">{service.category} · Individual setup</span><h1>{service.name}</h1><p className="detail-summary">{service.summary}</p><div className="detail-price-line"><strong>{money(service.price)}</strong><span>one-time setup fee</span></div><button className="button button-primary" onClick={() => openEnquiry(service.name)}>Ask about this service <ArrowUpRight size={15} /></button><small className="detail-fee-note">Third-party subscriptions, fees and approvals are separate where applicable.</small></div><div className={`detail-hero-card ${service.brand ? `detail-brand-${service.brand}` : ''}`}><span className="detail-card-kicker">WHAT YOU'RE SETTING UP</span>{service.brand ? <div className="detail-brand-lockup"><BrandLogo brand={service.brand} /></div> : <div className="detail-card-mark">{service.mark}</div>}<h2>{service.name}</h2><p>{service.bestFor}</p><div className="detail-card-foot"><Check size={15} /> Template-led · Clear scope</div></div></div></div></section>
       <ServiceImpact service={service} />
       <ServiceDemo service={service} />

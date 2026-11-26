@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ArrowUpRight, Check, Menu, X } from 'lucide-react'
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
 import { formspreeEndpoint } from './config'
 import HomePage from './pages/HomePage'
 import HowItWorksPage from './pages/HowItWorksPage'
@@ -298,10 +299,12 @@ function AppContent() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <EnquiryProvider>
-        <AppContent />
-      </EnquiryProvider>
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <EnquiryProvider>
+          <AppContent />
+        </EnquiryProvider>
+      </BrowserRouter>
+    </HelmetProvider>
   )
 }

@@ -1,5 +1,6 @@
 import { ArrowUpRight, Check, Clock3 } from 'lucide-react'
 import { useEnquiry } from '../context/EnquiryContext'
+import { SEO } from '../components/SEO'
 
 const money = (value: number | string): string => `₹${Number(value).toLocaleString('en-IN')}`
 
@@ -24,6 +25,11 @@ export default function PacksPage() {
   const { openEnquiry } = useEnquiry()
   return (
     <div className="page-wrapper">
+      <SEO
+        title="Setup Packs — Fixed-Price Digital Packs | OnlineKarDo"
+        description="Choose from 3 fixed-price digital packs: Starter (₹2,999), Business (₹4,999), Seller (₹6,999). Clear scope, upfront pricing, delivery in 48-72 hours."
+        canonical="/packs"
+      />
       <section className="page-hero">
         <div className="container">
           <span className="eyebrow">One-time setup</span>

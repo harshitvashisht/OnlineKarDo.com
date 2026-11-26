@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { useEnquiry } from '../context/EnquiryContext'
+import { SEO } from '../components/SEO'
 
 interface PhonePreviewProps {
   type: string
@@ -122,6 +123,11 @@ export default function ExamplesPage() {
 
   return (
     <div className="page-wrapper">
+      <SEO
+        title="Examples — Phone-First Pages for Your Business | OnlineKarDo"
+        description="See 8 phone-first page types: product catalogue, WhatsApp ordering, payment page, social page, digital menu, website, search listing, link-in-bio. Filter by 30+ business types."
+        canonical="/examples"
+      />
       <section className="page-hero">
         <div className="container">
           <span className="eyebrow">Picture your business here</span>

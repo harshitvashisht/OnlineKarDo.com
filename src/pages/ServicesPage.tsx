@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useEnquiry } from '../context/EnquiryContext'
+import { SEO } from '../components/SEO'
 
 const money = (value: number | string): string => `₹${Number(value).toLocaleString('en-IN')}`
 
@@ -68,6 +69,11 @@ export default function ServicesPage() {
 
   return (
     <div className="page-wrapper">
+      <SEO
+        title="Individual Services — 14 Ways to Get Started | OnlineKarDo"
+        description="Pick from 14 individual services: websites, WhatsApp ordering, payment links, catalogues, menus, SEO, social profiles, Google Business, domain/email. Transparent pricing from ₹499."
+        canonical="/services"
+      />
       <section className="page-hero">
         <div className="container">
           <span className="eyebrow">Build your own bundle</span>

@@ -1,6 +1,7 @@
 import { ArrowDown, ArrowUpRight, Check } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useEnquiry } from '../context/EnquiryContext'
+import { SEO, OrganizationSchema } from '../components/SEO'
 
 const money = (value: number | string): string => `₹${Number(value).toLocaleString('en-IN')}`
 
@@ -144,6 +145,13 @@ export default function HomePage() {
   const { openEnquiry } = useEnquiry()
   return (
     <>
+      <SEO
+        title="Get Your Business Online in 48 Hours | OnlineKarDo"
+        description="Websites, WhatsApp ordering and digital setup for Indian small businesses. Pick a fixed-price pack and get started with OnlineKarDo."
+        canonical="/"
+        ogImage="/assets/onlinekardo-logo.jpeg"
+      />
+      <OrganizationSchema />
       <section className="hero">
         <div className="container hero-layout">
           <div className="hero-copy">

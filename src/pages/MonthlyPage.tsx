@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { useEnquiry } from '../context/EnquiryContext'
+import { SEO } from '../components/SEO'
 
 const money = (value: number | string): string => `₹${Number(value).toLocaleString('en-IN')}`
 
@@ -15,6 +16,11 @@ export default function MonthlyPage() {
   const { openEnquiry } = useEnquiry()
   return (
     <div className="page-wrapper">
+      <SEO
+        title="Monthly Care Plans — Ongoing Support | OnlineKarDo"
+        description="4 monthly plans from ₹499: Basic Care, Social Lite, Social Growth, Digital Care Plus. Website maintenance, social posts, content updates. Cancel anytime."
+        canonical="/monthly"
+      />
       <section className="page-hero">
         <div className="container">
           <span className="eyebrow">Ongoing support</span>
