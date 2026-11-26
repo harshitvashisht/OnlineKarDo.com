@@ -18,11 +18,11 @@ export default function FineprintPage() {
         canonical="/fineprint"
       />
       <FAQSchema faqs={faqs} />
-      <section className="page-hero page-hero--fineprint">
-        <div className="container">
-          <span className="eyebrow">The useful details</span>
-          <h1>Good to know<br />before we start.</h1>
-          <p className="hero-lede">Clear expectations make a better project for everyone.</p>
+      <section className="page-hero page-hero--fineprint !bg-[#eee5d6] !py-24 md:!py-32">
+        <div className="container !max-w-6xl !text-left">
+          <span className="eyebrow !text-[#806640]">The useful details</span>
+          <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Good work begins<br />with clarity.</h1>
+          <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#5e584d]">Clear expectations make a better project for everyone.</p>
         </div>
       </section>
 
@@ -39,7 +39,7 @@ export default function FineprintPage() {
         </div>
       </section>
 
-      <section className="cta-section">
+      <section className="cta-section !bg-gradient-to-r !from-[#eee5d6] !to-[#e7eadf] !py-20">
         <div className="container">
           <div className="cta-content">
             <h2>Ready to get started?</h2>

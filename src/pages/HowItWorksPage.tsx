@@ -18,19 +18,19 @@ export default function HowItWorksPage() {
         description="Four simple steps: pick a pack, share details, we build it, review and launch. Get your business online in about 48 hours with OnlineKarDo."
         canonical="/how"
       />
-      <section className="page-hero page-hero--how">
-        <div className="container">
-          <span className="eyebrow">A smoother way to get online</span>
-          <h1>Four steps. No tech headache.</h1>
-          <p className="hero-lede">You bring the business details. We bring the setup, structure and launch support.</p>
+      <section className="page-hero page-hero--how !bg-[#e8ebdb] !py-24 md:!py-32">
+        <div className="container !max-w-6xl !text-left">
+          <span className="eyebrow !text-[#58723c]">A smoother way to get online</span>
+          <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Clear from day one.</h1>
+          <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#56604d]">A simple, guided process that takes your business from scattered details to a confident online presence.</p>
         </div>
       </section>
 
-      <section className="how-section">
+      <section className="how-section !bg-[#fffaf0] !py-24">
         <div className="container">
           <div className="steps-grid">
             {steps.map(([icon, title, copy], index) => (
-              <article className="step-card" key={title}>
+              <article className="step-card !rounded-2xl !border-[#e5e1d6] !bg-white !p-7 !shadow-[0_12px_36px_rgba(35,52,39,0.06)]" key={title}>
                 <span className="step-count">0{index + 1}</span>
                 <div className="step-icon">{icon}</div>
                 <h3>{title}</h3>
@@ -46,7 +46,7 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
-      <section className="cta-section">
+      <section className="cta-section !bg-gradient-to-r !from-[#e8ebdb] !to-[#dfe8d9] !py-20">
         <div className="container">
           <div className="cta-content">
             <h2>Ready to get started?</h2>

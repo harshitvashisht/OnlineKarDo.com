@@ -152,20 +152,20 @@ export default function HomePage() {
         ogImage="/assets/onlinekardo-logo.jpeg"
       />
       <OrganizationSchema />
-      <section className="hero">
+      <section className="hero !relative !isolate !overflow-hidden !bg-gradient-to-br !from-[#153d31] !via-[#194637] !to-[#2b5a43] !py-20 !text-[#fffaf0] md:!py-28">
         <div className="container hero-layout">
           <div className="hero-copy">
-            <div className="eyebrow"><span className="eyebrow-dot" />Your digital setup partner</div>
-            <h1>Your business online<br /><span>in about 48 hours.</span></h1>
-            <p className="hero-lede">A website, WhatsApp ordering and the essentials to help customers find you. Choose a fixed-price setup and we'll take care of the tech.</p>
+            <div className="eyebrow !text-[#f7b27d]"><span className="eyebrow-dot" />Your digital setup partner</div>
+            <h1 className="!max-w-[720px] !text-6xl !leading-[.98] !tracking-[-.075em] md:!text-8xl">Your business deserves<br /><span className="!text-[#f4a168]">a brilliant online home.</span></h1>
+            <p className="hero-lede !max-w-xl !text-lg !leading-relaxed !text-[#e0e9df]">A polished website, WhatsApp ordering and the digital essentials that help customers find you, trust you and take the next step.</p>
             <div className="hero-actions">
-              <Link to="/packs" className="button button-primary">Explore packs <ArrowDown size={16} /></Link>
-              <Link to="/examples" className="text-link">See what's possible <ArrowUpRight size={15} /></Link>
+              <Link to="/packs" className="button button-primary !rounded-full !bg-[#e36a27] !px-7 !py-4 !text-white !shadow-lg !shadow-black/15 hover:!bg-[#f07b36]">Find your setup <ArrowDown size={16} /></Link>
+              <Link to="/examples" className="text-link !text-[#fffaf0] underline decoration-[#f4a168]/60 underline-offset-4">See what's possible <ArrowUpRight size={15} /></Link>
             </div>
-            <p className="delivery-note"><Check className="check" size={14} /> Starting at <strong>₹2,999</strong> <span className="note-divider">·</span> Delivery target starts after we have your complete details and approvals.</p>
+            <p className="delivery-note !max-w-xl !text-[#c6d5ca]"><Check className="check !text-[#f4a168]" size={14} /> Starting at <strong className="!text-white">₹2,999</strong> <span className="note-divider !text-[#93aa99]">·</span> First launch target: about 48 hours after details and approvals.</p>
             <div className="hero-proof">
-              <div className="proof-icon">01</div><div><strong>Simple, fixed scope</strong><span>Know what's included before we begin.</span></div>
-              <div className="proof-icon proof-icon-orange">02</div><div><strong>Made for local business</strong><span>Clear on a phone. Easy to share.</span></div>
+              <div className="proof-icon !bg-[#315b47] !text-[#f4a168]">01</div><div><strong className="!text-white">Simple, fixed scope</strong><span className="!text-[#c5d4ca]">Know what's included before we begin.</span></div>
+              <div className="proof-icon proof-icon-orange !bg-[#f4a168] !text-[#183d32]">02</div><div><strong className="!text-white">Made for local business</strong><span className="!text-[#c5d4ca]">Clear on a phone. Easy to share.</span></div>
             </div>
           </div>
           <div className="hero-visual" aria-label="A preview of a small business mobile website">
@@ -183,18 +183,29 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="how-section" id="how">
+      <nav className="!border-b !border-[#dfd6c6] !bg-[#fffaf0]" aria-label="Explore digital services">
+        <div className="container flex flex-wrap items-center justify-center gap-x-8 gap-y-3 !py-5 md:justify-between">
+          <span className="font-display text-xs font-bold uppercase tracking-[.16em] !text-[#76776a]">A better way to show up</span>
+          <Link className="font-semibold !text-[#173c30] transition hover:!text-[#e36a27]" to="/services/one-page-business-website">Websites <i className="!text-[#e36a27]">↗</i></Link>
+          <Link className="font-semibold !text-[#173c30] transition hover:!text-[#e36a27]" to="/services/whatsapp-ordering-catalogue">WhatsApp ordering <i className="!text-[#e36a27]">↗</i></Link>
+          <Link className="font-semibold !text-[#173c30] transition hover:!text-[#e36a27]" to="/services/razorpay-payment-page-or-link">Online payments <i className="!text-[#e36a27]">↗</i></Link>
+          <Link className="font-semibold !text-[#173c30] transition hover:!text-[#e36a27]" to="/services/google-business-profile-setup">Google presence <i className="!text-[#e36a27]">↗</i></Link>
+          <Link className="font-semibold !text-[#173c30] transition hover:!text-[#e36a27]" to="/services/instagram-business-setup">Social profiles <i className="!text-[#e36a27]">↗</i></Link>
+        </div>
+      </nav>
+
+      <section className="how-section !bg-[#fffaf0] !py-24" id="how">
         <div className="container">
           <div className="section-heading centered"><span className="eyebrow">A smoother way to get online</span><h2>Four steps. No tech headache.</h2><p>You bring the business details. We bring the setup, structure and launch support.</p></div>
-          <div className="steps-grid">{steps.map(([icon, title, copy], index) => <article className="step-card" key={title}><span className="step-count">0{index + 1}</span><div className="step-icon">{icon}</div><h3>{title}</h3><p>{copy}</p></article>)}</div>
+          <div className="steps-grid">{steps.map(([icon, title, copy], index) => <article className="step-card !rounded-2xl !border-[#e6dfd1] !bg-white !p-6 !shadow-[0_10px_36px_rgba(31,53,42,0.05)]" key={title}><span className="step-count !text-[#b5a48d]">0{index + 1}</span><div className={`step-icon !h-12 !w-12 !rounded-2xl ${index % 2 ? '!bg-[#f5e3d2] !text-[#b34f20]' : '!bg-[#e5eee2] !text-[#315b3f]'}`}>{icon}</div><h3 className="!font-display !text-[#173c30]">{title}</h3><p>{copy}</p></article>)}</div>
           <div className="process-foot"><span className="process-line" /><span>We begin when your onboarding form is complete.</span><span className="process-line" /></div>
         </div>
       </section>
 
-      <section className="packs-section" id="packs">
+      <section className="packs-section !bg-[#f0eee5] !py-24" id="packs">
         <div className="container">
           <div className="section-heading section-heading-row"><div><span className="eyebrow">One-time setup</span><h2>Pick your starting point.</h2></div><p>Clear scope and upfront pricing, so you can choose with confidence.</p></div>
-          <div className="pack-grid">{packs.map(pack => <article className={`pack-card ${pack.featured ? 'pack-featured' : ''}`} key={pack.name}>
+          <div className="pack-grid">{packs.map((pack, index) => <article className={`pack-card !rounded-[24px] !border-[#e4dfd2] !bg-[#fffdf7] !p-7 !shadow-[0_18px_45px_rgba(31,53,42,0.08)] ${index === 0 ? '!border-t-4 !border-t-[#e36a27]' : index === 2 ? '!border-t-4 !border-t-[#69865c]' : ''} ${pack.featured ? 'pack-featured !border-[#173c30] !bg-[#173c30] !text-[#fffaf0]' : ''}`} key={pack.name}>
             {pack.featured && <div className="featured-tag">MOST POPULAR</div>}<div className="pack-top"><span className="pack-label">{pack.label}</span><span className="pack-emoji">{pack.icon}</span></div>
             <h3>{pack.name}</h3><p className="pack-desc">{pack.description}</p><div className="pack-price">{money(pack.price)} <small>one time</small></div>
             <ul>{pack.includes.map(item => <li key={item}><Check size={14} /> {item}</li>)}</ul><div className="pack-delivery"><Check size={14} /> Target: {pack.delivery}</div>
@@ -204,25 +215,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="showcase-section" id="examples">
+      <section className="showcase-section !bg-[#e7eee4] !py-24" id="examples">
         <div className="container">
           <div className="section-heading section-heading-row showcase-heading"><div><span className="eyebrow">Picture your business here</span><h2>Small screen. Big first impression.</h2></div><p>Practical, phone-first pages designed around how customers actually browse, ask and order.</p></div>
           <div className="preview-grid">{phonePreviews.map((preview, index) => <article className="preview-card" key={preview.type}>
             <div className={`phone phone-${preview.type}`}><div className="phone-notch" /><div className="phone-screen"><PhonePreview type={preview.type} /></div></div>
             <div className="preview-caption"><span>0{index + 1}</span><div><b>{preview.title}</b><small>{preview.caption}</small></div></div>
           </article>)}</div>
-          <div className="business-browser"><div className="business-head"><div><span className="eyebrow">Made for your kind of business</span><h3>What does your business do?</h3></div><div className="business-count"><b>{businesses.length}</b><span>business types</span></div></div>
-            <div className="business-grid">{businesses.map(([name, icon, , fit]) => <button type="button" className="business-card" onClick={() => openEnquiry(`${name} business setup`, name)}><span className="business-emoji" aria-hidden="true">{icon}</span><b>{name}</b><small>{fit}</small></button>)}</div>
+          <div className="business-browser !rounded-[28px] !border-[#d8e2d4] !bg-[#f8f7ef] !p-7 md:!p-12 !shadow-[0_22px_64px_rgba(30,62,43,0.09)]"><div className="business-head"><div><span className="eyebrow">Made for your kind of business</span><h3>What does your business do?</h3></div><div className="business-count"><b>{businesses.length}</b><span>business types</span></div></div>
+            <div className="business-grid">{businesses.map(([name, icon, , fit], index) => <button type="button" key={name} className={`business-card !min-h-36 !rounded-2xl !border-[#e5e2d8] !bg-white !p-5 !shadow-[0_6px_18px_rgba(30,50,39,0.04)] hover:-translate-y-1! hover:!shadow-xl ${['!border-t-4 !border-t-[#e36a27]','!border-t-4 !border-t-[#7b91a0]','!border-t-4 !border-t-[#779166]','!border-t-4 !border-t-[#d5a64b]'][index % 4]}`} onClick={() => openEnquiry(`${name} business setup`, name)}><span className="business-emoji !text-2xl" aria-hidden="true">{icon}</span><b className="!font-display !text-[#173c30]">{name}</b><small>{fit}</small></button>)}</div>
             <p className="business-note">Each setup is adapted to your details, audience and the tools your business already uses.</p>
           </div>
         </div>
       </section>
 
-      <section className="cta-section">
+      <section className="cta-section !bg-gradient-to-r !from-[#173c30] !via-[#265840] !to-[#b65328] !py-20 !text-white">
         <div className="container">
           <div className="cta-content">
-            <h2>Want to explore all services?</h2>
-            <p>Browse all 14 individual services or check our monthly care plans.</p>
+            <h2 className="!text-white">A stronger digital presence starts here.</h2>
+            <p className="!text-[#e3e9df]">Browse the services and ongoing care that make sense for your next chapter.</p>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Link to="/services" className="button button-primary">View all services <ArrowUpRight size={15} /></Link>
               <Link to="/monthly" className="button button-outline">Monthly plans <ArrowUpRight size={15} /></Link>

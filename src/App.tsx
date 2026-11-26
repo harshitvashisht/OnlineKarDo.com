@@ -14,7 +14,7 @@ import FineprintPage from './pages/FineprintPage'
 import ContactPage from './pages/ContactPage'
 import { EnquiryProvider } from './context/EnquiryContext'
 import './styles.css'
-import './site-refresh.css'
+import './tailwind.css'
 
 // Add the business WhatsApp number in international format and a contact email here.
 const CONTACT = { whatsapp: '+91 91879 43361', email: 'support@onlinekardo.com' }
@@ -125,7 +125,7 @@ function Header({ isService, onEnquiry }: HeaderProps) {
   }
 
   return (
-    <header className="site-header">
+    <header className="site-header !border-[#ded8ca] !bg-[#fffaf0]/95 !shadow-[0_6px_28px_rgba(24,44,34,0.07)] !backdrop-blur-xl">
       <div className="container nav-wrap">
         <Link to={isService ? '/' : '/'} className="brand" aria-label="OnlineKarDo home">
           <img src="/assets/onlinekardo-logo.jpeg" alt="OnlineKarDo — Get Your Business Online" />
@@ -139,7 +139,7 @@ function Header({ isService, onEnquiry }: HeaderProps) {
               {label}
             </Link>
           ))}
-          <button className="button button-small button-dark nav-cta" type="button" onClick={() => { setOpen(false); onEnquiry('General enquiry') }}>Get started <ArrowUpRight size={15} /></button>
+          <button className="button button-small button-dark nav-cta !rounded-full !bg-[#183d32] !px-5 !text-white !shadow-lg !shadow-[#173c3020] hover:!bg-[#255341]" type="button" onClick={() => { setOpen(false); onEnquiry('General enquiry') }}>Get started <ArrowUpRight size={15} /></button>
         </nav>
       </div>
     </header>
@@ -148,7 +148,7 @@ function Header({ isService, onEnquiry }: HeaderProps) {
 
 function Footer() {
   return (
-    <footer className="site-footer">
+    <footer className="site-footer !bg-[#102a23] !text-[#fffaf0]">
       <div className="container footer-main">
         <div className="footer-brand">
           <img src="/assets/onlinekardo-logo.jpeg" alt="OnlineKarDo" />
@@ -159,7 +159,7 @@ function Footer() {
             <b>Explore</b>
             <Link to="/how">How it works</Link>
             <Link to="/packs">Setup packs</Link>
-            <Link to="/examples">Services</Link>
+            <Link to="/examples">Work examples</Link>
             <Link to="/monthly">Monthly plans</Link>
           </div>
           <div>
@@ -240,8 +240,8 @@ function EnquiryModal({ offer, businessType, onClose }: EnquiryModalProps) {
     }
   }
   return (
-    <div className="enquiry-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
-      <section className="enquiry-modal" role="dialog" aria-modal="true" aria-labelledby="enquiry-title">
+    <div className="enquiry-backdrop !bg-[#10251f]/85 !backdrop-blur-md" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
+      <section className="enquiry-modal !rounded-[28px] !border-[#e8dfd1] !bg-[#fffaf0] !shadow-[0_36px_110px_rgba(7,22,16,0.45)]" role="dialog" aria-modal="true" aria-labelledby="enquiry-title">
         <button className="enquiry-close" type="button" onClick={onClose} aria-label="Close enquiry form"><X size={19} /></button>
         {status === 'sent' ? (
           <div className="enquiry-success"><span><Check size={23} /></span><p className="eyebrow">Request received</p><h2>Thanks for reaching out.</h2><p>We've received your enquiry about <b>{offer}</b> and will get back to you soon.</p><button className="button button-primary" type="button" onClick={onClose}>Done</button></div>
@@ -322,7 +322,7 @@ function AppContent() {
       </main>
       <Footer />
       {enquiryOffer && <EnquiryModal key={`${enquiryOffer}-${enquiryBusiness}`} offer={enquiryOffer} businessType={enquiryBusiness} onClose={() => { setEnquiryOffer(''); setEnquiryBusiness('') }} />}
-      <a className="floating-contact" href={whatsappHref} target={waNumber ? '_blank' : undefined} rel={waNumber ? 'noreferrer' : undefined} aria-label="Contact OnlineKarDo"><ArrowUpRight size={17} /><span>Let's talk</span></a>
+      <a className="floating-contact !rounded-full !bg-[#e36a27] !text-white !shadow-[0_16px_38px_rgba(16,42,35,0.24)] hover:!bg-[#c9551c]" href={whatsappHref} target={waNumber ? '_blank' : undefined} rel={waNumber ? 'noreferrer' : undefined} aria-label="Contact OnlineKarDo"><ArrowUpRight size={17} /><span>Let&apos;s talk</span></a>
       <div className={`toast ${toast ? 'show' : ''}`} role="status" aria-live="polite">{toast}</div>
     </>
   )

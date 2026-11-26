@@ -1,0 +1,15 @@
+@import "tailwindcss" important;
+
+@theme {
+  --font-sans: "DM Sans", sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --color-forest-950: #102a23;
+  --color-forest-900: #173c30;
+  --color-forest-800: #255341;
+  --color-ivory-50: #fffaf0;
+  --color-saffron-500: #e36a27;
+  --color-saffron-300: #f4a168;
+  --color-sage-100: #e7eee4;
+  --color-clay-100: #f1e1ce;
+  --color-sky-100: #e2ebec;
+}

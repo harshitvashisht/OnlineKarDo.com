@@ -129,15 +129,15 @@ export default function ExamplesPage() {
         description="See 8 phone-first page types: product catalogue, WhatsApp ordering, payment page, social page, digital menu, website, search listing, link-in-bio. Filter by 30+ business types."
         canonical="/examples"
       />
-      <section className="page-hero page-hero--examples">
-        <div className="container">
-          <span className="eyebrow">Picture your business here</span>
-          <h1>Small screen. Big first impression.</h1>
-          <p className="hero-lede">Practical, phone-first pages designed around how customers actually browse, ask and order.</p>
+      <section className="page-hero page-hero--examples !bg-[#e4ece0] !py-24 md:!py-32">
+        <div className="container !max-w-6xl !text-left">
+          <span className="eyebrow !text-[#416646]">Picture your business here</span>
+          <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Make a lovely<br />first impression.</h1>
+          <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#536052]">Explore the small-screen experiences that help customers browse, ask, book and order.</p>
         </div>
       </section>
 
-      <section className="showcase-section">
+      <section className="showcase-section !bg-[#fffaf0] !py-24">
         <div className="container">
           <div className="preview-grid">
             {phonePreviews.map((preview, index) => (
@@ -183,7 +183,7 @@ export default function ExamplesPage() {
         </div>
       </section>
 
-      <section className="cta-section">
+      <section className="cta-section !bg-gradient-to-r !from-[#f1e1ce] !via-[#ead9c3] !to-[#e5ece0] !py-20">
         <div className="container">
           <div className="cta-content">
             <h2>See a service you like?</h2>

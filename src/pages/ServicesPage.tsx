@@ -50,13 +50,13 @@ interface ServiceCardProps {
 function ServiceCard({ service, index }: ServiceCardProps) {
   return (
     <Link to={`/services/${service.id}`} className="service-card-link">
-      <button className="service-card" type="button">
+      <div className={`service-card !rounded-[22px] !border-[#e5e0d5] !border-t-4 !bg-[#fffdf7] !p-6 !shadow-[0_10px_36px_rgba(31,53,42,0.06)] hover:-translate-y-1! hover:!shadow-xl ${['!border-t-[#e36a27]','!border-t-[#7b91a0]','!border-t-[#779166]','!border-t-[#d5a64b]'][index % 4]}`}>
         <span className="service-card-top"><span className="service-mark">{service.mark}</span><span className="service-number">{String(index + 1).padStart(2, '0')}</span></span>
         <span className="service-category">{service.category}</span>
         <strong className="service-card-title">{service.name}</strong>
         <span className="service-card-summary">{service.summary}</span>
         <span className="service-card-bottom"><b>{money(service.price)}</b><span>Explore service <ArrowUpRight size={14} /></span></span>
-      </button>
+      </div>
     </Link>
   )
 }
@@ -72,15 +72,15 @@ export default function ServicesPage() {
         description="Pick from 14 individual services: websites, WhatsApp ordering, payment links, catalogues, menus, SEO, social profiles, Google Business, domain/email. Transparent pricing from ₹499."
         canonical="/services"
       />
-      <section className="page-hero page-hero--services">
-        <div className="container">
-          <span className="eyebrow">Build your own bundle</span>
-          <h1>Just need one piece?</h1>
-          <p className="hero-lede">Choose one useful upgrade at a time. Open any service to see how it can help and try a sample.</p>
+      <section className="page-hero page-hero--services !bg-gradient-to-br !from-[#163b31] !to-[#285942] !py-24 !text-[#fffaf0] md:!py-32">
+        <div className="container !max-w-6xl !text-left">
+          <span className="eyebrow !text-[#f4a168]">Build your own bundle</span>
+          <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] !text-[#fffaf0] md:!text-8xl">Small upgrades.<br />A bigger presence.</h1>
+          <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#d5e1d8]">Choose one useful service at a time. Explore a live sample and see how it can help customers take the next step.</p>
         </div>
       </section>
 
-      <section className="services-section">
+      <section className="services-section !bg-[#f1f0e9] !py-24">
         <div className="container">
           <div className="services-heading">
             <div className="services-heading-badge"><span>14</span><small>ways to<br />get started</small></div>
@@ -101,7 +101,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="cta-section">
+      <section className="cta-section !bg-gradient-to-r !from-[#e7eee4] !to-[#dce8e2] !py-20">
         <div className="container">
           <div className="cta-content">
             <h2>Want a complete package?</h2>

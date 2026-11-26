@@ -1,4 +1,5 @@
 import { ArrowUpRight, Check, Clock3 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useEnquiry } from '../context/EnquiryContext'
 import { SEO } from '../components/SEO'
 
@@ -30,19 +31,19 @@ export default function PacksPage() {
         description="Choose from 3 fixed-price digital packs: Starter (₹2,999), Business (₹4,999), Seller (₹6,999). Clear scope, upfront pricing, delivery in 48-72 hours."
         canonical="/packs"
       />
-      <section className="page-hero page-hero--packs">
-        <div className="container">
-          <span className="eyebrow">One-time setup</span>
-          <h1>Pick your starting point.</h1>
-          <p className="hero-lede">Clear scope and upfront pricing, so you can choose with confidence.</p>
+      <section className="page-hero page-hero--packs !bg-[#f1e1ce] !py-24 md:!py-32">
+        <div className="container !max-w-6xl !text-left">
+          <span className="eyebrow !text-[#a94820]">One-time setup</span>
+          <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Pick your starting point.</h1>
+          <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#665c4d]">Clear scope and upfront pricing, so you can choose with confidence.</p>
         </div>
       </section>
 
-      <section className="packs-section">
+      <section className="packs-section !bg-[#fffaf0] !py-24">
         <div className="container">
           <div className="pack-grid">
-            {packs.map(pack => (
-              <article className={`pack-card ${pack.featured ? 'pack-featured' : ''}`} key={pack.name}>
+            {packs.map((pack, index) => (
+              <article className={`pack-card !rounded-[24px] !border-[#e5dfd1] !border-t-4 !bg-white !p-7 !shadow-[0_14px_42px_rgba(35,52,39,0.08)] ${['!border-t-[#e36a27]','!border-t-[#779166]','!border-t-[#d5a64b]'][index]} ${pack.featured ? 'pack-featured !border-[#173c30] !bg-[#173c30] !text-[#fffaf0]' : ''}`} key={pack.name}>
                 {pack.featured && <div className="featured-tag">MOST POPULAR</div>}
                 <div className="pack-top">
                   <span className="pack-label">{pack.label}</span>
@@ -65,14 +66,14 @@ export default function PacksPage() {
         </div>
       </section>
 
-      <section className="cta-section">
+      <section className="cta-section !bg-gradient-to-r !from-[#173c30] !to-[#285842] !py-20 !text-white">
         <div className="container">
           <div className="cta-content">
             <h2>Want to build your own bundle?</h2>
             <p>Choose individual services à la carte or start with a pack and add what you need.</p>
-            <button className="button button-primary" onClick={() => openEnquiry('Build your own bundle')}>
+            <Link className="button button-primary" to="/services">
               View all services <ArrowUpRight size={15} />
-            </button>
+            </Link>
           </div>
         </div>
       </section>
