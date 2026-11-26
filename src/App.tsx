@@ -114,6 +114,7 @@ interface HeaderProps {
 function Header({ isService, onEnquiry }: HeaderProps) {
   const [open, setOpen] = useState(false)
   const location = useLocation()
+  const homeHeader = location.pathname === '/'
   const navigate = useNavigate()
   const links = [{ label: 'How it works', to: '/how' }, { label: 'Packs', to: '/packs' }, { label: 'Work examples', to: '/examples' }, { label: 'Services', to: '/services' }, { label: 'Monthly plans', to: '/monthly' }]
   
@@ -125,21 +126,21 @@ function Header({ isService, onEnquiry }: HeaderProps) {
   }
 
   return (
-    <header className="site-header !border-[#ded8ca] !bg-[#fffaf0]/95 !shadow-[0_6px_28px_rgba(24,44,34,0.07)] !backdrop-blur-xl">
-      <div className="container nav-wrap">
-        <Link to={isService ? '/' : '/'} className="brand" aria-label="OnlineKarDo home">
+    <header className={`site-header !border-[#ded8ca] !bg-[#fffaf0]/95 !shadow-[0_6px_28px_rgba(24,44,34,0.07)] !backdrop-blur-xl ${homeHeader ? '!absolute !left-0 !right-0 !top-0 !z-50 !h-auto !border-0 !bg-transparent !shadow-none !backdrop-blur-none' : ''}`}>
+      <div className={`container nav-wrap ${homeHeader ? '!h-auto !w-full !max-w-none !gap-3 !px-4 !py-5 md:!gap-5 md:!px-10 md:!py-7' : ''}`}>
+        <Link to="/" className={`brand ${homeHeader ? '!rounded-full !bg-white !px-4 !py-3 !shadow-[0_14px_40px_rgba(5,18,43,.16)] md:!px-5' : ''}`} aria-label="OnlineKarDo home">
           <img src="/assets/onlinekardo-logo.jpeg" alt="OnlineKarDo — Get Your Business Online" />
         </Link>
-        <button className="menu-toggle" type="button" aria-expanded={open} aria-label={open ? 'Close navigation' : 'Open navigation'} onClick={() => setOpen(!open)}>
+        <button className={`menu-toggle ${homeHeader ? '!rounded-full !border !border-white/40 !bg-white/15 !text-white !backdrop-blur-md' : ''}`} type="button" aria-expanded={open} aria-label={open ? 'Close navigation' : 'Open navigation'} onClick={() => setOpen(!open)}>
           {open ? <X size={19} /> : <Menu size={19} />}
         </button>
-        <nav id="main-nav" className={`main-nav ${open ? 'open' : ''}`} aria-label="Main navigation">
+        <nav id="main-nav" className={`main-nav ${open ? 'open' : ''} ${homeHeader ? '!gap-2 !rounded-full !bg-white/95 !p-2 !shadow-[0_14px_40px_rgba(5,18,43,.16)] !backdrop-blur-md md:!gap-5 md:!px-4' : ''}`} aria-label="Main navigation">
           {links.map(({ label, to }) => (
             <Link key={to} to={to} onClick={() => handleNavClick(to)} className={location.pathname === to ? 'active' : ''}>
               {label}
             </Link>
           ))}
-          <button className="button button-small button-dark nav-cta !rounded-full !bg-[#183d32] !px-5 !text-white !shadow-lg !shadow-[#173c3020] hover:!bg-[#255341]" type="button" onClick={() => { setOpen(false); onEnquiry('General enquiry') }}>Get started <ArrowUpRight size={15} /></button>
+          <button className={`button button-small button-dark nav-cta !rounded-full !px-5 !text-white !shadow-lg ${homeHeader ? '!bg-[#171521] !shadow-black/20 hover:!bg-[#714be8]' : '!bg-[#714be8] !shadow-[#714be833] hover:!bg-[#5e3ad0]'}`} type="button" onClick={() => { setOpen(false); onEnquiry('General enquiry') }}>{homeHeader ? 'Let’s talk' : 'Get started'} <ArrowUpRight size={15} /></button>
         </nav>
       </div>
     </header>
@@ -148,7 +149,7 @@ function Header({ isService, onEnquiry }: HeaderProps) {
 
 function Footer() {
   return (
-    <footer className="site-footer !bg-[#102a23] !text-[#fffaf0]">
+    <footer className="site-footer !bg-[#171521] !text-[#fffaff]">
       <div className="container footer-main">
         <div className="footer-brand">
           <img src="/assets/onlinekardo-logo.jpeg" alt="OnlineKarDo" />
@@ -241,7 +242,7 @@ function EnquiryModal({ offer, businessType, onClose }: EnquiryModalProps) {
   }
   return (
     <div className="enquiry-backdrop !bg-[#10251f]/85 !backdrop-blur-md" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
-      <section className="enquiry-modal !rounded-[28px] !border-[#e8dfd1] !bg-[#fffaf0] !shadow-[0_36px_110px_rgba(7,22,16,0.45)]" role="dialog" aria-modal="true" aria-labelledby="enquiry-title">
+      <section className="enquiry-modal !rounded-[28px] !border-[#e8e0f3] !bg-[#fffaff] !shadow-[0_36px_110px_rgba(26,16,51,0.48)]" role="dialog" aria-modal="true" aria-labelledby="enquiry-title">
         <button className="enquiry-close" type="button" onClick={onClose} aria-label="Close enquiry form"><X size={19} /></button>
         {status === 'sent' ? (
           <div className="enquiry-success"><span><Check size={23} /></span><p className="eyebrow">Request received</p><h2>Thanks for reaching out.</h2><p>We've received your enquiry about <b>{offer}</b> and will get back to you soon.</p><button className="button button-primary" type="button" onClick={onClose}>Done</button></div>
@@ -322,7 +323,7 @@ function AppContent() {
       </main>
       <Footer />
       {enquiryOffer && <EnquiryModal key={`${enquiryOffer}-${enquiryBusiness}`} offer={enquiryOffer} businessType={enquiryBusiness} onClose={() => { setEnquiryOffer(''); setEnquiryBusiness('') }} />}
-      <a className="floating-contact !rounded-full !bg-[#e36a27] !text-white !shadow-[0_16px_38px_rgba(16,42,35,0.24)] hover:!bg-[#c9551c]" href={whatsappHref} target={waNumber ? '_blank' : undefined} rel={waNumber ? 'noreferrer' : undefined} aria-label="Contact OnlineKarDo"><ArrowUpRight size={17} /><span>Let&apos;s talk</span></a>
+      <a className="floating-contact !rounded-full !bg-[#171521] !text-white !shadow-[0_16px_38px_rgba(29,21,50,0.28)] hover:!bg-[#714be8]" href={whatsappHref} target={waNumber ? '_blank' : undefined} rel={waNumber ? 'noreferrer' : undefined} aria-label="Contact OnlineKarDo"><ArrowUpRight size={17} /><span>Let&apos;s talk</span></a>
       <div className={`toast ${toast ? 'show' : ''}`} role="status" aria-live="polite">{toast}</div>
     </>
   )

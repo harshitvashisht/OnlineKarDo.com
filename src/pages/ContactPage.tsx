@@ -144,15 +144,15 @@ export default function ContactPage() {
 
   return (
     <div className="page-wrapper">
-      <section className="page-hero page-hero--contact !bg-[#f1e1ce] !py-24 md:!py-32">
+      <section className="page-hero page-hero--contact !bg-[#eee8ff] !py-24 md:!py-32">
         <div className="container !max-w-6xl !text-left">
-          <span className="eyebrow">Your next step starts here</span>
-          <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Tell us what you do.<br /><span className="!text-[#a94820]">We&apos;ll help you get online.</span></h1>
-          <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#665c4d]">Pick a pack or tell us what you&apos;re trying to set up. We&apos;ll point you in the right direction.</p>
+          <span className="eyebrow !text-[#714be8]">Your next step starts here</span>
+          <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Tell us what you do.<br /><span className="!text-[#714be8]">We&apos;ll help you get online.</span></h1>
+          <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#5e586d]">Pick a pack or tell us what you&apos;re trying to set up. We&apos;ll point you in the right direction.</p>
         </div>
       </section>
 
-      <section className="contact-section !bg-gradient-to-br !from-[#173c30] !to-[#285942] !py-24">
+      <section className="contact-section !bg-gradient-to-br !from-[#211832] !to-[#49318d] !py-24">
         <div className="container contact-layout !grid-cols-1 !gap-12 lg:!grid-cols-[minmax(0,1.2fr)_minmax(260px,.8fr)]">
           <div>
             {status === 'sent' ? (
@@ -165,7 +165,7 @@ export default function ContactPage() {
               </div>
             ) : (
               <>
-                <form className="enquiry-form !rounded-[26px] !border-[#e6e0d4] !bg-[#fffdf7] !p-6 !shadow-[0_24px_70px_rgba(5,24,17,0.18)] md:!p-9" onSubmit={submit}>
+                <form className="enquiry-form !rounded-[26px] !border-[#e8e0f3] !bg-[#fffaff] !p-6 !shadow-[0_24px_70px_rgba(26,16,51,0.22)] md:!p-9" onSubmit={submit}>
                   <input type="hidden" name="Selected service or plan" value={offer} />
                   {businessType && <input type="hidden" name="Business type" value={businessType} />}
                   <label className="enquiry-trap" aria-hidden="true">Leave this field empty<input name="_gotcha" tabIndex={-1} autoComplete="off" /></label>

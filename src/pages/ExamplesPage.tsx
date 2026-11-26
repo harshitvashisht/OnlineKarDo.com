@@ -131,13 +131,13 @@ export default function ExamplesPage() {
       />
       <section className="page-hero page-hero--examples !bg-[#e4ece0] !py-24 md:!py-32">
         <div className="container !max-w-6xl !text-left">
-          <span className="eyebrow !text-[#416646]">Picture your business here</span>
+          <span className="eyebrow !text-[#714be8]">Picture your business here</span>
           <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Make a lovely<br />first impression.</h1>
           <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#536052]">Explore the small-screen experiences that help customers browse, ask, book and order.</p>
         </div>
       </section>
 
-      <section className="showcase-section !bg-[#fffaf0] !py-24">
+      <section className="showcase-section !bg-[#fff5fa] !py-24">
         <div className="container">
           <div className="preview-grid">
             {phonePreviews.map((preview, index) => (

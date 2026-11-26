@@ -31,15 +31,15 @@ export default function PacksPage() {
         description="Choose from 3 fixed-price digital packs: Starter (₹2,999), Business (₹4,999), Seller (₹6,999). Clear scope, upfront pricing, delivery in 48-72 hours."
         canonical="/packs"
       />
-      <section className="page-hero page-hero--packs !bg-[#f1e1ce] !py-24 md:!py-32">
+      <section className="page-hero page-hero--packs !bg-[#eee8ff] !py-24 md:!py-32">
         <div className="container !max-w-6xl !text-left">
-          <span className="eyebrow !text-[#a94820]">One-time setup</span>
+          <span className="eyebrow !text-[#714be8]">One-time setup</span>
           <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Pick your starting point.</h1>
-          <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#665c4d]">Clear scope and upfront pricing, so you can choose with confidence.</p>
+          <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#5e586d]">Clear scope and upfront pricing, so you can choose with confidence.</p>
         </div>
       </section>
 
-      <section className="packs-section !bg-[#fffaf0] !py-24">
+      <section className="packs-section !bg-[#faf9ff] !py-24">
         <div className="container">
           <div className="pack-grid">
             {packs.map((pack, index) => (
@@ -56,7 +56,7 @@ export default function PacksPage() {
                   {pack.includes.map(item => <li key={item}><Check size={14} /> {item}</li>)}
                 </ul>
                 <div className="pack-delivery"><Clock3 size={14} /> Target: {pack.delivery}</div>
-                <button className={`button ${pack.featured ? 'button-primary' : 'button-outline'} pack-action`} onClick={() => openEnquiry(pack.name)}>
+              <button className={`button ${pack.featured ? 'button-primary' : 'button-outline'} pack-action !rounded-full !bg-[#714be8] !px-5 !text-white hover:!bg-[#5e3ad0]`} onClick={() => openEnquiry(pack.name)}>
                   {pack.button} <ArrowUpRight size={15} />
                 </button>
               </article>

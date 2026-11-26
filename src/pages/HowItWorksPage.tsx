@@ -20,7 +20,7 @@ export default function HowItWorksPage() {
       />
       <section className="page-hero page-hero--how !bg-[#e8ebdb] !py-24 md:!py-32">
         <div className="container !max-w-6xl !text-left">
-          <span className="eyebrow !text-[#58723c]">A smoother way to get online</span>
+          <span className="eyebrow !text-[#714be8]">A smoother way to get online</span>
           <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] md:!text-8xl">Clear from day one.</h1>
           <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#56604d]">A simple, guided process that takes your business from scattered details to a confident online presence.</p>
         </div>

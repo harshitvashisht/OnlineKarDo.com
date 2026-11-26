@@ -1,0 +1,17 @@
+{
+  "name": "OnlineKarDo",
+  "short_name": "OnlineKarDo",
+  "description": "Websites, WhatsApp ordering and digital setup for Indian small businesses",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f3ec",
+  "theme_color": "#172c28",
+  "icons": [
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

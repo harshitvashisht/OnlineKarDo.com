@@ -72,15 +72,15 @@ export default function ServicesPage() {
         description="Pick from 14 individual services: websites, WhatsApp ordering, payment links, catalogues, menus, SEO, social profiles, Google Business, domain/email. Transparent pricing from ₹499."
         canonical="/services"
       />
-      <section className="page-hero page-hero--services !bg-gradient-to-br !from-[#163b31] !to-[#285942] !py-24 !text-[#fffaf0] md:!py-32">
+      <section className="page-hero page-hero--services !bg-gradient-to-br !from-[#211832] !via-[#49318d] !to-[#714be8] !py-24 !text-white md:!py-32">
         <div className="container !max-w-6xl !text-left">
-          <span className="eyebrow !text-[#f4a168]">Build your own bundle</span>
-          <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] !text-[#fffaf0] md:!text-8xl">Small upgrades.<br />A bigger presence.</h1>
-          <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-[#d5e1d8]">Choose one useful service at a time. Explore a live sample and see how it can help customers take the next step.</p>
+          <span className="eyebrow !text-[#ffe27a]">Build your own bundle</span>
+          <h1 className="!max-w-4xl !text-6xl !leading-[.95] !tracking-[-.07em] !text-white md:!text-8xl">Small upgrades.<br />A bigger presence.</h1>
+          <p className="hero-lede !mx-0 !max-w-xl !text-lg !leading-relaxed !text-white/80">Choose one useful service at a time. Explore a live sample and see how it can help customers take the next step.</p>
         </div>
       </section>
 
-      <section className="services-section !bg-[#f1f0e9] !py-24">
+      <section className="services-section !bg-[#f6f3fb] !py-24">
         <div className="container">
           <div className="services-heading">
             <div className="services-heading-badge"><span>14</span><small>ways to<br />get started</small></div>
