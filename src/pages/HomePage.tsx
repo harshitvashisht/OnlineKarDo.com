@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, Zap, Globe, Smartphone, type LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
+import type { CSSProperties } from 'react'
 import { useEnquiry } from '../context/EnquiryContext'
 import { SEO, OrganizationSchema } from '../components/SEO'
 import PresenceInvite from '../components/PresenceInvite'
@@ -198,7 +199,7 @@ function StackedServiceCategories({ heading, items, categories, stacked = true }
       </div>
       <div className="space-y-3 pb-2">
         {items.map((item, index) => (
-          <Link key={item.number} to={item.href} className={`${stacked ? 'sticky' : 'relative'} block min-h-[92px] rounded-2xl border border-[#d5e5eb] bg-gradient-to-br ${item.tint} p-4 shadow-[0_12px_30px_rgba(16,53,73,.12)] transition hover:-translate-y-1 hover:border-[#087b87] hover:shadow-[0_18px_38px_rgba(16,53,73,.18)]`} style={stacked ? { top: `${92 + index * 18}px`, zIndex: index + 1 } : undefined}>
+          <Link key={item.number} to={item.href} className={`${stacked ? 'service-stack-card' : 'relative'} block min-h-[92px] rounded-2xl border border-[#d5e5eb] bg-gradient-to-br ${item.tint} p-4 shadow-[0_12px_30px_rgba(16,53,73,.12)] transition hover:-translate-y-1 hover:border-[#087b87] hover:shadow-[0_18px_38px_rgba(16,53,73,.18)]`} style={stacked ? { '--service-stack-offset': `${index * 18}px`, '--service-stack-offset-mobile': `${index * 12}px`, '--service-stack-offset-small': `${index * 10}px`, zIndex: index + 1 } as CSSProperties : undefined}>
             <div className="flex items-start justify-between gap-3">
               <div className="flex min-w-0 items-start gap-3">
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#0a526c] text-[10px] font-bold text-white">{item.number}</span>

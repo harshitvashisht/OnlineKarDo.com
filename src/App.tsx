@@ -181,16 +181,24 @@ function ServicesMegaMenu({ onClose }: { onClose: () => void }) {
   const menuTabs = [...serviceMenuGroups.map(item => item.label), 'Industries']
 
   useEffect(() => {
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
     const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose() }
     document.addEventListener('keydown', closeOnEscape)
-    return () => document.removeEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape)
+      document.body.style.overflow = previousOverflow
+    }
   }, [onClose])
 
-  return <div className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-[#071e32]/60 px-3 pb-5 pt-24 backdrop-blur-sm md:px-6 md:pt-28" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
-    <section role="dialog" aria-modal="true" aria-label="Explore services" className="relative w-full max-w-[1500px] rounded-[28px] border border-white/70 bg-[#f5f5e9] p-3 shadow-[0_35px_110px_rgba(0,0,0,.3)] md:rounded-[34px] md:p-5">
+  return <div className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto overscroll-contain bg-[#071e32]/60 px-3 pb-5 pt-20 backdrop-blur-sm md:px-6 md:pt-28" onClick={event => { if (event.target === event.currentTarget) onClose() }}>
+    <section role="dialog" aria-modal="true" aria-label="Explore services" className="relative w-full max-w-[1500px] rounded-[28px] border border-white/70 bg-[#f5f5e9] p-3 pt-14 shadow-[0_35px_110px_rgba(0,0,0,.3)] md:rounded-[34px] md:p-5">
       <div className="grid gap-4 md:grid-cols-[250px_1fr] lg:grid-cols-[300px_1fr]">
-        <div className="flex gap-2 overflow-x-auto md:flex-col md:overflow-visible" role="tablist" aria-label="Service categories and industries">
-          {menuTabs.map((label, index) => <button key={label} id={`service-group-tab-${index}`} type="button" role="tab" aria-selected={activeGroup === index} aria-controls="service-group-panel" onClick={() => setActiveGroup(index)} className={`flex min-h-14 shrink-0 items-center justify-between gap-4 rounded-full px-5 text-left text-sm font-semibold transition md:min-h-[72px] md:px-6 md:text-base ${activeGroup === index ? 'bg-[#55c9c0] text-white shadow-[0_12px_30px_rgba(40,170,165,.22)]' : 'bg-white text-[#30343a] hover:bg-[#e7f5f1]'}`}><span>{label}</span>{activeGroup === index && <span className="h-2 w-2 rounded-full bg-white"/>}</button>)}
+        <div className="grid grid-cols-2 gap-2 md:flex md:flex-col" role="tablist" aria-label="Service categories and industries">
+          {menuTabs.map((label, index) => <button key={label} id={`service-group-tab-${index}`} type="button" role="tab" aria-selected={activeGroup === index} aria-controls="service-group-panel" tabIndex={activeGroup === index ? 0 : -1} onKeyDown={event => {
+            const next = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? (activeGroup + 1) % menuTabs.length : event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? (activeGroup - 1 + menuTabs.length) % menuTabs.length : event.key === 'Home' ? 0 : event.key === 'End' ? menuTabs.length - 1 : -1
+            if (next !== -1) { event.preventDefault(); setActiveGroup(next); document.getElementById(`service-group-tab-${next}`)?.focus() }
+          }} onClick={() => setActiveGroup(index)} className={`services-menu-tab flex min-h-12 min-w-0 items-center justify-between gap-2 rounded-full px-3 text-left text-sm font-semibold leading-tight transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#087b87] sm:px-4 md:min-h-[72px] md:px-6 md:text-base ${activeGroup === index ? 'bg-[#55c9c0] text-white shadow-[0_12px_30px_rgba(40,170,165,.22)]' : 'bg-white text-[#30343a] hover:bg-[#e7f5f1]'}`}><span>{label}</span>{activeGroup === index && <span className="h-2 w-2 shrink-0 rounded-full bg-white"/>}</button>)}
         </div>
         <div id="service-group-panel" role="tabpanel" aria-labelledby={`service-group-tab-${activeGroup}`} className="min-w-0 rounded-[22px] bg-transparent p-2 md:p-3">
           {isIndustries ? <>
@@ -202,7 +210,7 @@ function ServicesMegaMenu({ onClose }: { onClose: () => void }) {
           </>}
         </div>
       </div>
-      <button type="button" onClick={onClose} className="absolute right-4 top-4 hidden h-10 w-10 place-items-center rounded-full bg-white text-[#263847] shadow md:grid" aria-label="Close services menu"><X size={18}/></button>
+      <button type="button" onClick={onClose} className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-full bg-white text-[#263847] shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#087b87] md:right-4 md:top-4" aria-label="Close services menu"><X size={18}/></button>
     </section>
   </div>
 }

@@ -2216,6 +2216,16 @@
 }
 
 /* Case study project preview */
+.service-stack-card { position: sticky; top: calc(92px + var(--service-stack-offset, 0px)); scroll-margin-top: 92px; }
+@media (max-width: 720px) {
+  .service-stack-card { top: calc(72px + var(--service-stack-offset-mobile, 0px)); scroll-margin-top: 72px; }
+  .services-menu-tab { min-height: 48px; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+}
+@media (max-width: 390px) {
+  .service-stack-card { top: calc(64px + var(--service-stack-offset-small, 0px)); scroll-margin-top: 64px; }
+}
+
 .case-service-mockup {
   overflow: hidden;
   border: 1px solid rgba(255,255,255,.38);
