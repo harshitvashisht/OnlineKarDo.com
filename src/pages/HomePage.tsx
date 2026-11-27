@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react'
 import type { CSSProperties } from 'react'
 import { useEnquiry } from '../context/EnquiryContext'
 import { SEO, OrganizationSchema } from '../components/SEO'
-import PresenceInvite from '../components/PresenceInvite'
+
 import { formspreeEndpoint } from '../config'
 
 const money = (value: number | string): string => `₹${Number(value).toLocaleString('en-IN')}`
@@ -584,11 +584,10 @@ export default function HomePage() {
         ogImage="/assets/onlinekardo-logo.jpeg"
       />
       <OrganizationSchema />
-      <PresenceInvite />
 
       {/* Immersive homepage hero */}
       <section id="homepage-hero" className={`relative isolate mt-3 min-h-[880px] overflow-hidden bg-[#082c50] pb-8 pt-36 text-white shadow-[0_26px_80px_rgba(6,31,61,.22)] transition-[margin,border-radius] duration-700 ease-out md:mt-5 md:min-h-[calc(100svh-40px)] md:pt-44 xl:mt-6 xl:min-h-[calc(100svh-48px)] ${heroGutter}`}>
-        <img src="https://images.unsplash.com/photo-1621868579917-560fc2c68ec0?auto=format&fit=crop&w=2600&q=90" alt="A sea turtle moving through clear blue ocean water" fetchPriority="high" className="absolute inset-0 -z-30 h-full w-full object-cover object-center motion-safe:animate-[hero-drift_24s_ease-in-out_infinite_alternate]" />
+        <img src="https://images.unsplash.com/photo-1621868579917-560fc2c68ec0?auto=format&fit=crop&w=2600&q=90" alt="A sea turtle moving through clear blue ocean water"  className="absolute inset-0 -z-30 h-full w-full object-cover object-center motion-safe:animate-[hero-drift_24s_ease-in-out_infinite_alternate]" />
         <div className="absolute inset-0 -z-20 bg-gradient-to-r from-[#071e42]/90 via-[#07547c]/64 to-[#057f9b]/40" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#052649]/90 via-[#073a63]/10 to-[#072b50]/35" />
         <div className="absolute inset-0 -z-10 opacity-25 [background:radial-gradient(circle_at_75%_16%,rgba(134,244,239,.7),transparent_24%),radial-gradient(circle_at_13%_68%,rgba(89,190,235,.38),transparent_30%)]" />

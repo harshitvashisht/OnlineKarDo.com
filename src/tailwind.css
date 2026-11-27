@@ -21,6 +21,16 @@
   --animate-soft-float: soft-float 6s ease-in-out infinite;
 }
 
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
 @keyframes marquee {
   to { transform: translateX(-50%); }
 }

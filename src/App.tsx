@@ -1,18 +1,25 @@
 import { useEffect, useState } from 'react'
-import { ArrowUpRight, Check, Menu, X, ShoppingBag, HeartPulse, House, Utensils, Briefcase, GraduationCap } from 'lucide-react'
+import { ArrowUpRight, Check, Menu, X, ShoppingBag, HeartPulse, House, Utensils, Briefcase, GraduationCap, GraduationCap as GradCap } from 'lucide-react'
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { formspreeEndpoint } from './config'
 import HomePage from './pages/HomePage'
 import HowItWorksPage from './pages/HowItWorksPage'
-import PacksPage from './pages/PacksPage'
-import MonthlyPage from './pages/MonthlyPage'
+import PlansPage from './pages/PlansPage'
 import ServicesPage from './pages/ServicesPage'
 import ServiceDetailPage from './pages/ServiceDetailPage'
 import CategoryPage from './pages/CategoryPage'
 import CaseStudyPage from './pages/CaseStudyPage'
 import FineprintPage from './pages/FineprintPage'
 import ContactPage from './pages/ContactPage'
+import IndustriesPage from './pages/IndustriesPage'
+import EcommerceRetailPage from './pages/industries/EcommerceRetail'
+import HealthcarePage from './pages/industries/Healthcare'
+import RealEstatePage from './pages/industries/RealEstate'
+import RestaurantsHospitalityPage from './pages/industries/RestaurantsHospitality'
+import ProfessionalServicesPage from './pages/industries/ProfessionalServices'
+import ConsultingPage from './pages/industries/Consulting'
+import EducationTrainingPage from './pages/industries/EducationTraining'
 import { EnquiryProvider } from './context/EnquiryContext'
 import './styles.css'
 import './tailwind.css'
@@ -118,7 +125,7 @@ function Header({ isService, onEnquiry }: HeaderProps) {
   const location = useLocation()
   const homeHeader = location.pathname === '/'
   const navigate = useNavigate()
-  const links = [{ label: 'How it works', to: '/how' }, { label: 'Packs', to: '/packs' }, { label: 'Monthly plans', to: '/monthly' }]
+  const links = [{ label: 'How it works', to: '/how' }, { label: 'Pricing', to: '/plans' }, { label: 'Industries', to: '/industries' }]
   
   const handleNavClick = (to: string) => {
     setOpen(false)
@@ -165,12 +172,13 @@ const serviceMenuGroups = [
 ]
 
 const industryMenuItems = [
-  { label: 'E-commerce & Retail', detail: 'Storefronts, product catalogues and local shops.', icon: ShoppingBag },
-  { label: 'Restaurants & Hospitality', detail: 'Menus, ordering, bookings and discovery.', icon: Utensils },
-  { label: 'Healthcare', detail: 'Clinic information and patient enquiry journeys.', icon: HeartPulse },
-  { label: 'Real Estate', detail: 'Property showcases and location-led enquiries.', icon: House },
-  { label: 'Professional Services', detail: 'Clear service pages and qualified enquiries.', icon: Briefcase },
-  { label: 'Education', detail: 'Programs, admissions information and contact paths.', icon: GraduationCap },
+  { label: 'E-commerce & Retail', detail: 'Storefronts, product catalogues and local shops.', icon: ShoppingBag, href: '/industries/ecommerce-retail' },
+  { label: 'Healthcare', detail: 'Clinic information and patient enquiry journeys.', icon: HeartPulse, href: '/industries/healthcare' },
+  { label: 'Real Estate', detail: 'Property showcases and location-led enquiries.', icon: House, href: '/industries/real-estate' },
+  { label: 'Restaurants & Hospitality', detail: 'Menus, ordering, bookings and discovery.', icon: Utensils, href: '/industries/restaurants-hospitality' },
+  { label: 'Professional Services', detail: 'Clear service pages and qualified enquiries.', icon: Briefcase, href: '/industries/professional-services' },
+  { label: 'Consulting', detail: 'Authority that wins high-value engagements.', icon: GraduationCap, href: '/industries/consulting' },
+  { label: 'Education & Training', detail: 'Programs, admissions information and contact paths.', icon: GradCap, href: '/industries/education-training' },
 ]
 
 function ServicesMegaMenu({ onClose }: { onClose: () => void }) {
@@ -202,8 +210,14 @@ function ServicesMegaMenu({ onClose }: { onClose: () => void }) {
         </div>
         <div id="service-group-panel" role="tabpanel" aria-labelledby={`service-group-tab-${activeGroup}`} className="min-w-0 rounded-[22px] bg-transparent p-2 md:p-3">
           {isIndustries ? <>
-            <div className="grid gap-x-5 md:grid-cols-2 xl:grid-cols-3">{industryMenuItems.map(({label,detail,icon:Icon})=><div key={label} className="flex min-h-[82px] items-center gap-4 border-b border-[#d9ddd5] px-2 py-3 text-[#282b2e] md:px-3"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-[#e8e8df] bg-white text-[#087b87] shadow-sm"><Icon size={22}/></span><span><b className="block text-sm font-semibold leading-snug md:text-base">{label}</b><small className="mt-1 block text-xs text-[#818781]">{detail}</small></span></div>)}</div>
-            <div className="mt-4 flex flex-col gap-3 rounded-[20px] bg-white p-4 sm:flex-row sm:items-center sm:justify-between md:mt-5 md:px-5"><div><span className="block text-lg font-semibold tracking-tight text-[#24282b]">Industry overview</span><span className="text-xs text-[#77817f]">Digital setup options for the way different businesses serve customers.</span></div><Link to="/services" onClick={onClose} className="inline-flex min-h-11 items-center gap-2 self-start rounded-full bg-[#55c9c0] px-5 text-sm font-bold text-white transition hover:bg-[#168b8f] sm:self-auto">Explore services <ArrowUpRight size={15}/></Link></div>
+            <div className="grid gap-x-5 md:grid-cols-2 xl:grid-cols-3">{industryMenuItems.map(({label,detail,icon:Icon,href})=>(
+              <Link key={label} to={href} onClick={onClose} className="group flex min-h-[82px] items-center gap-4 border-b border-[#d9ddd5] px-2 py-3 text-[#282b2e] transition hover:text-[#087b87] md:px-3">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-[#e8e8df] bg-white text-[#087b87] shadow-sm"><Icon size={22}/></span>
+                <span className="min-w-0"><b className="block text-sm font-semibold leading-snug md:text-base">{label}</b><small className="mt-1 block text-xs text-[#818781]">{detail}</small></span>
+                <ArrowUpRight size={15} className="ml-auto shrink-0 opacity-0 transition group-hover:opacity-100"/>
+              </Link>
+            ))}</div>
+            <div className="mt-4 flex flex-col gap-3 rounded-[20px] bg-white p-4 sm:flex-row sm:items-center sm:justify-between md:mt-5 md:px-5"><div><span className="block text-lg font-semibold tracking-tight text-[#24282b]">Industry overview</span><span className="text-xs text-[#77817f]">Digital setup options for the way different businesses serve customers.</span></div><Link to="/industries" onClick={onClose} className="inline-flex min-h-11 items-center gap-2 self-start rounded-full bg-[#55c9c0] px-5 text-sm font-bold text-white transition hover:bg-[#168b8f] sm:self-auto">Explore all industries <ArrowUpRight size={15}/></Link></div>
           </> : <>
             <div className="grid gap-x-5 md:grid-cols-2 xl:grid-cols-3">{groupServices.map(service => <Link key={service.id} to={`/services/${service.id}`} onClick={onClose} className="group flex min-h-[76px] items-center gap-4 border-b border-[#d9ddd5] px-2 py-3 text-[#282b2e] transition hover:text-[#087b87] md:px-3"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-[#e8e8df] bg-white font-display text-xl font-semibold text-[#087b87] shadow-sm">{service.mark || service.name.slice(0, 1)}</span><span className="min-w-0"><b className="block text-sm font-semibold leading-snug md:text-base">{service.name}</b><small className="mt-1 block text-xs text-[#818781]">{`₹${service.price.toLocaleString('en-IN')}`}</small></span><ArrowUpRight size={15} className="ml-auto shrink-0 opacity-0 transition group-hover:opacity-100"/></Link>)}</div>
             <div className="mt-4 flex flex-col gap-3 rounded-[20px] bg-white p-4 sm:flex-row sm:items-center sm:justify-between md:mt-5 md:px-5"><div><span className="block text-lg font-semibold tracking-tight text-[#24282b]">{group.label} overview</span><span className="text-xs text-[#77817f]">See the full approach, demos and outcomes for this area.</span></div><div className="flex flex-wrap gap-2"><Link to={group.to} onClick={onClose} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#55c9c0] px-5 text-sm font-bold text-white transition hover:bg-[#168b8f]">{group.label} overview <ArrowUpRight size={15}/></Link><Link to="/services" onClick={onClose} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#d8dfd9] px-5 text-sm font-bold text-[#34444b] transition hover:bg-[#f3f7f5]">All services</Link></div></div>
@@ -227,8 +241,7 @@ function Footer() {
           <div>
             <b>Explore</b>
             <Link to="/how">How it works</Link>
-            <Link to="/packs">Setup packs</Link>
-            <Link to="/monthly">Monthly plans</Link>
+            <Link to="/plans">Pricing</Link>
           </div>
           <div>
             <b>Get started</b>
@@ -382,9 +395,16 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/how" element={<HowItWorksPage />} />
-          <Route path="/packs" element={<PacksPage />} />
-          <Route path="/monthly" element={<MonthlyPage />} />
+          <Route path="/plans" element={<PlansPage />} />
           <Route path="/services" element={<ServicesPage />} />
+          <Route path="/industries" element={<IndustriesPage />} />
+          <Route path="/industries/ecommerce-retail" element={<EcommerceRetailPage />} />
+          <Route path="/industries/healthcare" element={<HealthcarePage />} />
+          <Route path="/industries/real-estate" element={<RealEstatePage />} />
+          <Route path="/industries/restaurants-hospitality" element={<RestaurantsHospitalityPage />} />
+          <Route path="/industries/professional-services" element={<ProfessionalServicesPage />} />
+          <Route path="/industries/consulting" element={<ConsultingPage />} />
+          <Route path="/industries/education-training" element={<EducationTrainingPage />} />
           <Route path="/web-development" element={<CategoryPage category="web-development" />} />
           <Route path="/whatsapp-commerce" element={<CategoryPage category="whatsapp-commerce" />} />
           <Route path="/local-discovery" element={<CategoryPage category="local-discovery" />} />

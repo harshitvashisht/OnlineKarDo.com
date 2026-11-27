@@ -43,9 +43,9 @@ export default function FineprintPage() {
         <div className="container">
           <div className="cta-content">
             <h2>Ready to get started?</h2>
-            <p>Pick a pack or browse individual services to begin.</p>
-            <Link to="/packs" className="button button-primary">
-              View setup packs <span style={{ display: 'inline-block', marginLeft: '8px' }}>→</span>
+            <p>Pick a plan or browse individual services to begin.</p>
+            <Link to="/plans" className="button button-primary">
+              View plans <span style={{ display: 'inline-block', marginLeft: '8px' }}>→</span>
             </Link>
           </div>
         </div>

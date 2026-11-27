@@ -106,8 +106,8 @@ export default function ServicesPage() {
           <div className="cta-content">
             <h2>Want a complete package?</h2>
             <p>Our bundles combine the most popular services at a better value.</p>
-            <Link className="button button-primary" to="/packs">
-              View setup packs <ArrowUpRight size={15} />
+            <Link className="button button-primary" to="/plans">
+              View plans <ArrowUpRight size={15} />
             </Link>
           </div>
         </div>
