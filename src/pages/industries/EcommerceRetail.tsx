@@ -13,6 +13,11 @@ const IMG = {
   buildNew: burst('shop-owner-gets-ready'),
   rebuild: burst('a-happy-store-owner-opens-for-the-day'),
   fashion: burst('person-browses-clothing-racks-in-a-store'),
+  beauty: burst('makeup-and-beauty-products'),
+  food: burst('shelves-filled-with-glassware-and-jars-of-preserves'),
+  home: burst('grey-and-gold-living-room-interior-design'),
+  wellness: burst('herbal-vitamins'),
+  wholesale: burst('boxes-on-warehouse-shelves'),
   cta: burst('photo-of-people-shopping-in-a-clothing-store'),
 }
 
@@ -67,11 +72,11 @@ const processSteps = [
 
 const categories = [
   { name: 'Fashion & apparel', text: 'Visual-first pages, size confidence, fast galleries and easy returns that turn browsers into repeat buyers.', icon: ShoppingBag, image: IMG.fashion },
-  { name: 'Beauty & personal care', text: 'Reviews, repeat purchases and quick mobile buying built for impulse and replenishment.', icon: Sparkles },
-  { name: 'Food & beverage', text: 'Speed, bundles and effortless reordering, among the best-converting categories when the experience is quick.', icon: Store },
-  { name: 'Home & high-value items', text: 'Richer content, EMI options and trust-building for bigger decisions with longer journeys.', icon: Boxes },
-  { name: 'Health & wellness', text: 'Compliance-aware, subscription-friendly product pages that build credibility before the sale.', icon: ShieldCheck },
-  { name: 'B2B & wholesale', text: 'Account pricing, bulk and quote ordering and accounting integration, built for how businesses buy.', icon: Truck },
+  { name: 'Beauty & personal care', text: 'Reviews, repeat purchases and quick mobile buying built for impulse and replenishment.', icon: Sparkles, image: IMG.beauty },
+  { name: 'Food & beverage', text: 'Speed, bundles and effortless reordering, among the best-converting categories when the experience is quick.', icon: Store, image: IMG.food },
+  { name: 'Home & high-value items', text: 'Richer content, EMI options and trust-building for bigger decisions with longer journeys.', icon: Boxes, image: IMG.home },
+  { name: 'Health & wellness', text: 'Compliance-aware, subscription-friendly product pages that build credibility before the sale.', icon: ShieldCheck, image: IMG.wellness },
+  { name: 'B2B & wholesale', text: 'Account pricing, bulk and quote ordering and accounting integration, built for how businesses buy.', icon: Truck, image: IMG.wholesale },
 ]
 
 const reasons = [
