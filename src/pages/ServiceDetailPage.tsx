@@ -109,6 +109,24 @@ const SERVICE_IMAGES: Record<string, { image: string; icon: keyof typeof ICON_CO
   },
 }
 
+// Header text colours, one set per service: title, gradient start, gradient end
+const HERO_COLORS: Record<string, [string, string, string]> = {
+  'one-page-business-website': ['#7c2d12', '#c2410c', '#b45309'],
+  '3-5-page-business-website': ['#1e293b', '#334155', '#0369a1'],
+  'whatsapp-ordering-catalogue': ['#14532d', '#15803d', '#0f766e'],
+  'razorpay-payment-page-or-link': ['#172554', '#1e40af', '#2563eb'],
+  'razorpay-supported-payment-catalogue': ['#312e81', '#4338ca', '#7c3aed'],
+  'digital-product-catalogue': ['#365314', '#4d7c0f', '#047857'],
+  'digital-menu-with-qr-code': ['#713f12', '#a16207', '#c2410c'],
+  'google-business-profile-setup': ['#0c4a6e', '#0369a1', '#0e7490'],
+  'instagram-business-setup': ['#831843', '#be185d', '#9333ea'],
+  'facebook-business-page-setup': ['#1e3a8a', '#1d4ed8', '#0284c7'],
+  'whatsapp-business-profile-setup': ['#134e4a', '#0f766e', '#15803d'],
+  'link-in-bio-business-page': ['#581c87', '#7e22ce', '#c026d3'],
+  'domain-and-business-email-setup': ['#7f1d1d', '#b91c1c', '#ea580c'],
+  'basic-seo-setup': ['#164e63', '#0e7490', '#4f46e5'],
+}
+
 const SERVICE_CONTENT: Record<string, {
   heroSubtitle: string
   detailedDescription: string
@@ -681,258 +699,201 @@ const SERVICE_CONTENT: Record<string, {
   },
 }
 
-function Marquee({ text, speed = 30, className = '' }: { text: string; speed?: number; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [duration, setDuration] = useState(30)
+// Sample screens drawn in code, one before/after pair per service. Names and prices are illustrative.
+type Row = [icon: string, label: string, value?: string]
+interface ScreenData {
+  before: { title: string; style: 'chat' | 'note'; lines: string[] }
+  after: { title: string; subtitle: string; layout: 'list' | 'grid'; rows: Row[]; action: string; tabs?: string[] }
+}
+
+const SCREENS: Record<string, ScreenData> = {
+  'one-page-business-website': {
+    before: { title: 'No website to share', style: 'chat', lines: ['Do you have a website?', 'No, I will send photos here', 'Where is your shop?', 'What do you offer?'] },
+    after: { title: 'The Little Corner', subtitle: 'One page: offer, location and contact', layout: 'list', tabs: ['Home', 'About', 'Contact'], rows: [['🛍️', 'What we offer'], ['📍', 'Indiranagar, Bengaluru'], ['🕗', 'Open 8 am – 8 pm']], action: 'Send an enquiry' } },
+  '3-5-page-business-website': {
+    before: { title: 'Everything on one crowded page', style: 'note', lines: ['services timings about us doctors address', 'fees? ask on phone', 'photos coming soon', 'scroll down for map… maybe'] },
+    after: { title: 'Greenleaf Family Clinic', subtitle: 'A clear page for every question', layout: 'grid', tabs: ['Home', 'Services', 'About', 'Contact'], rows: [['🩺', 'Services'], ['👩‍⚕️', 'Our team'], ['🏥', 'Gallery'], ['📅', 'Visit us']], action: 'Request an appointment' } },
+  'whatsapp-ordering-catalogue': {
+    before: { title: 'Orders typed out in chat', style: 'chat', lines: ['What do you have today?', 'Fruit box, greens, eggs', 'Price?', 'Send 2… no, 1 of the first one'] },
+    after: { title: 'Nila · Fresh Picks', subtitle: 'Pick items, then send one clear order', layout: 'list', rows: [['🥭', 'Seasonal fruit box × 1', '₹420'], ['🥬', 'Greens bundle × 1', '₹260'], ['🥚', 'Farm eggs × 2', '₹360']], action: 'Send order · ₹1,040' } },
+  'razorpay-payment-page-or-link': {
+    before: { title: 'Chasing a payment', style: 'chat', lines: ['How do I pay the advance?', 'I will send account details', 'Paid. Did you get it?', 'Please send a screenshot'] },
+    after: { title: 'Payment request', subtitle: 'The Sugar Window · sample', layout: 'list', rows: [['🎂', 'Cake booking advance', '₹1,250'], ['📱', 'UPI'], ['💳', 'Card']], action: 'Pay ₹1,250' } },
+  'razorpay-supported-payment-catalogue': {
+    before: { title: 'Totals worked out by hand', style: 'note', lines: ['kurta 899', 'tote 499 ?', 'total = 1398 (check)', 'payment pending – call back'] },
+    after: { title: 'Your cart', subtitle: 'Browse, review and pay in one flow', layout: 'list', rows: [['👕', 'Everyday cotton kurta', '₹899'], ['👜', 'Linen tote bag', '₹499'], ['🧾', 'Total', '₹1,398']], action: 'Continue to checkout' } },
+  'digital-product-catalogue': {
+    before: { title: 'Photos lost in a chat', style: 'chat', lines: ['📷 photo_0412.jpg', '📷 photo_0413.jpg', 'Which one is ₹480?', 'Scroll up, I sent it last week'] },
+    after: { title: 'Small Batch Studio', subtitle: 'Every product and price in one link', layout: 'grid', tabs: ['All', 'Home', 'Clothing'], rows: [['☕', 'Ceramic cup', '₹650'], ['👜', 'Cotton tote', '₹480'], ['👕', 'Linen shirt', '₹1,290'], ['🎁', 'Gift set', '₹1,150']], action: 'Enquire about a product' } },
+  'digital-menu-with-qr-code': {
+    before: { title: 'Printed menu, edited by pen', style: 'note', lines: ['Garden bowl  ₹250 → ₹280', 'Cold brew  (sold out)', 'Seasonal tart  ₹?', 'reprint next week'] },
+    after: { title: 'The Garden Table', subtitle: 'Scan the QR code to see today’s menu', layout: 'list', tabs: ['Mains', 'Drinks', 'Desserts'], rows: [['🥗', 'Garden bowl', '₹280'], ['🍛', 'Roasted paneer plate', '₹340'], ['🍋', 'Lemon rice & greens', '₹260']], action: 'Browse full menu' } },
+  'google-business-profile-setup': {
+    before: { title: 'Incomplete local listing', style: 'note', lines: ['The Daily Loaf', 'Hours: not listed', 'Phone: not listed', 'No photos yet'] },
+    after: { title: 'The Daily Loaf', subtitle: 'Bakery · Indiranagar, Bengaluru', layout: 'list', tabs: ['Overview', 'Photos', 'Contact'], rows: [['🕗', 'Open today', '8 am – 8 pm'], ['📍', 'Get directions'], ['📞', 'Call the shop']], action: 'Visit website' } },
+  'instagram-business-setup': {
+    before: { title: 'A profile with missing details', style: 'note', lines: ['@user_84213', 'Bio: (empty)', 'No contact button', 'No shop link'] },
+    after: { title: 'threadandthimble', subtitle: 'Everyday wear · Made in Bengaluru', layout: 'grid', tabs: ['Posts', 'About', 'Contact'], rows: [['👗', 'New arrivals'], ['🧵', 'Made with care'], ['👜', 'Accessories'], ['🏷️', 'Shop']], action: 'Contact the shop' } },
+  'facebook-business-page-setup': {
+    before: { title: 'Customers unsure it is you', style: 'chat', lines: ['Is this the nursery?', 'What time do you open?', 'Where are you?', 'Do you have a phone number?'] },
+    after: { title: 'Little Leaf Nursery', subtitle: 'Plants and growing advice for city homes', layout: 'list', tabs: ['Posts', 'About', 'Contact'], rows: [['🪴', 'New plants every Friday'], ['🕙', 'Visit us', '10 am – 7 pm'], ['💬', 'Ask a plant question']], action: 'Send message' } },
+  'whatsapp-business-profile-setup': {
+    before: { title: 'Just an unknown number', style: 'chat', lines: ['Who is this?', 'Is this Saffron & Stone?', 'Menu please', 'Are you open now?'] },
+    after: { title: 'Saffron & Stone', subtitle: 'Home-style meals · Business profile', layout: 'list', rows: [['🕚', 'Business hours', '11 am – 8 pm'], ['🍱', 'View catalogue'], ['⚡', 'Quick reply: pickup details']], action: 'Start a chat' } },
+  'link-in-bio-business-page': {
+    before: { title: '“DM me for details”', style: 'chat', lines: ['Where can I see your work?', 'How do I book?', 'Do you sell prints?', 'Link please?'] },
+    after: { title: 'Ananya Kapoor', subtitle: 'Photographer · one link for everything', layout: 'list', rows: [['🖼️', 'View portfolio'], ['📅', 'Book a session'], ['🛒', 'Print shop']], action: 'Say hello' } },
+  'domain-and-business-email-setup': {
+    before: { title: 'Hard to remember', style: 'note', lines: ['freesite.example/u/shop_8841', 'shopname1987@mail.example', 'Different name on every card', '“Can you spell that again?”'] },
+    after: { title: 'Your business address', subtitle: 'One name for website and email', layout: 'list', rows: [['🌐', 'www.yourbusiness.in'], ['✉️', 'hello@yourbusiness.in'], ['🔑', 'Registered in your name']], action: 'Share your address' } },
+  'basic-seo-setup': {
+    before: { title: 'Unclear search result', style: 'note', lines: ['Home', 'yoursite.example/index', 'No description available', 'Page heading missing'] },
+    after: { title: 'Everyday Care Clinic', subtitle: 'Family doctor in Bengaluru · sample result', layout: 'list', rows: [['✅', 'Clear page title'], ['✅', 'Useful search description'], ['✅', 'Organised headings']], action: 'Preview search result' } },
+}
+
+function ServiceScreen({ serviceId, side, withPhoto = false }: { serviceId: string; side: 'before' | 'after'; withPhoto?: boolean }) {
+  const data = SCREENS[serviceId]
+  const photo = withPhoto ? COMPARE_PHOTOS[serviceId]?.[side] : undefined
+  if (!data) return null
+  if (side === 'before') {
+    const { title, style, lines } = data.before
+    return (
+      <div className="relative h-full w-full bg-[#d9d7d2]">
+        {photo && <><ScreenPhoto src={photo} className="grayscale" /><div className="absolute inset-0 bg-[#d9d7d2]/70" /></>}
+        <div className="relative flex h-full w-full flex-col items-center justify-center gap-3 px-5 pt-5 pb-16 text-[#33312d]">
+        <b className="mb-2 text-center text-lg md:text-2xl">{title}</b>
+        {style === 'chat'
+          ? <div className="flex w-full max-w-md flex-col gap-3">{lines.map((line, i) => <span key={line} className={`max-w-[80%] rounded-2xl border border-[#bbb7ae] px-4 py-2.5 text-sm ${i % 2 ? 'self-end bg-[#c9c6be]' : 'self-start bg-[#efede8]'}`}>{line}</span>)}</div>
+          : <div className="w-full max-w-sm -rotate-2 border border-[#bbb7ae] bg-[#f1eee5] p-5 font-mono text-sm shadow-md">{lines.map(line => <p key={line} className="!m-0 border-b border-dashed !border-[#c5c0b2] py-3 !text-[#4d4a45]">{line}</p>)}</div>}
+        </div>
+      </div>
+    )
+  }
+  const { title, subtitle, layout, rows, action, tabs } = data.after
+  const accent = SERVICE_IMAGES[serviceId]?.color || '#47539c'
+  return (
+    <div className="relative h-full w-full bg-[#f3f5fa]">
+      {photo && <><ScreenPhoto src={photo} /><div className="absolute inset-0 bg-[#17142e]/35" /></>}
+      <div className="relative flex h-full w-full flex-col justify-center px-4 pt-4 pb-16 sm:px-8 md:pb-4">
+      <div className={`mx-auto w-full ${photo ? 'max-w-sm' : 'max-w-md'} rounded-2xl border border-[#e1dfee] bg-white p-4 shadow-lg sm:p-5`}>
+        <div className="flex items-center gap-3 border-b border-[#eceaf4] pb-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-lg font-bold text-white" style={{ background: accent }}>{title.charAt(0).toUpperCase()}</span>
+          <div className="min-w-0"><b className="block text-base leading-tight text-[#1c1a24]">{title}</b><small className="block text-xs text-[#6b6879]">{subtitle}</small></div>
+        </div>
+        {tabs && <div className="mt-3 flex gap-1.5">{tabs.map((tab, i) => <span key={tab} className={`rounded-full px-2.5 py-1 text-xs font-semibold ${i ? 'bg-[#f1f0f8] text-[#4f4c60]' : 'bg-[#1c1a24] text-white'}`}>{tab}</span>)}</div>}
+        <div className={`mt-3 grid gap-2 ${layout === 'grid' ? 'grid-cols-2' : 'grid-cols-1'}`}>
+          {rows.map(([icon, label, value]) => (
+            <div key={label} className={`flex min-w-0 rounded-xl border border-[#eceaf4] bg-[#fafaff] p-2.5 ${layout === 'grid' ? 'flex-col items-center text-center' : 'items-center gap-3'}`}>
+              <span className={layout === 'grid' ? 'text-2xl' : 'text-xl'}>{icon}</span>
+              <span className="min-w-0 flex-1 text-xs font-semibold text-[#1c1a24] sm:text-sm">{label}</span>
+              {value && <b className="shrink-0 text-xs text-[#47539c] sm:text-sm">{value}</b>}
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 rounded-full py-2.5 text-center text-sm font-bold text-white" style={{ background: '#1c1a24' }}>{action}</div>
+      </div>
+      </div>
+    </div>
+  )
+}
+
+// Free stock photos from Unsplash, shown in the header. To use your own photo,
+// replace a URL with a path such as '/assets/my-photo.jpg'.
+const unsplash = (photo: string) => `https://images.unsplash.com/photo-${photo}?auto=format&fit=crop&w=1400&q=80`
+
+const HERO_PHOTOS: Record<string, { src: string; alt: string }> = {
+  'one-page-business-website': { src: unsplash('1558478551-1a378f63328e'), alt: 'Laptop on a white table' },
+  '3-5-page-business-website': { src: unsplash('1591088761584-d3f8540fc587'), alt: 'Laptop beside a green plant' },
+  'whatsapp-ordering-catalogue': { src: unsplash('1509017174183-0b7e0278f1ec'), alt: 'Woman holding a smartphone' },
+  'razorpay-payment-page-or-link': { src: unsplash('1599050751795-6cdaafbc2319'), alt: 'Phone held over a card reader for payment' },
+  'razorpay-supported-payment-catalogue': { src: unsplash('1563013544-824ae1b704d3'), alt: 'Person using a laptop while holding a card' },
+  'digital-product-catalogue': { src: unsplash('1556741533-411cf82e4e2d'), alt: 'Person browsing on a monitor' },
+  'digital-menu-with-qr-code': { src: unsplash('1766072972117-f3b61a0ccd54'), alt: 'QR code on a café table' },
+  'google-business-profile-setup': { src: unsplash('1694928850410-b209896782a2'), alt: 'Map pin on a sheet of paper' },
+  'instagram-business-setup': { src: unsplash('1505156868547-9b49f4df4e04'), alt: 'Smartphone showing the Instagram icon' },
+  'facebook-business-page-setup': { src: unsplash('1662070479020-73f77887c87c'), alt: 'Facebook icon with reaction symbols' },
+  'whatsapp-business-profile-setup': { src: unsplash('1556742111-a301076d9d18'), alt: 'Close-up of a person holding a smartphone' },
+  'link-in-bio-business-page': { src: unsplash('1739989934321-fadbccc56265'), alt: 'Man looking at his phone' },
+  'domain-and-business-email-setup': { src: unsplash('1773332598414-44a45e364d85'), alt: 'Woman working with a laptop and tablet' },
+  'basic-seo-setup': { src: unsplash('1551288049-bebda4e38f71'), alt: 'Performance graphs on a laptop screen' },
+}
+
+// Falls back to the sample screen if the photo cannot load
+function HeroPhoto({ serviceId }: { serviceId: string }) {
+  const [failed, setFailed] = useState(false)
+  const photo = HERO_PHOTOS[serviceId]
+  if (!photo || failed) return <div className="h-full"><ServiceScreen serviceId={serviceId} side="after" /></div>
+  return <img src={photo.src} alt={photo.alt} onError={() => setFailed(true)} className="h-full w-full object-cover" />
+}
+
+// Background photos for the before and after slider
+const COMPARE_PHOTOS: Record<string, { before: string; after: string }> = {
+  'one-page-business-website': { before: unsplash('1585119192382-71236d43b689'), after: unsplash('1591382696684-38c427c7547a') },
+  '3-5-page-business-website': { before: unsplash('1583521214690-73421a1829a9'), after: unsplash('1629317337307-e37f95ebc372') },
+  'whatsapp-ordering-catalogue': { before: unsplash('1613420471688-009b97bc5655'), after: unsplash('1571867424488-4565932edb41') },
+  'razorpay-payment-page-or-link': { before: unsplash('1634733988138-bf2c3a2a13fa'), after: unsplash('1556742521-9713bf272865') },
+  'razorpay-supported-payment-catalogue': { before: unsplash('1554224155-1696413565d3'), after: unsplash('1556742502-ec7c0e9f34b1') },
+  'digital-product-catalogue': { before: unsplash('1555529669-e69e7aa0ba9a'), after: unsplash('1561715276-a2d087060f1d') },
+  'digital-menu-with-qr-code': { before: unsplash('1599250300435-b9693f21830d'), after: unsplash('1642019084045-26e516668025') },
+  'google-business-profile-setup': { before: unsplash('1569336415962-a4bd9f69cd83'), after: unsplash('1604357209793-fca5dca89f97') },
+  'instagram-business-setup': { before: unsplash('1598305762558-328f599df683'), after: unsplash('1595039838779-f3780873afdd') },
+  'facebook-business-page-setup': { before: unsplash('1528698827591-e19ccd7bc23d'), after: unsplash('1611926653458-09294b3142bf') },
+  'whatsapp-business-profile-setup': { before: unsplash('1542838132-92c53300491e'), after: unsplash('1556740714-a8395b3bf30f') },
+  'link-in-bio-business-page': { before: unsplash('1776715139576-d22cff4c203a'), after: unsplash('1508938255445-041651dfe0c3') },
+  'domain-and-business-email-setup': { before: unsplash('1562240020-ce31ccb0fa7d'), after: unsplash('1773332585687-85beb4da71ab') },
+  'basic-seo-setup': { before: unsplash('1632152053640-da3a8b3ee812'), after: unsplash('1460925895917-afdab827c52f') },
+}
+
+function ScreenPhoto({ src, className = '' }: { src: string; className?: string }) {
+  const [failed, setFailed] = useState(false)
+  if (failed) return null
+  return <img src={src} alt="" data-compare draggable={false} onError={() => setFailed(true)} className={`absolute inset-0 h-full w-full object-cover ${className}`} />
+}
+
+function BeforeAfterSlider({ service }: { service: Service }) {
+  const [position, setPosition] = useState(50)
+  const positionRef = useRef(50)
+  const pausedUntil = useRef(0)
+  const boxRef = useRef<HTMLDivElement>(null)
+
+  const move = (value: number) => { positionRef.current = value; setPosition(value) }
+  const hold = () => { pausedUntil.current = performance.now() + 3000 }
+
+  // Sweeps between 15% and 85%; waits after the visitor interacts
   useEffect(() => {
-    if (ref.current) {
-      const w = ref.current.scrollWidth
-      setDuration(w / speed)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let frame = 0
+    let last = performance.now()
+    let direction = 1
+    const tick = (now: number) => {
+      const elapsed = Math.min(now - last, 50)
+      last = now
+      const box = boxRef.current?.getBoundingClientRect()
+      const visible = !!box && box.bottom > 0 && box.top < window.innerHeight
+      if (visible && now > pausedUntil.current) {
+        const current = positionRef.current
+        if (current >= 85) direction = -1
+        if (current <= 15) direction = 1
+        move(current + direction * elapsed * 0.018)
+      }
+      frame = requestAnimationFrame(tick)
     }
-  }, [speed])
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [])
+
   return (
-    <div className={`overflow-hidden whitespace-nowrap ${className}`} aria-hidden="true">
-      <div ref={ref} className="inline-flex gap-8" style={{ animation: `marquee ${duration}s linear infinite` }}>
-        {text.split(' • ').map((item: string, i: number) => <span key={i} className="px-4">{item} •</span>)}
-        {text.split(' • ').map((item: string, i: number) => <span key={i + 100} className="px-4">{item} •</span>)}
+    <div ref={boxRef} className="relative h-[470px] w-full select-none overflow-hidden md:h-[440px]">
+      <div role="img" aria-label={`${service.name}: before`} className="absolute inset-0"><ServiceScreen serviceId={service.id} side="before" withPhoto /></div>
+      <div className="absolute inset-0" style={{ clipPath: `inset(0 0 0 ${position}%)` }}><ServiceScreen serviceId={service.id} side="after" withPhoto /></div>
+      <span className="pointer-events-none absolute bottom-5 left-5 rounded-full bg-white px-4 py-2 text-xs font-bold tracking-widest text-[#1c1a24] shadow">BEFORE</span>
+      <span className="pointer-events-none absolute right-5 bottom-5 rounded-full bg-[#73c2bc] px-4 py-2 text-xs font-bold tracking-widest text-white shadow">AFTER</span>
+      <input type="range" min={0} max={100} step="any" value={position} aria-label="Compare before and after" onChange={e => { hold(); move(Number(e.target.value)) }} onPointerDown={hold} onPointerMove={hold} onKeyDown={hold} className="peer absolute inset-0 z-10 !m-0 h-full w-full cursor-ew-resize touch-pan-y opacity-0" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 w-0.5 -translate-x-1/2 bg-white peer-focus-visible:bg-[#f4c95d]" style={{ left: `${position}%` }}>
+        <span className="absolute top-1/2 left-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-2xl font-bold text-[#1c1a24] shadow-lg">↔</span>
       </div>
-      <style>{`
-        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-      `}</style>
     </div>
   )
-}
-
-const BRAND_NAMES: Record<string, string> = { razorpay: 'Razorpay', google: 'Google', instagram: 'Instagram', facebook: 'Facebook', whatsapp: 'WhatsApp' }
-
-// Demo Components
-function OnePageWebsiteDemo() {
-  const [section, setSection] = useState('Home')
-  const copy = ({ Home: ['A good place to begin.', 'A clear welcome, your main offer and the best way to reach you.'], About: ['Small business. Personal service.', 'Introduce your team, your story and what makes your approach yours.'], Contact: ["We're easy to find.", 'Show your location, opening hours and a simple enquiry action.'] } as Record<string, string[]>)[section]
-  return (
-    <div className="specific-demo website-sample">
-      <div className="specific-top"><b>✳ THE LITTLE CORNER</b><span>BUSINESS WEBSITE</span></div>
-      <div className="specific-tabs">{Object.keys({Home: 1, About: 1, Contact: 1}).map(tab => <button className={section === tab ? 'selected' : ''} key={tab} onClick={() => setSection(tab)}>{tab}</button>)}</div>
-      <div className="website-sample-hero"><small>{section.toUpperCase()} · BENGALURU</small><h3>{copy[0]}</h3><p>{copy[1]}</p><button className="sample-action" onClick={() => setSection(section === 'Contact' ? 'Home' : 'Contact')}>Find out more <ArrowUpRight size={13} /></button></div>
-      <div className="sample-footnote">One page · Sections linked from the top navigation</div>
-    </div>
-  )
-}
-
-function MultiPageWebsitePreview() {
-  const pages = [
-    { name: 'Home', eyebrow: 'GREENLEAF FAMILY CLINIC · BENGALURU', title: 'Care that listens.', body: 'Thoughtful family healthcare, built around clear conversations and care at every age.', visual: '✳', action: 'Meet the clinic' },
-    { name: 'Services', eyebrow: 'HOW WE CAN HELP', title: 'The right care, close to home.', body: 'Explore everyday health services and find the right appointment for you and your family.', visual: '✚', action: 'View services' },
-    { name: 'About', eyebrow: 'A LITTLE ABOUT US', title: 'A practice built on listening.', body: 'Meet the people behind your care and learn what to expect when you visit our clinic.', visual: '◌', action: 'Meet our team' },
-    { name: 'Gallery', eyebrow: 'INSIDE GREENLEAF', title: 'A calm place to feel cared for.', body: 'Take a look around the clinic, find the entrance and feel familiar before your first visit.', visual: '⌂', action: 'Explore the clinic' },
-    { name: 'Contact', eyebrow: 'WE\'RE HERE TO HELP', title: "Let's find a time to meet.", body: 'Check our hours, get directions and send a request for an appointment.', visual: '⌖', action: 'Request an appointment' },
-  ]
-  const [activeIndex, setActiveIndex] = useState(0)
-  const activePage = pages[activeIndex]
-  const showPage = (index: number) => setActiveIndex((index + pages.length) % pages.length)
-
-  return (
-    <div className="multi-site-preview">
-      <div className="multi-site-nav"><span className="multi-site-logo"><i>G</i><b>GREENLEAF<small>FAMILY CLINIC</small></b></span><div className="multi-site-tabs">{pages.map((page, index) => <button className={index === activeIndex ? 'active' : ''} key={page.name} onClick={() => showPage(index)}>{page.name}</button>)}</div><span className="multi-site-book">Book a visit <ArrowUpRight size={12} /></span></div>
-      <div className="multi-site-page" key={activePage.name}>
-        <div className="multi-site-copy"><small>{activePage.eyebrow}</small><h3>{activePage.title}</h3><p>{activePage.body}</p><div className="multi-site-points"><span><Check size={12} /> Family focused</span><span><Check size={12} /> Easy to reach</span></div><button className="multi-site-action" onClick={() => showPage(activeIndex === pages.length - 1 ? 0 : activeIndex + 1)}>{activePage.action} <ArrowUpRight size={13} /></button></div>
-        <div className={`multi-site-image multi-site-image-${activeIndex}`}><span>{activePage.visual}</span><small>{activePage.name.toUpperCase()} PAGE · SAMPLE</small></div>
-      </div>
-      <div className="multi-site-controls"><button className="page-arrow" aria-label="Previous page" onClick={() => showPage(activeIndex - 1)}><ArrowLeft size={14} /></button><div className="page-progress">{pages.map((page, index) => <button key={page.name} className={index === activeIndex ? 'active' : ''} aria-label={`Show ${page.name} page`} aria-current={index === activeIndex ? 'page' : undefined} onClick={() => showPage(index)} />)}</div><span className="page-count">Page <b>{activeIndex + 1}</b> of 5</span><button className="page-arrow" aria-label="Next page" onClick={() => showPage(activeIndex + 1)}><ArrowRight size={14} /></button></div>
-    </div>
-  )
-}
-
-function WhatsAppOrderingDemo() {
-  const [quantities, setQuantities] = useState([0, 0, 0])
-  const [notice, setNotice] = useState('')
-  const products: [string, number, string][] = [['Seasonal fruit box', 420, '🥭'], ['Fresh greens bundle', 260, '🥬'], ['Farm eggs · 6 pack', 180, '🥚']]
-  const total = products.reduce((sum, item, index) => sum + item[1] * quantities[index], 0)
-  function change(index: number, delta: number) { setQuantities(current => current.map((value, itemIndex) => itemIndex === index ? Math.max(0, value + delta) : value)) }
-  return (
-    <div className="specific-demo order-sample">
-      <div className="wa-order-titlebar"><span className="brand-lockup brand-lockup-whatsapp"><svg className="brand-logo-icon whatsapp-logo-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#25d366"/><path fill="white" d="M17.4 14.2c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.5-1.6-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.7s1.2 3.1 1.4 3.3c.2.2 2.3 3.5 5.6 4.9.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.4Z"/></svg><b>WhatsApp</b></span><span>CATALOGUE ORDER</span></div>
-      <div className="wa-order-store"><b>NILA · FRESH PICKS</b><small>A few good things, picked this morning.</small></div>
-      {products.map(([name, price, emoji], index) => <div className="order-sample-row" key={name}><span className="order-emoji">{emoji}</span><span className="order-name"><b>{name}</b><small>{money(price)}</small></span><button aria-label={`Remove ${name}`} onClick={() => change(index, -1)}>−</button><b className="order-quantity">{quantities[index]}</b><button aria-label={`Add ${name}`} onClick={() => change(index, 1)}>+</button></div>)}
-      <div className="sample-total"><span>Order estimate</span><b>{money(total)}</b></div>
-      <button className="sample-action" onClick={() => setNotice(total ? 'Sample order ready to review. Nothing was sent.' : 'Add an item to build a sample order.')}>Review WhatsApp order <ArrowUpRight size={13} /></button>
-      {notice && <div className="sample-notice">{notice}</div>}
-    </div>
-  )
-}
-
-function PaymentLinkDemo() {
-  const [status, setStatus] = useState('')
-  return (
-    <div className="specific-demo payment-sample">
-      <div className="razorpay-brandbar"><span className="brand-lockup brand-lockup-razorpay"><svg className="brand-logo-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22.436 0 10.526 7.773l-1.174 4.276 6.625-4.297L11.65 24h4.391l6.395-24ZM14.26 10.098 3.389 17.166 1.564 24h9.008l3.688-13.902Z" /></svg><b>Razorpay</b></span><span>PAYMENT LINKS</span></div>
-      <div className="payment-request-label">PAYMENT REQUEST · SAMPLE</div>
-      <div className="payment-amount">₹1,250</div>
-      <p className="payment-for">Booking advance · The Sugar Window</p>
-      <div className="payment-line"><span>Request ID</span><b>DEMO-2048</b></div>
-      <div className="payment-line"><span>Merchant</span><b>Example business</b></div>
-      <button className="sample-action" onClick={() => setStatus('Payment demo only — no payment was collected.')}>{status ? 'Demo viewed' : 'Continue to sample payment'} <ArrowUpRight size={13} /></button>
-      {status && <div className="sample-notice">{status}</div>}
-      <small className="sample-legal">A live link requires an approved merchant account.</small>
-    </div>
-  )
-}
-
-function PaymentCatalogueDemo() {
-  const [cart, setCart] = useState<number[]>([])
-  const [notice, setNotice] = useState('')
-  const products: [string, number][] = [['Linen tote', 499], ['Everyday kurta', 899], ['Gift set', 1150]]
-  const total = cart.reduce((sum, index) => sum + products[index][1], 0)
-  return (
-    <div className="specific-demo payment-catalogue-sample">
-      <div className="razorpay-brandbar"><span className="brand-lockup brand-lockup-razorpay"><svg className="brand-logo-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22.436 0 10.526 7.773l-1.174 4.276 6.625-4.297L11.65 24h4.391l6.395-24ZM14.26 10.098 3.389 17.166 1.564 24h9.008l3.688-13.902Z" /></svg><b>Razorpay</b></span><span>PAYMENT CATALOGUE</span></div>
-      <div className="catalogue-storehead"><b>THREAD & THIMBLE</b><small>SHOP · SAMPLE</small></div>
-      <p className="sample-intro">Browse a product, build a cart, review the total.</p>
-      <div className="catalogue-product-grid">{products.map(([name, price], index) => <button className={cart.includes(index) ? 'chosen' : ''} key={name} onClick={() => setCart(current => current.includes(index) ? current.filter(item => item !== index) : [...current, index])}><span>{['👜', '👕', '🎁'][index]}</span><b>{name}</b><small>{money(price)} · {cart.includes(index) ? 'Added' : 'Add to cart +'}</small></button>)}</div>
-      <div className="sample-total"><span>Sample cart · {cart.length} items</span><b>{money(total)}</b></div>
-      <button className="sample-action" onClick={() => setNotice('Sample checkout only. Your merchant account determines available payment options.')}>Review checkout options <ArrowUpRight size={13} /></button>
-      {notice && <div className="sample-notice">{notice}</div>}
-    </div>
-  )
-}
-
-function ProductCatalogueDemo() {
-  const [category, setCategory] = useState('All')
-  const [selectedItem, setSelectedItem] = useState('')
-  const products = [{name:'Ceramic cup',type:'Home',price:650,icon:'☕'},{name:'Cotton tote',type:'Accessories',price:480,icon:'👜'},{name:'Linen shirt',type:'Clothing',price:1290,icon:'👕'},{name:'Gift set',type:'Home',price:1150,icon:'🎁'}]
-  const visible = category === 'All' ? products : products.filter(item => item.type === category)
-  return (
-    <div className="specific-demo products-sample">
-      <div className="specific-top"><b>SMALL BATCH STUDIO</b><span>4 ITEMS · CATALOGUE</span></div>
-      <div className="specific-tabs">{['All','Home','Accessories','Clothing'].map(tab => <button className={category === tab ? 'selected' : ''} key={tab} onClick={() => setCategory(tab)}>{tab}</button>)}</div>
-      <div className="catalogue-list">{visible.map(item => <button key={item.name} onClick={() => setSelectedItem(item.name)}><span>{item.icon}</span><b>{item.name}</b><small>{money(item.price)}</small><ArrowUpRight size={12} /></button>)}</div>
-      {selectedItem && <div className="sample-notice">{selectedItem} selected for a sample enquiry.</div>}
-      <div className="sample-footnote">A browsable catalogue, ready to share as one link.</div>
-    </div>
-  )
-}
-
-function DigitalMenuDemo() {
-  const [category, setCategory] = useState('Mains')
-  const menu: Record<string, [string, string][]> = { Mains: [['Garden bowl','₹280'],['Roasted paneer plate','₹340'],['Lemon rice & greens','₹260']], Drinks: [['Cold brew','₹180'],['Nimbu soda','₹120'],['Masala chai','₹90']], Desserts: [['Seasonal tart','₹190'],['Chocolate cake','₹210'],['Mango shrikhand','₹160']] }
-  return (
-    <div className="specific-demo menu-sample">
-      <div className="menu-sample-cover"><small>GOOD FOOD, GOOD MOOD</small><b>THE GARDEN TABLE</b><span>MENU · BENGALURU</span></div>
-      <div className="specific-tabs">{Object.keys(menu).map(tab => <button className={category === tab ? 'selected' : ''} key={tab} onClick={() => setCategory(tab)}>{tab}</button>)}</div>
-      {menu[category].map(([name, price]) => <div className="menu-sample-row" key={name}><b>{name}</b><span>{price}</span></div>)}
-      <div className="sample-footnote">A QR code can open this menu on a customer's phone.</div>
-    </div>
-  )
-}
-
-function GoogleBusinessDemo() {
-  const [active, setActive] = useState('Overview')
-  const details: Record<string, string> = { Overview: 'Fresh breads, pastries and coffee made every morning.', Hours: 'Today · 8:00 am–8:00 pm\nMon–Sat · 8:00 am–8:00 pm', Contact: 'Indiranagar, Bengaluru\nCall · Directions · Website' }
-  return (
-    <div className="specific-demo google-sample">
-      <div className="google-product-bar"><span className="brand-lockup brand-lockup-google"><svg className="brand-logo-icon google-logo-icon" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M43.6 24.5c0-1.4-.1-2.7-.4-4H24v7.6h11a9.4 9.4 0 0 1-4.1 6.2v5h6.6c3.9-3.6 6.1-8.8 6.1-14.8Z"/><path fill="#34A853" d="M24 44c5.5 0 10.1-1.8 13.5-4.8l-6.6-5c-1.8 1.2-4.1 2-6.9 2-5.3 0-9.8-3.6-11.4-8.4H5.8v5.2A20 20 0 0 0 24 44Z"/><path fill="#FBBC05" d="M12.6 27.8a12 12 0 0 1 0-7.6V15H5.8a20 20 0 0 0 0 17.9l6.8-5.1Z"/><path fill="#EA4335" d="M24 12c3 0 5.7 1 7.8 3.1l5.8-5.8A19.3 19.3 0 0 0 24 4 20 20 0 0 0 5.8 15l6.8 5.2C14.2 15.6 18.7 12 24 12Z"/></svg><b>Google</b></span><span>BUSINESS PROFILE · SAMPLE</span></div>
-      <div className="google-sample-search"><span className="google-search-icon">⌕</span><span>bakery near me</span><small>⌕</small></div>
-      <div className="google-business-card"><div className="google-cover">🥐 <span>LOCAL PLACE · SAMPLE</span></div><h3>The Daily Loaf</h3><small>Bakery · Bengaluru · Open now</small><div className="google-rating">SAMPLE PREVIEW <span>★</span></div><div className="specific-tabs">{Object.keys(details).map(tab => <button className={active === tab ? 'selected' : ''} key={tab} onClick={() => setActive(tab)}>{tab}</button>)}</div><p className="google-details">{details[active]}</p><div className="google-quicklinks"><span>⌖ Directions</span><span>☎ Call</span><span>↗ Website</span></div></div>
-      <div className="sample-footnote">Example listing; no live Google profile is connected.</div>
-    </div>
-  )
-}
-
-function InstagramSetupDemo() {
-  const [tab, setTab] = useState('Posts')
-  return (
-    <div className="specific-demo instagram-sample">
-      <div className="instagram-brandbar"><span className="brand-lockup brand-lockup-instagram"><svg className="brand-logo-icon instagram-logo-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igLogoGradient" x1="0" x2="1" y1="1" y2="0"><stop stopColor="#feda75"/><stop offset=".45" stopColor="#d62976"/><stop offset="1" stopColor="#4f5bd5"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="6" fill="url(#igLogoGradient)"/><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="white" strokeWidth="1.7"/><circle cx="12" cy="12" r="2.7" fill="none" stroke="white" strokeWidth="1.7"/><circle cx="17.5" cy="6.8" r="1" fill="white"/></svg><b>Instagram</b></span><span>⌕</span><span>♡</span></div>
-      <div className="social-profile-sample"><div className="insta-avatar">TT</div><div><b>threadandthimble</b><small>Business profile · Sample</small></div><button onClick={() => setTab('Contact')}>Follow</button></div>
-      <div className="insta-bio">Thoughtful everyday wear<br />Made in Bengaluru · New pieces weekly<br /><a>threadandthimble.example</a></div>
-      <div className="specific-tabs">{['Posts','About','Contact'].map(item => <button className={tab === item ? 'selected' : ''} key={item} onClick={() => setTab(item)}>{item}</button>)}</div>
-      {tab === 'Posts' ? <div className="insta-grid"><span>✳<small>NEW ARRIVALS</small></span><span>◒<small>MADE SLOWLY</small></span><span>☼<small>THE EVERYDAY EDIT</small></span></div> : <div className="social-tab-content"><b>{tab === 'About' ? 'Clothing & accessories' : 'Get in touch'}</b><small>{tab === 'About' ? 'Small batches, considered details.' : 'WhatsApp · Email · Store location'}</small></div>}
-      <div className="sample-footnote">Sample profile with contact and shop links.</div>
-    </div>
-  )
-}
-
-function FacebookPageDemo() {
-  const [tab, setTab] = useState('Posts')
-  return (
-    <div className="specific-demo facebook-sample">
-      <div className="facebook-brandbar"><span className="brand-lockup brand-lockup-facebook"><svg className="brand-logo-icon facebook-logo-icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#0866ff"/><path fill="white" d="M13.8 22v-8.1h2.7l.4-3.2h-3.1v-2c0-.9.3-1.5 1.6-1.5H17V4.3c-.3 0-1.2-.1-2.3-.1-2.4 0-4.1 1.5-4.1 4.3v2.2H8v3.2h2.6V22h3.2Z"/></svg><b>Facebook</b></span><span>☰</span></div>
-      <div className="facebook-cover"><span>✿</span><small>LITTLE LEAF NURSERY · SAMPLE PAGE</small></div>
-      <div className="facebook-page-title"><b>Little Leaf Nursery</b><span>Plants for city homes</span></div>
-      <div className="facebook-action-row"><button onClick={() => setTab('Contact')}>Message</button><button onClick={() => setTab('About')}>View details</button></div>
-      <div className="specific-tabs">{['Posts','About','Contact'].map(item => <button className={tab === item ? 'selected' : ''} key={item} onClick={() => setTab(item)}>{item}</button>)}</div>
-      <div className="facebook-post"><small>{tab.toUpperCase()} · SAMPLE</small><b>{tab === 'Posts' ? 'A new batch of easy-care plants is here.' : tab === 'About' ? 'Plants, pots and growing advice.' : 'Visit us · 10 am–7 pm · Bengaluru'}</b><p>Clear business information helps visitors know what to expect.</p></div>
-    </div>
-  )
-}
-
-function WhatsAppProfileDemo() {
-  const [message, setMessage] = useState('')
-  return (
-    <div className="specific-demo wa-profile-sample">
-      <div className="wa-profile-header"><span className="brand-lockup brand-lockup-whatsapp inverted"><svg className="brand-logo-icon whatsapp-logo-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#25d366"/><path fill="white" d="M17.4 14.2c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.5-1.6-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.7s1.2 3.1 1.4 3.3c.2.2 2.3 3.5 5.6 4.9.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.4Z"/></svg><b>WhatsApp Business</b></span><span>⋮</span></div>
-      <div className="wa-business-profile"><div className="wa-business-avatar">S</div><h3>Saffron & Stone</h3><small>Home-style meals · Bengaluru</small><span className="wa-hours">Open · Closes 8:00 pm</span><div className="wa-profile-buttons"><button onClick={() => setMessage('Sample call action selected')}>Call</button><button onClick={() => setMessage('Sample catalogue opened')}>Catalogue</button></div></div>
-      <div className="wa-quick-messages"><small>START A CONVERSATION</small>{["Can I see today's menu?",'What are your pickup hours?','Do you deliver nearby?'].map(item => <button key={item} onClick={() => setMessage(item)}>{item}<ArrowUpRight size={12} /></button>)}</div>
-      {message && <div className="sample-notice">Sample selection: "{message}" — not sent.</div>}
-    </div>
-  )
-}
-
-function LinkInBioDemo() {
-  const [selected, setSelected] = useState('')
-  const items = [['View my portfolio','Selected work and recent projects'],['Book a session','Availability and booking enquiry'],['Print shop','Browse available prints'],['Say hello','Contact Ananya directly']]
-  return (
-    <div className="specific-demo bio-sample">
-      <div className="bio-sample-avatar">AK</div>
-      <h3>Ananya Kapoor</h3>
-      <p>Photographer & visual storyteller</p>
-      <div className="bio-link-list">{items.map(([title, description]) => <button key={title} onClick={() => setSelected(title)}><span><b>{title}</b><small>{description}</small></span><ArrowUpRight size={14} /></button>)}</div>
-      {selected && <div className="sample-notice">"{selected}" selected. Your link would open here.</div>}
-      <small className="sample-footnote">One profile link. Four helpful destinations.</small>
-    </div>
-  )
-}
-
-function DomainEmailDemo() {
-  const [active, setActive] = useState('Website')
-  return (
-    <div className="specific-demo domain-sample">
-      <div className="specific-top"><b>YOUR BUSINESS IDENTITY</b><span>SETUP PREVIEW</span></div>
-      <p className="sample-intro">A domain and email that match your business name.</p>
-      <div className="identity-switch"><button className={active === 'Website' ? 'selected' : ''} onClick={() => setActive('Website')}>Website</button><button className={active === 'Email' ? 'selected' : ''} onClick={() => setActive('Email')}>Business email</button></div>
-      <div className="identity-card"><span className="identity-icon">{active === 'Website' ? '↗' : '@'}</span><small>{active === 'Website' ? 'YOUR DOMAIN' : 'YOUR BUSINESS EMAIL'}</small><b>{active === 'Website' ? 'www.yourbusiness.in' : 'hello@yourbusiness.in'}</b><span>{active === 'Website' ? 'Registered in your business name' : 'Connected to your chosen mailbox provider'}</span></div>
-      <div className="sample-notice">Example only. Domain availability and provider charges are separate.</div>
-    </div>
-  )
-}
-
-function BasicSeoDemo() {
-  const [tab, setTab] = useState('Search result')
-  return (
-    <div className="specific-demo seo-sample">
-      <div className="specific-top"><b>SEARCH PRESENCE</b><span>BASIC SEO PREVIEW</span></div>
-      <div className="specific-tabs">{['Search result','Page details'].map(item => <button className={tab === item ? 'selected' : ''} key={item} onClick={() => setTab(item)}>{item}</button>)}</div>
-      {tab === 'Search result' ? <div className="seo-result"><small>yourbusiness.in › bengaluru</small><b>Everyday Care Clinic | Family Doctor in Bengaluru</b><span>Clear information about clinic services, hours and location. Request an appointment online.</span></div> : <div className="seo-checklist">{[['✓','Page title describes the business'],['✓','Search description explains the page'],['✓','Headings organize key information']].map(([mark, text]) => <div key={text}><span>{mark}</span>{text}</div>)}</div>}
-      <div className="sample-footnote">SEO setup helps search tools understand a page; it cannot guarantee rankings.</div>
-    </div>
-  )
-}
-
-const serviceDemos: Record<string, React.ComponentType<{ service: Service }>> = {
-  'one-page-business-website': OnePageWebsiteDemo,
-  '3-5-page-business-website': MultiPageWebsitePreview,
-  'whatsapp-ordering-catalogue': WhatsAppOrderingDemo,
-  'razorpay-payment-page-or-link': PaymentLinkDemo,
-  'razorpay-supported-payment-catalogue': PaymentCatalogueDemo,
-  'digital-product-catalogue': ProductCatalogueDemo,
-  'digital-menu-with-qr-code': DigitalMenuDemo,
-  'google-business-profile-setup': GoogleBusinessDemo,
-  'instagram-business-setup': InstagramSetupDemo,
-  'facebook-business-page-setup': FacebookPageDemo,
-  'whatsapp-business-profile-setup': WhatsAppProfileDemo,
-  'link-in-bio-business-page': LinkInBioDemo,
-  'domain-and-business-email-setup': DomainEmailDemo,
-  'basic-seo-setup': BasicSeoDemo,
 }
 
 interface Service {
@@ -951,6 +912,108 @@ interface Service {
 
 interface ServiceDetailPageProps { services: Service[] }
 
+// Card titles for "What is included": each card holds two features, in order
+const CARD_GROUPS: Record<string, string[]> = {
+  'one-page-business-website': ['First impression', 'Offer & proof', 'Contact & footer', 'Mobile & search'],
+  '3-5-page-business-website': ['Core pages', 'Services & more', 'Contact & editing', 'Content & insight'],
+  'whatsapp-ordering-catalogue': ['Browsing', 'Building the order', 'Sending & stock', 'Reach & alerts'],
+  'razorpay-payment-page-or-link': ['Page & links', 'Methods & fields', 'Alerts & part-payments', 'Cards & reports'],
+  'razorpay-supported-payment-catalogue': ['Shopping', 'Options & offers', 'Checkout', 'Stock & admin'],
+  'digital-product-catalogue': ['Range & filters', 'Search & enquiry', 'Forms & sharing', 'Print & display'],
+  'digital-menu-with-qr-code': ['Menu layout', 'Prices & photos', 'Edits & QR codes', 'Print & language'],
+  'google-business-profile-setup': ['Verification & details', 'Categories & media', 'Hours & listings', 'Reviews & insights'],
+  'instagram-business-setup': ['Account & bio', 'Visual style', 'Shop & links', 'Contact & content'],
+  'facebook-business-page-setup': ['Page & branding', 'Tabs & services', 'Shop & messages', 'Reviews & ads'],
+  'whatsapp-business-profile-setup': ['Identity', 'Catalogue & replies', 'Messages & labels', 'Sharing & broadcast'],
+  'link-in-bio-business-page': ['Links & branding', 'Scheduling & tracking', 'Insight & forms', 'Trust & domain'],
+  'domain-and-business-email-setup': ['Domain & Google email', 'Zoho & authentication', 'Addresses & routing', 'Setup & security'],
+  'basic-seo-setup': ['Keywords & metadata', 'Structure & schema', 'Crawling & speed', 'Tracking & reporting'],
+}
+
+function FeatureCards({ serviceId, features }: { serviceId: string; features: { title: string; description: string; icon: keyof typeof ICON_COMPONENTS }[] }) {
+  const [picked, setPicked] = useState<Record<number, number>>({})
+  const groups = Array.from({ length: Math.ceil(features.length / 2) }, (_, i) => features.slice(i * 2, i * 2 + 2))
+  return (
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {groups.map((group, i) => {
+        const active = group[picked[i] ?? 0]
+        const GroupIcon = ICON_COMPONENTS[active.icon] || Check
+        return (
+          <article key={i} className="flex min-w-0 flex-col rounded-[28px] border border-[#e1dfee] bg-white p-6 shadow-[0_6px_24px_rgba(30,27,75,0.06)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_18px_44px_rgba(30,27,75,0.14)]">
+            <div className="flex items-center gap-4">
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#eeedf7] text-[#47539c]"><GroupIcon size={24} /></span>
+              <h3 className="!m-0 !text-lg !font-bold !leading-tight !text-[#1c1a24]">{CARD_GROUPS[serviceId]?.[i] || `Part ${i + 1}`}</h3>
+            </div>
+            <div className="mt-5 flex flex-col items-start gap-2">
+              {group.map((f, j) => {
+                const selected = f === active
+                return (
+                  <button key={f.title} type="button" aria-pressed={selected} onClick={() => setPicked(current => ({ ...current, [i]: j }))} className={`cursor-pointer rounded-full border px-4 py-2 text-left text-sm font-semibold transition ${selected ? '!border-[#e6d3ad] !bg-[#edeaf6] !text-[#8a6420]' : '!border-[#e1dfee] !bg-[#f8f7fc] !text-[#1c1a24] hover:!border-[#6a5fb8]'}`}>{f.title}</button>
+                )
+              })}
+            </div>
+            <p aria-live="polite" className="!mt-4 !mb-0 !text-[15px] !leading-relaxed !text-[#6b6879]">{active.description}</p>
+          </article>
+        )
+      })}
+    </div>
+  )
+}
+
+// Three-question recommender. Answers live only in component state.
+const FIT_QUESTIONS = [
+  { title: 'What should customers do first?', options: [['learn', 'Learn about my business'], ['order', 'Browse or order'], ['pay', 'Pay me online'], ['find', 'Find and contact me']] },
+  { title: 'How much do you need to show?', options: [['simple', 'Just the essentials'], ['detailed', 'Several pages, products or links']] },
+  { title: 'Do you already have a website?', options: [['yes', 'Yes'], ['no', 'Not yet']] },
+]
+
+function recommend([goal, size, site]: string[]): string {
+  const simple = size === 'simple'
+  if (goal === 'order') return simple ? 'whatsapp-ordering-catalogue' : 'digital-product-catalogue'
+  if (goal === 'pay') return simple ? 'razorpay-payment-page-or-link' : 'razorpay-supported-payment-catalogue'
+  if (goal === 'find') return simple ? 'google-business-profile-setup' : site === 'yes' ? 'basic-seo-setup' : 'link-in-bio-business-page'
+  if (site === 'yes' && simple) return 'basic-seo-setup'
+  return simple ? 'one-page-business-website' : '3-5-page-business-website'
+}
+
+function FitCheck({ services, current, onEnquire }: { services: Service[]; current: Service; onEnquire: (name: string) => void }) {
+  const [answers, setAnswers] = useState<string[]>(['', '', ''])
+  const done = answers.every(Boolean)
+  const match = done ? services.find(s => s.id === recommend(answers)) : undefined
+  const target = match || current
+  const remaining = answers.filter(a => !a).length
+
+  return (
+    <div className="grid overflow-hidden rounded-[32px] border border-[#e1dfee] bg-white shadow-[0_14px_44px_rgba(30,27,75,0.10)] lg:grid-cols-2">
+      <div className="min-w-0 p-7 md:p-12">
+        <p className="!mt-0 !mb-8 !text-[15px] !text-[#6b6879]">A quick check. Your answers stay in your browser.</p>
+        {FIT_QUESTIONS.map((q, i) => (
+          <fieldset key={q.title} className="!m-0 !mb-6 !border-0 !p-0">
+            <legend className="mb-3 text-sm font-bold tracking-[.12em] text-[#6a5fb8] uppercase">{i + 1} · {q.title}</legend>
+            <div className="flex flex-wrap gap-3">
+              {q.options.map(([value, label]) => {
+                const selected = answers[i] === value
+                return (
+                  <button key={value} type="button" aria-pressed={selected} onClick={() => setAnswers(list => list.map((a, n) => n === i ? value : a))} className={`cursor-pointer rounded-full border-2 px-5 py-3 text-[15px] font-semibold transition hover:-translate-y-0.5 ${selected ? '!border-[#47539c] !bg-[#47539c] !text-white shadow-md' : '!border-[#e1dfee] !bg-[#f8f7fc] !text-[#1c1a24] hover:!border-[#6a5fb8]'}`}>{label}</button>
+                )
+              })}
+            </div>
+          </fieldset>
+        ))}
+        {answers.some(Boolean) && <button type="button" onClick={() => setAnswers(['', '', ''])} className="cursor-pointer !border-0 !bg-transparent !p-0 text-sm font-semibold !text-[#6b6879] underline underline-offset-4">Start over</button>}
+      </div>
+      <div aria-live="polite" className="flex min-w-0 flex-col items-start justify-center bg-gradient-to-br from-[#47539c] via-[#2f3263] to-[#17142e] p-7 md:p-12">
+        <span className="text-sm font-bold tracking-[.14em] text-[#73c2bc] uppercase">Our suggestion</span>
+        <h3 className="!mt-4 !mb-4 !text-3xl !leading-tight !font-medium !text-white md:!text-4xl">{match ? match.name : done ? "Let's talk it through" : 'Answer the three questions →'}</h3>
+        <p className="!mt-0 !mb-3 max-w-md !text-lg !leading-relaxed !text-white/65">{match ? match.summary : done ? 'Tell us about your business and ask which setup fits.' : `${remaining} to go. We'll point you to the service that matches your answers.`}</p>
+        {match && <p className="!mt-0 !mb-0 !font-semibold !text-white">{money(match.price)}{match.id === current.id ? ' · You are on the right page' : ''}</p>}
+        <button type="button" onClick={() => onEnquire(target.name)} className="mt-8 inline-flex cursor-pointer items-center gap-3 rounded-full !border-0 !bg-[#73c2bc] px-8 py-4 text-lg font-bold !text-white transition hover:-translate-y-0.5 hover:shadow-xl">Ask about {match ? 'this match' : 'this service'} <ArrowRight size={18} /></button>
+        {match && match.id !== current.id && <Link to={`/services/${match.id}`} className="mt-4 text-sm font-semibold !text-white underline underline-offset-4">View {match.name}</Link>}
+      </div>
+    </div>
+  )
+}
+
 export default function ServiceDetailPage({ services }: ServiceDetailPageProps) {
   const { id } = useParams<{ id: string }>()
   const { openEnquiry } = useEnquiry()
@@ -964,6 +1027,8 @@ export default function ServiceDetailPage({ services }: ServiceDetailPageProps) 
   const serviceUrl = `https://onlinekardo.com/services/${service.id}`
   const svcImg = SERVICE_IMAGES[service.id]
   const svcContent = SERVICE_CONTENT[service.id]
+  const goTo = (target: string) => document.getElementById(target)?.scrollIntoView({ behavior: 'smooth' })
+  const [titleColor, from, to] = HERO_COLORS[service.id] || ['#1c1a24', '#47539c', '#6a5fb8']
   const IconComp = svcImg ? ICON_COMPONENTS[svcImg.icon] : Monitor
 
   return (
@@ -972,64 +1037,90 @@ export default function ServiceDetailPage({ services }: ServiceDetailPageProps) 
       <ServiceSchema name={service.name} description={service.summary} price={service.price} category={service.category} url={serviceUrl} />
       <BreadcrumbSchema items={[{ name: 'Home', url: 'https://onlinekardo.com' }, { name: 'Services', url: 'https://onlinekardo.com/services' }, { name: service.name, url: serviceUrl }]} />
 
-      {/* Hero with Marquee */}
-      <section className="service-detail-hero relative overflow-hidden" style={{ background: `linear-gradient(135deg, ${svcImg?.bgColor || '#f3ede1'} 0%, white 100%)` }}>
-        <div className="absolute inset-0 opacity-5" style={{ background: `url(${svcImg?.image || '/assets/industries/one-page-website.jpg'}) center/cover` }} />
-        <div className="relative z-10 container py-16 md:py-24">
+      {/* Hero */}
+      <section className="service-detail-hero overflow-hidden bg-[#f7f6fb] pt-8 pb-16 md:pb-24">
+        <div className="container">
           <button className="detail-back mb-8" onClick={backToServices}><ArrowLeft size={15} /> Back to all services</button>
-          <div className="lg:grid lg:grid-cols-[1fr_1fr] gap-12 items-start">
-            <div>
-              <span className="eyebrow" style={{ color: svcImg?.color || '#e36a27' }}>{service.category} · Individual setup</span>
-              <h1 className="!text-6xl !leading-[.95] !tracking-[-.07em] md:!text-7xl mt-4">{service.name}</h1>
-              <p className="detail-summary text-xl mt-6 text-[#5d6962] max-w-xl">{svcContent?.heroSubtitle || service.summary}</p>
-              <div className="detail-price-line mt-8"><strong>{money(service.price)}</strong><span>one-time setup fee</span></div>
-              <button className="button button-primary !rounded-full !px-6 !py-4 mt-8" style={{ background: svcImg?.color || '#e36a27' }} onClick={() => openEnquiry(service.name)}>Ask about this service <ArrowUpRight size={15} /></button>
-              <small className="detail-fee-note mt-4 block">Third-party subscriptions, fees and approvals are separate where applicable.</small>
-            </div>
-            <div className="hidden lg:block relative">
-              <div className="relative rounded-[28px] overflow-hidden" style={{ aspectRatio: '4/5', background: svcImg?.bgColor || '#f3ede1' }}>
-                <img src={svcImg?.image || '/assets/industries/one-page-website.jpg'} alt={service.name} className="absolute inset-0 w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
-                  <div><span className="text-xs font-medium text-white/80 tracking-wide uppercase">SERVICE PREVIEW</span><p className="text-sm mt-1 text-white font-medium">{service.name}</p></div>
-                  <div className="w-14 h-14 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20"><IconComp size={28} className="text-white" /></div>
-                </div>
+          <div className="grid items-center gap-12 lg:grid-cols-2">
+            <div className="min-w-0">
+              <div className="flex items-center gap-4"><span className="h-0.5 w-12" style={{ background: to }} /><span className="text-sm font-bold tracking-[.14em] uppercase" style={{ color: from }}>{service.category}</span></div>
+              <h1 className="!mt-5 !mb-0 !text-4xl !leading-[1.04] !font-semibold !tracking-[-.045em] md:!text-6xl"><span style={{ color: titleColor }}>{service.name},</span> <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(to right, ${from}, ${to})` }}>set up around your business</span></h1>
+              <p className="!mt-6 !mb-0 max-w-xl !text-lg !leading-relaxed !text-[#6b6879]">{svcContent?.heroSubtitle || service.summary} <button type="button" onClick={() => goTo('details')} className="cursor-pointer !border-0 !bg-transparent !p-0 font-semibold underline underline-offset-4" style={{ color: from }}>Read more</button></p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <button type="button" className="inline-flex cursor-pointer items-center gap-3 rounded-full !border-2 px-8 py-4 text-lg font-bold !text-white shadow-md transition hover:-translate-y-0.5" style={{ background: from, borderColor: from }} onClick={() => openEnquiry(service.name)}>Get a quote <ArrowRight size={18} /></button>
+                <button type="button" className="inline-flex cursor-pointer items-center gap-3 rounded-full !border-2 !bg-transparent px-8 py-4 text-lg font-bold transition hover:-translate-y-0.5" style={{ color: titleColor, borderColor: titleColor }} onClick={() => goTo('compare')}>See before &amp; after <ArrowUpRight size={18} /></button>
               </div>
+              <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                <div className="flex items-center gap-4 rounded-2xl border border-[#e1dfee] bg-white p-4 shadow-sm">
+                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl text-white" style={{ background: from }}><IconComp size={24} /></span>
+                  <span className="min-w-0"><b className="block text-xl" style={{ color: titleColor }}>{money(service.price)}</b><small className="block text-sm text-[#6b6879]">One-time setup fee</small></span>
+                </div>
+                <button type="button" onClick={() => goTo('fit')} className="flex cursor-pointer items-center gap-4 rounded-2xl !border !border-[#e1dfee] !bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5">
+                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl text-white" style={{ background: to }}><Check size={24} /></span>
+                  <span className="min-w-0"><b className="block" style={{ color: titleColor }}>Is it right for you?</b><small className="block text-sm !text-[#6b6879]">Answer three questions</small></span>
+                </button>
+              </div>
+              <small className="mt-5 block text-[#6b6879]">Third-party subscriptions, fees and approvals are separate where applicable.</small>
+            </div>
+            <div className="h-[340px] min-w-0 overflow-hidden rounded-[32px] border border-[#e1dfee] bg-[#eeedf7] shadow-[0_30px_70px_rgba(30,27,75,0.16)] md:h-[500px]">
+              <HeroPhoto key={service.id} serviceId={service.id} />
             </div>
           </div>
-        </div>
-        {/* Marquee at bottom of hero */}
-        <div className="absolute bottom-0 left-0 right-0 py-4" style={{ background: `linear-gradient(to top, ${svcImg?.color || '#e36a27'}22, transparent)` }}>
-          <Marquee text={svcContent?.marqueeText || ''} speed={25} className="px-4" />
         </div>
       </section>
 
       {/* Detailed Description */}
-      <section className="py-24 bg-white">
+      <section id="details" className="py-24 bg-white">
         <div className="container max-w-4xl">
           <h2 className="!font-display !text-4xl !tracking-[-.05em] mb-8">What you get</h2>
           <div className="prose prose-lg text-[#5d6962] max-w-none">{svcContent?.detailedDescription || ''}</div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-24" style={{ background: svcImg?.bgColor || '#f6f3fb' }}>
+      {/* Recommender */}
+      <section id="fit" className="bg-[#f7f6fb] py-24">
         <div className="container">
-          <div className="text-center mb-16">
-            <span className="eyebrow" style={{ color: svcImg?.color || '#e36a27' }}>Features</span>
-            <h2 className="!font-display !text-4xl !tracking-[-.05em] mt-2">Every detail, built for conversion</h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {svcContent?.features?.map((f, i) => (
-              <article key={i} className="bg-white rounded-[22px] p-6 border border-[#e8e0f3] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-                <div className="w-12 h-12 rounded-xl mb-4" style={{ background: `${svcImg?.color || '#e36a27'}15` }}><IconComp size={24} className="text-white" style={{ color: svcImg?.color || '#e36a27' }} /></div>
-                <h3 className="text-xl font-bold text-[#102a3d] mb-2">{f.title}</h3>
-                <p className="text-[#5d6962]">{f.description}</p>
-              </article>
-            ))}
-          </div>
+          <span className="text-base font-medium text-[#8b93c4]">Not sure yet?</span>
+          <h2 className="!mt-3 !mb-4 !text-4xl !tracking-[-.04em] !text-[#1c1a24] md:!text-5xl">Is this the right setup for you?</h2>
+          <p className="!mt-0 !mb-10 max-w-2xl !text-lg !leading-relaxed !text-[#6b6879]">Answer three questions to get a suggestion before you enquire.</p>
+          <FitCheck key={service.id} services={services} current={service} onEnquire={openEnquiry} />
         </div>
       </section>
+
+      {/* Before / after */}
+      <section id="compare" className="bg-[#f7f6fb] pb-16">
+        <div className="container !max-w-[1400px]">
+          <article className="w-full overflow-hidden rounded-[32px] border border-[#e1dfee] bg-white shadow-[0_14px_44px_rgba(30,27,75,0.10)]">
+            <BeforeAfterSlider key={service.id} service={service} />
+            <div className="grid gap-6 p-6 md:p-8 lg:grid-cols-2 lg:gap-12">
+              <div className="min-w-0">
+              <span className="text-sm font-bold tracking-[.12em] text-[#6a5fb8] uppercase">{service.category} · Before and after</span>
+              <h2 className="!mt-3 !mb-3 !text-3xl !tracking-[-.04em] !text-[#1c1a24] md:!text-4xl">See what could change</h2>
+              <p className="!m-0 !text-lg !leading-relaxed !text-[#6b6879]">{service.impact}</p>
+              </div>
+              <div className="min-w-0">
+              <ul className="!m-0 !mb-5 !list-none space-y-2 !p-0">
+                {svcContent?.features?.slice(0, 3).map(f => <li key={f.title} className="flex items-start gap-3 text-[#1c1a24]"><Check size={20} className="mt-0.5 shrink-0 text-[#4caf7d]" />{f.title}</li>)}
+              </ul>
+              <button type="button" className="inline-flex cursor-pointer items-center gap-3 rounded-full !border-2 !border-[#1c1a24] !bg-transparent px-7 py-3 text-base font-bold !text-[#1c1a24] transition hover:!bg-[#1c1a24] hover:!text-white" onClick={() => openEnquiry(service.name)}>Get a quote <ArrowRight size={18} /></button>
+              <small className="mt-5 block text-[#6b6879]">Sample business examples over stock photos, not client work. Your business details and results will differ.</small>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      {/* Feature cards */}
+      {!!svcContent?.features?.length && (
+        <section className="bg-[#f7f6fb] pb-24">
+          <div className="container">
+            <span className="text-base font-medium text-[#8b93c4]">What is included</span>
+            <h2 className="!mt-3 !mb-4 !text-4xl !tracking-[-.04em] !text-[#1c1a24] md:!text-5xl">Every part, explained</h2>
+            <p className="!mt-0 !mb-10 max-w-2xl !text-lg !leading-relaxed !text-[#6b6879]">Select any item to see what it covers.</p>
+            <FeatureCards key={service.id} serviceId={service.id} features={svcContent.features} />
+          </div>
+        </section>
+      )}
 
       {/* Process Timeline */}
       <section className="py-24 bg-white">
@@ -1045,7 +1136,7 @@ export default function ServiceDetailPage({ services }: ServiceDetailPageProps) 
                 <div className="absolute left-4 top-2 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: svcImg?.color || '#e36a27' }}>{p.step}</div>
                 <div className="bg-[#fffaf0] rounded-[16px] p-6 border-l-4" style={{ borderColor: svcImg?.color || '#e36a27' }}>
                   <h3 className="text-lg font-bold text-[#102a3d] mb-2">{p.title}</h3>
-                  <p className="text-[#5d6962]">{p.description}</p>
+                  <p className="text-[#5d6962] [overflow-wrap:anywhere]">{p.description}</p>
                 </div>
               </div>
             ))}
@@ -1097,32 +1188,6 @@ export default function ServiceDetailPage({ services }: ServiceDetailPageProps) 
                 <div className="px-6 pb-6 text-[#5d6962] leading-relaxed border-t border-[#e8e0f3]">{f.a}</div>
               </details>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Interactive Demo */}
-      <section className="py-24" style={{ background: '#e7eee4' }}>
-        <div className="container">
-          <div className="lg:grid lg:grid-cols-[1fr_1fr] gap-12 items-start">
-            <div>
-              <span className="eyebrow">A small preview</span>
-              <h2 className="!font-display !text-4xl !tracking-[-.05em] mt-2 mb-4">See how it could work</h2>
-              <p className="text-[#5d6962] mb-6">This is a sample interaction to help you picture the customer experience. Names and details are illustrative.</p>
-              <div className="flex items-center gap-2 text-sm text-[#087b87]"><Check size={16} /><span>{service.category === 'Payments' ? 'Demo only. No payment is collected.' : 'Sample content only. Your business details replace these.'}</span></div>
-            </div>
-            <div className="relative">
-              <div className="demo-stage rounded-[22px] overflow-hidden border border-[#dce4e2] bg-white" style={{ background: svcImg?.bgColor || '#f3ede1' }}>
-                <div className="demo-toolbar flex items-center justify-between px-4 py-3 border-b border-[#dce4e2]"><span className="flex gap-1.5"><i className="w-3 h-3 rounded-full bg-[#d5d9d0]" /><i className="w-3 h-3 rounded-full bg-[#d5d9d0]" /><i className="w-3 h-3 rounded-full bg-[#d5d9d0]" /></span><b className="text-xs tracking-wider">ONLINEKARDO · SAMPLE PREVIEW</b><span className="demo-label text-xs px-2 py-0.5 rounded bg-[#fff4ed] text-[#e36a27]">NOT LIVE</span></div>
-                <div className="p-6 min-h-[400px]">
-                  {(() => {
-                    const DemoComponent = serviceDemos[service.id]
-                    return DemoComponent ? <DemoComponent service={service} /> : <div className="text-center text-[#5d6962] py-20">Demo component not found</div>
-                  })()}
-                </div>
-                <div className="demo-stage-caption px-4 py-3 text-xs text-[#818781] border-t border-[#dce4e2]"><span>✳</span> {service.brand ? `Independent ${BRAND_NAMES[service.brand]} visual sample · no affiliation or live account connection` : service.category === 'Payments' ? 'Sample only · No real payment or merchant account is connected' : 'Illustrative demo · No real orders or messages are sent'}</div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
