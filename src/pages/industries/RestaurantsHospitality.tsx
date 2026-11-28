@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { ArrowRight, ArrowUpRight, BedDouble, Building2, CalendarCheck, ChefHat, Check, ChevronDown, Coffee, CreditCard, Gauge, Home, MapPin, PartyPopper, QrCode, Search, Smartphone, Star, Truck, Users, Utensils, Wine } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useEnquiry } from '../../context/EnquiryContext'
@@ -26,7 +26,6 @@ const GOLD = '#d5a64b'
 const GOLD_D = '#8a6a1f'
 const INK = '#102a3d'
 const EMBER = '#c2562b'
-const MUTED = '#5d6962'
 
 /* ---------- Data ---------- */
 const leaks = [

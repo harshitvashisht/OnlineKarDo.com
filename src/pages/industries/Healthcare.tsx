@@ -26,7 +26,6 @@ const IMG = {
 const ACCENT = '#2f7f9e'
 const TEAL = '#087b87'
 const MINT = '#55c9c0'
-const NAVY = '#102a3d'
 
 /* ---------- Data ---------- */
 const leaks = [

@@ -26,9 +26,7 @@ const IMG = {
 const SAGE = '#779166'
 const GREEN = '#4f6f47'
 const LIGHT = '#ecf4e8'
-const LINE = '#d9e8d0'
 const MINT = '#b9d4a8'
-const INK = '#102a3d'
 
 /* ---------- Data ---------- */
 const steps = [

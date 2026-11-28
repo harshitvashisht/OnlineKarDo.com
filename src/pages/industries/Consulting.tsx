@@ -24,7 +24,6 @@ const IMG = {
 const ACCENT = '#6d4fd6'
 const DEEP = '#2a1b6b'
 const MINT = '#55c9c0'
-const NAVY = '#102a3d'
 
 /* ---------- Data ---------- */
 const doubts = [
